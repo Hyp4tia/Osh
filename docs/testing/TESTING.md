@@ -1,6 +1,6 @@
 # Testing Guide
 
-## Local Verification (本地验证)
+## Local Verification
 
 ### Step 1: Build the App
 ```bash
@@ -15,11 +15,11 @@ open ~/Library/Developer/Xcode/DerivedData/Osh-*/Build/Products/Debug/Osh.app
 
 Or in Xcode:
 1. Open `Osh.xcodeproj`
-2. **重要**: 在顶部工具栏确保选择的是 **Markdown** scheme (不是 MarkdownPreview)
-   - 点击 scheme 下拉菜单（在 Run/Stop 按钮旁边）
-   - 选择 "Markdown"
+2. **Important**: make sure the **Markdown** scheme is selected in the toolbar (not MarkdownPreview)
+   - Click the scheme dropdown (next to the Run/Stop buttons)
+   - Choose "Markdown"
 3. Press `Cmd+R` to run
-4. 如果弹出 "Choose an app to run"，选择任意应用（如 Finder），这是 Extension 的正常行为
+4. If macOS asks "Choose an app to run", pick any app (e.g. Finder) — this is normal for extension targets
 
 **Important**: Keep the app running while testing. This registers the Quick Look extension with the system.
 

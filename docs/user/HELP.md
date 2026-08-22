@@ -1,50 +1,50 @@
-# Osh 使用指南（新手友好）
+# Osh User Guide (Beginner-Friendly)
 
-这份文档面向 **普通用户**：帮你在 1 分钟内完成第一次成功预览，并在遇到问题时按“由浅入深”的顺序排查。
+This guide is aimed at **everyday users**: get your first successful preview within one minute, then work through any problems from simplest to hardest.
 
-> 如果你是开发者/想看更底层的原理与命令行诊断，请直接跳到：
-> - 高级排障：[`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
-
----
-
-## 1) 先体验一次“它真的在工作”
-
-1. 在 Finder 里找到一个 `.md` 文件
-2. 选中它，按 **Space（空格）**
-3. 你应该看到带样式的 Markdown 预览（而不是纯文本）
-
-如果这一步成功了，后面只是可选增强。
+> If you are a developer looking for lower-level details and command-line diagnostics, jump straight to:
+> - Advanced troubleshooting: [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
 
 ---
 
-## 2) 第一次使用（推荐流程）
+## 1) See that it really works
 
-### Step A：启动一次 App（很重要）
+1. Find a `.md` file in Finder
+2. Select it and press **Space**
+3. You should see a styled Markdown preview (not plain text)
 
-macOS 的 QuickLook 扩展通常需要宿主 App 被打开过一次，系统才会完成注册。
-
-1. 打开 **Applications（应用程序）**
-2. 启动 **Osh** 一次
-3. 出现欢迎窗口即可（不需要选择文件）
-
-### Step B：确认 Quick Look 扩展已启用
-
-如果你按空格仍然是旧预览：
-
-1. 打开 **System Settings（系统设置）**
-2. 进入 **Extensions（扩展）** → **Quick Look（快速查看）**
-3. 确认 **Osh / MarkdownPreview** 相关项已启用
+If that step worked, everything below is optional.
 
 ---
 
-## 3) 常见问题（由简到难）
+## 2) First-time setup (recommended flow)
 
-### 3.1 按空格还是“没有变化”
+### Step A: Launch the app once (important)
 
-按下面顺序逐项尝试：
+macOS usually only registers a QuickLook extension after its host app has been opened at least once.
 
-1. **重启 Finder**：在 Dock 上右键 Finder 图标（按住 Option 更稳妥）→ Relauch（重新启动）
-2. **清理 QuickLook 缓存**：打开“终端”，运行：
+1. Open **Applications**
+2. Launch **Osh** once
+3. Seeing the welcome window is enough (no need to pick a file)
+
+### Step B: Make sure the Quick Look extension is enabled
+
+If pressing Space still shows the old preview:
+
+1. Open **System Settings**
+2. Go to **Extensions** → **Quick Look**
+3. Make sure the **Osh / MarkdownPreview** item is enabled
+
+---
+
+## 3) Common issues (simple → hard)
+
+### 3.1 Pressing Space still "does nothing"
+
+Try each of these in order:
+
+1. **Restart Finder**: right-click the Finder icon in the Dock (holding Option makes this more reliable) → Relaunch
+2. **Clear the QuickLook cache**: open Terminal and run:
 
 ```bash
 qlmanage -r
@@ -52,49 +52,49 @@ qlmanage -r cache
 killall Finder
 ```
 
-然后回到 Finder 再按一次空格。
+Then go back to Finder and press Space again.
 
-### 3.2 “App is damaged / 无法验证开发者”
+### 3.2 "App is damaged / can't verify the developer"
 
-这是 macOS 的安全机制（下载的 App 带有隔离标记）导致的。
+This is macOS Gatekeeper kicking in (downloaded apps carry a quarantine flag).
 
-打开终端运行：
+Run this in Terminal:
 
 ```bash
 xattr -cr "/Applications/Osh.app"
 ```
 
-再重新打开 App。
+Then open the app again.
 
-### 3.3 预览能打开，但偶尔显示成纯文本
+### 3.3 Preview opens, but occasionally shows plain text
 
-通常是系统选择了其他 QuickLook 插件或缓存。
+Usually the system picked another QuickLook plugin or has a stale cache.
 
-1. 先按 **3.1** 的步骤清理缓存
-2. 确认 Osh 是 `.md` 的默认打开方式（可选）：右键文件 → Get Info → Open with
+1. Clear the cache following steps in **3.1** first
+2. Optionally make Osh the default handler for `.md`: right-click the file → Get Info → Open with
 
-如果仍不稳定，请看高级排障：[`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
-
----
-
-## 4) 如何使用 App（打开文件 / 拖拽 / 设置）
-
-### 打开文件
-
-- 方式 1：双击 `.md` 文件（若 Osh 是默认打开方式）
-- 方式 2：在欢迎窗口点击中间的 **+**，选择文件
-- 方式 3：把文件直接拖到欢迎窗口的 **+** 区域
-
-### 打开设置（Settings）
-
-- 快捷键：**Cmd + ,**
-- 或者在欢迎窗口点击 **Open Settings**
+If it remains unreliable, see the advanced guide: [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
 
 ---
 
-## 5) 小贴士：如何写出“预览效果更好”的 Markdown
+## 4) Using the app (open files / drag & drop / settings)
 
-Osh 支持 Mermaid、KaTeX、GFM 等。这里给你几个可复制粘贴的小示例：
+### Opening files
+
+- Option 1: double-click a `.md` file (if Osh is the default handler)
+- Option 2: click the **+** in the middle of the welcome window and choose a file
+- Option 3: drag a file straight onto the **+** area of the welcome window
+
+### Opening Settings
+
+- Keyboard shortcut: **Cmd + ,**
+- Or click **Open Settings** in the welcome window
+
+---
+
+## 5) Tips: writing Markdown that previews beautifully
+
+Osh supports Mermaid, KaTeX, GFM and more. Here are a few copy-paste examples:
 
 ### Mermaid
 
@@ -105,9 +105,9 @@ flowchart TD
 
 ### KaTeX
 
-行内：`$E = mc^2$`
+Inline: `$E = mc^2$`
 
-块级：
+Block:
 
 ```tex
 \int_a^b f(x)\,dx
@@ -115,8 +115,8 @@ flowchart TD
 
 ---
 
-## 6) 仍然需要帮助？
+## 6) Still need help?
 
-1. 先看高级排障（包含更详细的检查命令与原因解释）：[`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
-2. 如果你愿意反馈问题：
-   - GitHub Issues：<https://github.com/Zeyadistired/Osh/issues>
+1. Read the advanced troubleshooting guide (more detailed checks and explanations): [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
+2. If you'd like to report a problem:
+   - GitHub Issues: <https://github.com/Zeyadistired/Osh/issues>

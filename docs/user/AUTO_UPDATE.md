@@ -1,39 +1,39 @@
 # Sparkle Auto Update (Osh)
 
-> 目标：让 **Osh** 使用 Sparkle 实现应用内自动更新。
-> 
-> 结论：**不需要启用 GitHub Pages**。推荐直接使用 `raw.githubusercontent.com` 托管 `appcast.xml`。
+> Goal: let **Osh** update itself in-app via Sparkle.
+>
+> Bottom line: **GitHub Pages is not required**. The recommended approach is to serve `appcast.xml` from `raw.githubusercontent.com`.
 
 ---
 
-## 1. 更新源（SUFeedURL）
+## 1. The update feed (SUFeedURL)
 
-Sparkle 需要访问 `appcast.xml` 来检查更新。
+Sparkle needs access to `appcast.xml` to check for updates.
 
-### 方法 1（推荐）：GitHub Raw（无需 Pages）
+### Method 1 (recommended): GitHub Raw (no Pages needed)
 
-在 `Sources/Markdown/Info.plist` 中设置：
+Set it in `Sources/Markdown/Info.plist`:
 
 ```xml
 <key>SUFeedURL</key>
 <string>https://raw.githubusercontent.com/Zeyadistired/Osh/main/appcast.xml</string>
 ```
 
-优点：
-- 无需 GitHub Pages
-- 链路简单，稳定可控
+Pros:
+- No GitHub Pages needed
+- Simple, stable, fully under your control
 
-注意：
-- 必须使用 **raw** URL（返回 XML 原文），不要用 GitHub 的 `blob` 页面 URL（会返回 HTML）。
+Note:
+- You **must** use the **raw** URL (returns the raw XML). Do not use GitHub's `blob` page URL (it returns HTML).
 
-### 方法 2（可选）：GitHub Pages
+### Method 2 (optional): GitHub Pages
 
-如果你想用 Pages（例如希望 `github.io` 域名更“产品化”）：
+If you prefer Pages (e.g. a `github.io` domain feels more "product-like"):
 
-1. 在 GitHub 仓库设置中启用 Pages
-2. 选择 `master` 分支的根目录（或你指定的目录）
-3. 确保 `appcast.xml` 在该目录下
-4. 设置：
+1. Enable Pages in the repo settings
+2. Choose the root of the branch you want (or a subdirectory)
+3. Make sure `appcast.xml` lives there
+4. Set:
 
 ```xml
 <key>SUFeedURL</key>
@@ -42,19 +42,19 @@ Sparkle 需要访问 `appcast.xml` 来检查更新。
 
 ---
 
-## 2. 发布时生成 appcast.xml
+## 2. Generating appcast.xml on release
 
-### 2.1 生成签名并更新 appcast
+### 2.1 Generate signatures and update the appcast
 
 ```bash
 ./scripts/generate-appcast.sh build/artifacts/Osh.dmg
 ```
 
-脚本会：
-- 对 DMG 生成 `sparkle:edSignature`
-- 更新/插入 `appcast.xml` 条目
+The script will:
+- Generate a `sparkle:edSignature` for the DMG
+- Update/insert the entry in `appcast.xml`
 
-### 2.2 提交并推送 appcast.xml
+### 2.2 Commit and push appcast.xml
 
 ```bash
 git add appcast.xml
@@ -64,48 +64,48 @@ git push
 
 ---
 
-## 3. 安全最佳实践
+## 3. Security best practices
 
-### 3.1 私钥管理
+### 3.1 Private key management
 
-⚠️ **绝对不要提交私钥到 Git**。
+⚠️ **Never commit private keys to Git.**
 
-`.gitignore` 应包含：
+`.gitignore` should include:
 
 ```gitignore
 .sparkle-keys/
 ```
 
-推荐存储方式：
-- 1Password / Bitwarden 等
-- 加密的离线存储
+Recommended storage:
+- 1Password / Bitwarden and similar tools
+- Encrypted offline storage
 
 ### 3.2 CI/CD
 
-如果你在 CI 里生成签名：
-- 使用 GitHub Secrets 存储私钥
-- 运行时写入临时文件，用完即删
+If you generate signatures in CI:
+- Store the private key in GitHub Secrets
+- Write it to a temporary file at runtime and delete it afterwards
 
 ---
 
-## 4. 常见排障
+## 4. Common troubleshooting
 
-### 4.1 更新源拿到的是 HTML
+### 4.1 The feed URL returns HTML instead of XML
 
-现象：更新检查失败，日志里出现 XML 解析错误。
+Symptom: update check fails, logs show an XML parsing error.
 
-原因：`SUFeedURL` 指向了 GitHub 的 `blob` 页面。
+Cause: `SUFeedURL` points at GitHub's `blob` page.
 
-修复：改成 raw：
+Fix: use the raw URL:
 
 `https://raw.githubusercontent.com/Zeyadistired/Osh/main/appcast.xml`
 
-### 4.2 签名校验失败
+### 4.2 Signature verification fails
 
-原因：
-- `sparkle:edSignature` 与实际 DMG 不匹配
+Cause:
+- `sparkle:edSignature` does not match the actual DMG
 
-修复：
+Fix:
 
 ```bash
 ./scripts/generate-appcast.sh build/artifacts/Osh.dmg
