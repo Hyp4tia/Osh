@@ -30,6 +30,12 @@
 
 ---
 
+## 📖 The Name
+
+**Osh** (ⲱϣ) is Coptic for **“to read”** — minimal and sharp. It reflects the pure reading/viewing experience, without editor clutter.
+
+---
+
 ## ✨ Demo
 
 ![Osh Demo](docs/assets/demo.gif)

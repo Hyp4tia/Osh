@@ -30,6 +30,12 @@
 
 ---
 
+## 📖 El nombre
+
+**Osh** (ⲱϣ) significa **«leer»** en copto — minimalista y afilado. Refleja una experiencia de lectura/visualización pura, sin el ruido de un editor.
+
+---
+
 ## ✨ Demo
 
 ![Demo de Osh](docs/assets/demo.gif)
