@@ -3,7 +3,7 @@ set -e
 
 VERSION_FILE=".version"
 CHANGELOG_FILE="CHANGELOG.md"
-DMG_PATH="build/artifacts/FluxMarkdown.dmg"
+DMG_PATH="build/artifacts/Osh.dmg"
 
 if ! command -v gh &> /dev/null; then
     echo "❌ Error: 'gh' (GitHub CLI) is not installed."
@@ -137,7 +137,7 @@ if [ ! -f "$DMG_PATH" ]; then
 fi
 
 echo "📦 Building MacPorts source tarball..."
-MACPORTS_TARBALL="build/artifacts/FluxMarkdown-${NEW_FULL_VERSION}-macports-source.tar.gz"
+MACPORTS_TARBALL="build/artifacts/Osh-${NEW_FULL_VERSION}-macports-source.tar.gz"
 if ./scripts/create_macports_tarball.sh "$NEW_FULL_VERSION"; then
     echo "✅ MacPorts tarball created: $MACPORTS_TARBALL"
     if [ -f "macports/Portfile" ]; then
@@ -208,4 +208,4 @@ echo "   ✅ DMG uploaded"
 echo "   ✅ Sparkle appcast updated (if configured)"
 echo "   ✅ Homebrew Cask updated (if configured)"
 echo ""
-echo "🌐 Release URL: https://github.com/xykong/flux-markdown/releases/tag/v$NEW_FULL_VERSION"
+echo "🌐 Release URL: https://github.com/Zeyadistired/Osh/releases/tag/v$NEW_FULL_VERSION"

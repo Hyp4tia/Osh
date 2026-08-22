@@ -12,7 +12,7 @@ final class FinderPanePreviewTests: XCTestCase {
             .appendingPathComponent("FinderPanePreviewTests-\(UUID().uuidString)")
         try? FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
         tempFile = tempDir.appendingPathComponent("test-preferences.plist")
-        suiteName = "com.xykong.Markdown.Tests.FinderPanePreviewTests.\(UUID().uuidString)"
+        suiteName = "com.zeyadistired.osh.Tests.FinderPanePreviewTests.\(UUID().uuidString)"
         localDefaults = UserDefaults(suiteName: suiteName)
     }
 

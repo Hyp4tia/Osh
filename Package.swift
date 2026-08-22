@@ -1,7 +1,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "FluxMarkdown",
+    name: "Osh",
     platforms: [.macOS(.v11)],
     dependencies: [
         .package(url: "https://github.com/sparkle-project/Sparkle", exact: "2.8.1"),

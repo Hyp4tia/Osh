@@ -7,7 +7,7 @@
  *   T_webview_init: WKWebView load + rendererReady handshake
  *
  * Run via:
- *   xcodebuild test -project FluxMarkdown.xcodeproj \
+ *   xcodebuild test -project Osh.xcodeproj \
  *     -scheme Markdown -destination 'platform=macOS,arch=arm64' \
  *     -only-testing MarkdownTests/RenderBenchmarkTests \
  *     2>&1 | tee benchmark/results/swift-bench-raw.log

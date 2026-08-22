@@ -1,4 +1,4 @@
-# FluxMarkdown 使用指南（新手友好）
+# Osh 使用指南（新手友好）
 
 这份文档面向 **普通用户**：帮你在 1 分钟内完成第一次成功预览，并在遇到问题时按“由浅入深”的顺序排查。
 
@@ -24,7 +24,7 @@
 macOS 的 QuickLook 扩展通常需要宿主 App 被打开过一次，系统才会完成注册。
 
 1. 打开 **Applications（应用程序）**
-2. 启动 **FluxMarkdown** 一次
+2. 启动 **Osh** 一次
 3. 出现欢迎窗口即可（不需要选择文件）
 
 ### Step B：确认 Quick Look 扩展已启用
@@ -33,7 +33,7 @@ macOS 的 QuickLook 扩展通常需要宿主 App 被打开过一次，系统才�
 
 1. 打开 **System Settings（系统设置）**
 2. 进入 **Extensions（扩展）** → **Quick Look（快速查看）**
-3. 确认 **FluxMarkdown / MarkdownPreview** 相关项已启用
+3. 确认 **Osh / MarkdownPreview** 相关项已启用
 
 ---
 
@@ -61,7 +61,7 @@ killall Finder
 打开终端运行：
 
 ```bash
-xattr -cr "/Applications/FluxMarkdown.app"
+xattr -cr "/Applications/Osh.app"
 ```
 
 再重新打开 App。
@@ -71,7 +71,7 @@ xattr -cr "/Applications/FluxMarkdown.app"
 通常是系统选择了其他 QuickLook 插件或缓存。
 
 1. 先按 **3.1** 的步骤清理缓存
-2. 确认 FluxMarkdown 是 `.md` 的默认打开方式（可选）：右键文件 → Get Info → Open with
+2. 确认 Osh 是 `.md` 的默认打开方式（可选）：右键文件 → Get Info → Open with
 
 如果仍不稳定，请看高级排障：[`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
 
@@ -81,7 +81,7 @@ xattr -cr "/Applications/FluxMarkdown.app"
 
 ### 打开文件
 
-- 方式 1：双击 `.md` 文件（若 FluxMarkdown 是默认打开方式）
+- 方式 1：双击 `.md` 文件（若 Osh 是默认打开方式）
 - 方式 2：在欢迎窗口点击中间的 **+**，选择文件
 - 方式 3：把文件直接拖到欢迎窗口的 **+** 区域
 
@@ -94,7 +94,7 @@ xattr -cr "/Applications/FluxMarkdown.app"
 
 ## 5) 小贴士：如何写出“预览效果更好”的 Markdown
 
-FluxMarkdown 支持 Mermaid、KaTeX、GFM 等。这里给你几个可复制粘贴的小示例：
+Osh 支持 Mermaid、KaTeX、GFM 等。这里给你几个可复制粘贴的小示例：
 
 ### Mermaid
 
@@ -119,4 +119,4 @@ flowchart TD
 
 1. 先看高级排障（包含更详细的检查命令与原因解释）：[`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
 2. 如果你愿意反馈问题：
-   - GitHub Issues：<https://github.com/xykong/flux-markdown/issues>
+   - GitHub Issues：<https://github.com/Zeyadistired/Osh/issues>

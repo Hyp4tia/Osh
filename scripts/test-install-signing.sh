@@ -41,7 +41,7 @@ require_text '/usr/bin/codesign --force --sign - --entitlements "$TEMP_QUICKLOOK
     "install.sh must sign MarkdownPreview.appex with expanded MarkdownPreview.entitlements"
 
 require_text '/usr/bin/codesign --force --sign - --entitlements "$APP_ENTITLEMENTS" "$INSTALLED_APP_PATH"' \
-    "install.sh must sign FluxMarkdown.app with Markdown.entitlements after nested code"
+    "install.sh must sign Osh.app with Markdown.entitlements after nested code"
 
 require_text '/usr/bin/codesign --verify --strict --deep --verbose=2 "$INSTALLED_APP_PATH"' \
     "install.sh must verify the final app signature after explicit signing"

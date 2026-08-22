@@ -74,10 +74,10 @@ struct WelcomeView: View {
                             .stroke(Color(NSColor.separatorColor).opacity(0.8), lineWidth: 1)
                     )
                     .shadow(color: Color.black.opacity(0.12), radius: 10, x: 0, y: 6)
-                    .accessibilityLabel(Text(NSLocalizedString("FluxMarkdown App Icon", comment: "App icon accessibility label")))
+                    .accessibilityLabel(Text(NSLocalizedString("Osh App Icon", comment: "App icon accessibility label")))
             }
 
-            Text("FluxMarkdown")
+            Text("Osh")
                 .font(.system(size: 26, weight: .semibold))
                 .foregroundColor(.primary)
 

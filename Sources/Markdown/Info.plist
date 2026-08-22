@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>FluxMarkdown</string>
+	<string>Osh</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>CFBundleIconName</key>
@@ -14,7 +14,7 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.xykong.Markdown</string>
+			<string>com.zeyadistired.osh</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>markdownpreview</string>
@@ -58,7 +58,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>FluxMarkdown</string>
+	<string>Osh</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
@@ -313,7 +313,7 @@
 		</dict>
 	</array>
 	<key>SUFeedURL</key>
-	<string>https://raw.githubusercontent.com/xykong/flux-markdown/master/appcast.xml</string>
+	<string>https://raw.githubusercontent.com/Zeyadistired/Osh/main/appcast.xml</string>
 	<key>SUPublicEDKey</key>
 	<string>BDhsLBTgtRax5K78RrmvkB2wCcLeKM7FxsuHu47soaU=</string>
 	<key>SUPublicEDKeyChain</key>

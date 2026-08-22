@@ -4,7 +4,7 @@
 "Export as HTML…" = "Exportar como HTML…";
 "Export as PDF…" = "Exportar como PDF…";
 "Find..." = "Buscar...";
-"FluxMarkdown Help" = "Ayuda de FluxMarkdown";
+"Osh Help" = "Ayuda de Osh";
 "README" = "README";
 "Report an Issue" = "Reportar un Problema";
 "Release Notes" = "Notas de la Versión";
@@ -87,7 +87,7 @@
 "Open Settings" = "Abrir Configuración";
 "Troubleshooting" = "Solución de Problemas";
 "Open" = "Abrir";
-"FluxMarkdown App Icon" = "Icono de la App FluxMarkdown";
+"Osh App Icon" = "Icono de la App Osh";
 
 /* === Toast Messages === */
 "QuickLook preview does not support link navigation" = "La vista previa de QuickLook no admite navegación de enlaces";

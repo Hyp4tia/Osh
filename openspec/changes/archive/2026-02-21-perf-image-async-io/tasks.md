@@ -14,4 +14,4 @@
 
 ## 3. 更新测试
 
-- [x] 3.1 运行 `xcodebuild test -project FluxMarkdown.xcodeproj -scheme Markdown -destination 'platform=macOS,arch=arm64'`，确认所有 XCTest 通过
+- [x] 3.1 运行 `xcodebuild test -project Osh.xcodeproj -scheme Markdown -destination 'platform=macOS,arch=arm64'`，确认所有 XCTest 通过

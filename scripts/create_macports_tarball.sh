@@ -3,7 +3,7 @@
 #
 # What's included vs. the default GitHub source tarball:
 #   - web-renderer/dist    (pre-built; MacPorts sandbox has no npm)
-#   - FluxMarkdown.xcodeproj (pre-generated; MacPorts has no xcodegen)
+#   - Osh.xcodeproj (pre-generated; MacPorts has no xcodegen)
 #   - Sparkle is REMOVED from project.yml + Swift sources (MacPorts manages updates)
 #
 # Usage: ./scripts/create_macports_tarball.sh [VERSION]
@@ -16,9 +16,9 @@ PROJECT_ROOT="$SCRIPT_DIR/.."
 cd "$PROJECT_ROOT"
 
 VERSION="${1:-$(cat .version)}"
-TARBALL_NAME="FluxMarkdown-${VERSION}-macports-source.tar.gz"
+TARBALL_NAME="Osh-${VERSION}-macports-source.tar.gz"
 OUTPUT_DIR="build/artifacts"
-STAGING_DIR="build/macports-staging/FluxMarkdown-${VERSION}"
+STAGING_DIR="build/macports-staging/Osh-${VERSION}"
 
 echo "📦 Creating MacPorts source tarball for v${VERSION}..."
 
@@ -78,7 +78,7 @@ print("  ✅ Sparkle removed from project.yml")
 PYEOF
 
 # ── 4. Generate .xcodeproj (without Sparkle) ─────────────────────────────────
-echo "🗂  Generating FluxMarkdown.xcodeproj..."
+echo "🗂  Generating Osh.xcodeproj..."
 FULL_V="$VERSION"
 MAJOR=$(echo "$FULL_V" | cut -d'.' -f1)
 MINOR=$(echo "$FULL_V" | cut -d'.' -f2)
@@ -143,7 +143,7 @@ echo "🗜  Creating tarball..."
 mkdir -p "$OUTPUT_DIR"
 tar -czf "$OUTPUT_DIR/$TARBALL_NAME" \
     -C "build/macports-staging" \
-    "FluxMarkdown-${VERSION}"
+    "Osh-${VERSION}"
 
 TARBALL_PATH="$OUTPUT_DIR/$TARBALL_NAME"
 SHA256=$(shasum -a 256 "$TARBALL_PATH" | awk '{print $1}')
@@ -164,8 +164,8 @@ if [ -f "$PORTFILE" ]; then
     echo ""
     echo "📝 Updating macports/Portfile checksums and version..."
     sed -i '' \
-        -e "s|github.setup        xykong flux-markdown [^ ]* v|github.setup        xykong flux-markdown ${VERSION} v|" \
-        -e "s|distname            FluxMarkdown-[^ ]*-macports-source|distname            FluxMarkdown-${VERSION}-macports-source|" \
+        -e "s|github.setup Zeyadistired osh [^ ]* v|github.setup Zeyadistired osh ${VERSION} v|" \
+        -e "s|distname            Osh-[^ ]*-macports-source|distname            Osh-${VERSION}-macports-source|" \
         -e "s|rmd160  [0-9a-f]*|rmd160  ${RMD160}|" \
         -e "s|sha256  [0-9a-f]*|sha256  ${SHA256}|" \
         -e "s|size    [0-9]*|size    ${SIZE}|" \

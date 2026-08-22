@@ -243,7 +243,7 @@ async function benchmarkFixture(browser, fixturePath, fixtureName) {
 // ─── Main ─────────────────────────────────────────────────────────────────────
 async function main() {
   console.log('═══════════════════════════════════════════════════════════');
-  console.log('  FluxMarkdown JS Rendering Benchmark (Layer 1)');
+  console.log('  Osh JS Rendering Benchmark (Layer 1)');
   console.log('═══════════════════════════════════════════════════════════');
   console.log(`  Renderer:   ${INDEX_HTML}`);
   console.log(`  Fixtures:   ${FIXTURES_DIR}`);

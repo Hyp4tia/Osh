@@ -73,8 +73,8 @@ PR_URL=$(gh pr create \
     --title "Add flux-markdown" \
     --body "## flux-markdown
 
-- **Name:** FluxMarkdown
-- **Homepage:** https://github.com/xykong/flux-markdown
+- **Name:** Osh
+- **Homepage:** https://github.com/Zeyadistired/Osh
 - **Desc:** Markdown previews in Finder QuickLook with diagrams and math
 - **Stars:** 600+
 - **License:** GPL-3.0
@@ -86,7 +86,7 @@ PR_URL=$(gh pr create \
 - [x] Verified install works: \`brew install --cask ./Casks/f/flux-markdown.rb\`
 
 **About:**
-FluxMarkdown is a macOS QuickLook extension for Markdown files.
+Osh is a macOS QuickLook extension for Markdown files.
 Supports Mermaid diagrams, KaTeX math, GitHub Flavored Markdown, syntax highlighting, TOC, and PDF/HTML export.
 
 **postflight explanation:**

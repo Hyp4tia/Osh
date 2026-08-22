@@ -196,7 +196,7 @@ Look for these log messages:
 
 1. Click inside the preview window first
 2. Make sure file is opened with correct app
-3. Check: Right-click .md → Get Info → Open with: "FluxMarkdown"
+3. Check: Right-click .md → Get Info → Open with: "Osh"
 
 ### Still not working?
 

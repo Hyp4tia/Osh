@@ -8,7 +8,7 @@ final class CLIAppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         let args = CommandLine.arguments
         guard let idx = args.firstIndex(of: "--export-pdf"), idx + 1 < args.count else {
-            fputs("Usage: FluxMarkdown --export-pdf <input.md> [output.pdf]\n", stderr)
+            fputs("Usage: Osh --export-pdf <input.md> [output.pdf]\n", stderr)
             exit(1)
         }
 

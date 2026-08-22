@@ -48,7 +48,7 @@
 **格式模板**:
 ```markdown
 ### [Added|Fixed|Changed|Removed]
-- **[Scope]**: [简短描述]。（感谢 [@username](https://github.com/username) 的贡献 [#PR_NUMBER](https://github.com/xykong/flux-markdown/pull/PR_NUMBER)）
+- **[Scope]**: [简短描述]。（感谢 [@username](https://github.com/username) 的贡献 [#PR_NUMBER](https://github.com/Zeyadistired/Osh/pull/PR_NUMBER)）
   - [技术实现细节 1]
   - [技术实现细节 2]
   - [技术实现细节 3]
@@ -57,7 +57,7 @@
 **示例**:
 ```markdown
 ### Fixed
-- **QuickLook**: 修复双击 Markdown 文件时意外触发"使用默认应用打开"的问题。（感谢 [@sxmad](https://github.com/sxmad) 的贡献 [#2](https://github.com/xykong/flux-markdown/pull/2)）
+- **QuickLook**: 修复双击 Markdown 文件时意外触发"使用默认应用打开"的问题。（感谢 [@sxmad](https://github.com/sxmad) 的贡献 [#2](https://github.com/Zeyadistired/Osh/pull/2)）
   - 通过自定义 `InteractiveWebView` 子类拦截鼠标事件，防止事件冒泡到 QuickLook 宿主。
   - 添加 `NSClickGestureRecognizer` 拦截双击手势，确保 WebView 内的交互（如文本选择）不受影响。
   - 实现 `acceptsFirstMouse(for:)` 方法，允许 WebView 直接响应首次点击事件。
@@ -131,7 +131,7 @@ make release major
 
 6. **创建 GitHub Release**:
    ```bash
-gh release create "v<VERSION>" build/artifacts/FluxMarkdown.dmg \
+gh release create "v<VERSION>" build/artifacts/Osh.dmg \
      --title "v<VERSION>" \
      --notes-file release_notes_tmp.md
    ```
@@ -140,7 +140,7 @@ gh release create "v<VERSION>" build/artifacts/FluxMarkdown.dmg \
 
 检查以下内容：
 
-- [ ] GitHub Release 已创建: https://github.com/xykong/flux-markdown/releases/tag/v<VERSION>
+- [ ] GitHub Release 已创建: https://github.com/Zeyadistired/Osh/releases/tag/v<VERSION>
 - [ ] DMG 文件已上传
 - [ ] Release Notes 包含所有 PR 的感谢信息
 - [ ] Git tag 已推送
@@ -153,12 +153,12 @@ gh release create "v<VERSION>" build/artifacts/FluxMarkdown.dmg \
 ### 3.1 计算 DMG 的 SHA256
 
 ```bash
-shasum -a 256 build/artifacts/FluxMarkdown.dmg
+shasum -a 256 build/artifacts/Osh.dmg
 ```
 
 输出示例：
 ```
-ca72b7201410962f0f5d272149b2405a5d191a8e692d9526f23ecad3882cd306  build/artifacts/FluxMarkdown.dmg
+ca72b7201410962f0f5d272149b2405a5d191a8e692d9526f23ecad3882cd306  build/artifacts/Osh.dmg
 ```
 
 ### 3.2 更新 Homebrew Cask
@@ -228,7 +228,7 @@ Date:   Tue Jan 13 12:25:58 2026 +0800
 $ make release minor
 🚀 Bumping Minor Version: 1.2 -> 1.3
 🎯 Target Version: 1.3.73
-✅ DMG created successfully at: build/artifacts/FluxMarkdown.dmg
+✅ DMG created successfully at: build/artifacts/Osh.dmg
 🎉 Successfully released v1.3.73!
 
 # 4. 回填 CHANGELOG（修正漏掉的步骤）
@@ -241,7 +241,7 @@ $ git push origin master
 $ gh release edit v1.3.73 --notes-file /tmp/release_notes_v1.3.73_updated.md
 
 # 6. 计算 SHA256
-$ shasum -a 256 build/artifacts/FluxMarkdown.dmg
+$ shasum -a 256 build/artifacts/Osh.dmg
 ca72b7201410962f0f5d272149b2405a5d191a8e692d9526f23ecad3882cd306
 
 # 7. 更新 Homebrew Cask
@@ -347,7 +347,7 @@ echo "📝 Suggested CHANGELOG Entry:"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "### [TODO: Category]"
-echo "- **[TODO: Scope]**: $PR_TITLE。（感谢 [@$PR_AUTHOR](https://github.com/$PR_AUTHOR) 的贡献 [#$PR_NUMBER](https://github.com/xykong/flux-markdown/pull/$PR_NUMBER)）"
+echo "- **[TODO: Scope]**: $PR_TITLE。（感谢 [@$PR_AUTHOR](https://github.com/$PR_AUTHOR) 的贡献 [#$PR_NUMBER](https://github.com/Zeyadistired/Osh/pull/$PR_NUMBER)）"
 echo "  - [TODO: 技术实现细节 1]"
 echo "  - [TODO: 技术实现细节 2]"
 echo ""
@@ -450,7 +450,7 @@ gh issue comment <NUMBER> --body "..."
 
 **英文 issue**:
 ```
-Fixed in [vX.Y.Z](https://github.com/xykong/flux-markdown/releases/tag/vX.Y.Z).
+Fixed in [vX.Y.Z](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
 
 **What changed:**
 - [specific fix relevant to this issue]
@@ -459,12 +459,12 @@ Fixed in [vX.Y.Z](https://github.com/xykong/flux-markdown/releases/tag/vX.Y.Z).
 \`\`\`bash
 brew update && brew upgrade --cask flux-markdown
 \`\`\`
-Or download the DMG from the [Releases page](https://github.com/xykong/flux-markdown/releases/tag/vX.Y.Z).
+Or download the DMG from the [Releases page](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
 ```
 
 **中文 issue**:
 ```
-已在 [vX.Y.Z](https://github.com/xykong/flux-markdown/releases/tag/vX.Y.Z) 中修复。
+已在 [vX.Y.Z](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z) 中修复。
 
 **修复内容：**
 - [与此 issue 相关的具体修复]
@@ -473,7 +473,7 @@ Or download the DMG from the [Releases page](https://github.com/xykong/flux-mark
 \`\`\`bash
 brew update && brew upgrade --cask flux-markdown
 \`\`\`
-或从 [Releases 页面](https://github.com/xykong/flux-markdown/releases/tag/vX.Y.Z) 直接下载 DMG。
+或从 [Releases 页面](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z) 直接下载 DMG。
 ```
 
 ---

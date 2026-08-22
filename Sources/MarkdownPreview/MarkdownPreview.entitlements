@@ -41,8 +41,8 @@
     <true/>
 
     <!-- App Groups removed: macOS 26 (Tahoe) rejects App Group containers for ad-hoc signed apps.
-         Settings from the main app are read via a plist file in ~/Library/Application Support/FluxMarkdown/.
-         See: https://github.com/xykong/flux-markdown/issues/13 -->
+         Settings from the main app are read via a plist file in ~/Library/Application Support/Osh/.
+         See: https://github.com/Zeyadistired/Osh/issues/13 -->
 </dict>
 </plist>
 

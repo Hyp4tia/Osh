@@ -1,4 +1,4 @@
-# FluxMarkdown
+# Osh
 
 <p align="center">
   <em>معاينات Markdown جميلة في QuickLook ضمن Finder على macOS</em><br>
@@ -32,14 +32,14 @@
 
 ## ✨ العرض التوضيحي
 
-![عرض FluxMarkdown التوضيحي](docs/assets/demo.gif)
+![عرض Osh التوضيحي](docs/assets/demo.gif)
 
 <p align="center">
   <strong>اضغط <code>مسافة</code> في Finder ← معاينة فورية مع المخططات والرياضيات والمزيد.</strong>
 </p>
 
 <p align="center">
-  <em>👋 إذا كان FluxMarkdown مفيدًا لك، ففّر منحه</em>
+  <em>👋 إذا كان Osh مفيدًا لك، ففّر منحه</em>
   <a href="https://github.com/Zeyadistired/Osh/stargazers">⭐ نجمة على GitHub</a>!
 </p>
 
@@ -49,9 +49,9 @@
 
 ### يدويًا (DMG)
 
-1. حمّل أحدث ملف `FluxMarkdown.dmg` من صفحة [الإصدارات](https://github.com/Zeyadistired/Osh/releases)
+1. حمّل أحدث ملف `Osh.dmg` من صفحة [الإصدارات](https://github.com/Zeyadistired/Osh/releases)
 2. افتح ملف DMG
-3. اسحب **FluxMarkdown.app** إلى مجلد **التطبيقات**
+3. اسحب **Osh.app** إلى مجلد **التطبيقات**
 
 ### Homebrew
 
@@ -63,7 +63,7 @@
 
 ---
 
-## 💡 لماذا FluxMarkdown؟
+## 💡 لماذا Osh؟
 
 | الميزة | الوصف |
 |---------|-------------|
@@ -84,7 +84,7 @@
 
 ## ⚙️ الإعدادات (Cmd+,)
 
-يتضمن FluxMarkdown نافذة إعدادات مخصصة لتخصيص تجربتك:
+يتضمن Osh نافذة إعدادات مخصصة لتخصيص تجربتك:
 
 - **المظهر**: التبديل بين السمات الفاتحة أو الداكنة أو المتزامنة مع النظام.
 - **العرض**: تفعيل أو تعطيل دعم Mermaid وKaTeX والإيموجي.
@@ -111,7 +111,7 @@
 
 شغّل هذا الأمر في الطرفية (Terminal):
 ```bash
-xattr -cr "/Applications/FluxMarkdown.app"
+xattr -cr "/Applications/Osh.app"
 ```
 </details>
 
@@ -140,7 +140,7 @@ qlmanage -r
 
 ## مقارنة (إضافات Markdown لـ QuickLook)
 
-| الميزة | FluxMarkdown | [QLMarkdown](https://github.com/sbarex/QLMarkdown) | [qlmarkdown](https://github.com/whomwah/qlmarkdown) | [PreviewMarkdown](https://github.com/smittytone/PreviewMarkdown) |
+| الميزة | Osh | [QLMarkdown](https://github.com/sbarex/QLMarkdown) | [qlmarkdown](https://github.com/whomwah/qlmarkdown) | [PreviewMarkdown](https://github.com/smittytone/PreviewMarkdown) |
 | --- | --- | --- | --- | --- |
 | التثبيت | brew cask / DMG | brew cask / DMG | يدويًا | App Store / DMG |
 | Mermaid | نعم | نعم ([المصدر](https://github.com/sbarex/QLMarkdown/blob/main/README.md#mermaid-diagrams)) | غير مذكور | غير مذكور |
@@ -170,7 +170,7 @@ make install
 
 ## 📄 الترخيص
 
-**يُوزَّع FluxMarkdown بموجب GPL-3.0:**
+**يُوزَّع Osh بموجب GPL-3.0:**
 - ✅ **مجاني** للاستخدام الشخصي والتعليمي ومشاريع المصادر المفتوحة
 - ✅ يجب فتح مصدر أي تعديلات أيضًا بموجب GPL-3.0
 - 📜 راجع [`LICENSE`](LICENSE) للشروط الكاملة

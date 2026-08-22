@@ -4,7 +4,7 @@
 "Export as HTML…" = "导出为 HTML…";
 "Export as PDF…" = "导出为 PDF…";
 "Find..." = "查找...";
-"FluxMarkdown Help" = "FluxMarkdown 帮助";
+"Osh Help" = "Osh 帮助";
 "README" = "README";
 "Report an Issue" = "报告问题";
 "Release Notes" = "发行说明";
@@ -87,7 +87,7 @@
 "Open Settings" = "打开设置";
 "Troubleshooting" = "故障排除";
 "Open" = "打开";
-"FluxMarkdown App Icon" = "FluxMarkdown 应用图标";
+"Osh App Icon" = "Osh 应用图标";
 
 /* === Toast Messages === */
 "QuickLook preview does not support link navigation" = "QuickLook 预览模式不支持链接跳转";

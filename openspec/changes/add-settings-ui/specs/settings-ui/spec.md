@@ -4,7 +4,7 @@
 Host App SHALL 提供一个原生 SwiftUI 设置面板，用户可通过图形界面配置预览偏好，无需修改代码或配置文件。
 
 #### Scenario: 通过菜单打开设置面板
-- **WHEN** 用户点击菜单栏中的"FluxMarkdown → Settings…"（或按 Cmd+,）
+- **WHEN** 用户点击菜单栏中的"Osh → Settings…"（或按 Cmd+,）
 - **THEN** 弹出设置窗口，包含主题、字体大小等配置项
 
 #### Scenario: 设置项持久化

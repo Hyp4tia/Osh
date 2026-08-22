@@ -184,7 +184,7 @@ benchmark_fixture() {
 
 # ─── Main ─────────────────────────────────────────────────────────────────────
 echo "═══════════════════════════════════════════════════════════"
-echo "  FluxMarkdown QuickLook System Benchmark (Layer 3)"
+echo "  Osh QuickLook System Benchmark (Layer 3)"
 echo "═══════════════════════════════════════════════════════════"
 echo "  Fixtures:   $FIXTURES_DIR"
 echo "  Warmup:     $WARMUP_RUNS runs"

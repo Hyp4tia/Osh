@@ -4,7 +4,7 @@
 "Export as HTML…" = "Export as HTML…";
 "Export as PDF…" = "Export as PDF…";
 "Find..." = "Find...";
-"FluxMarkdown Help" = "FluxMarkdown Help";
+"Osh Help" = "Osh Help";
 "README" = "README";
 "Report an Issue" = "Report an Issue";
 "Release Notes" = "Release Notes";
@@ -87,7 +87,7 @@
 "Open Settings" = "Open Settings";
 "Troubleshooting" = "Troubleshooting";
 "Open" = "Open";
-"FluxMarkdown App Icon" = "FluxMarkdown App Icon";
+"Osh App Icon" = "Osh App Icon";
 
 /* === Toast Messages === */
 "QuickLook preview does not support link navigation" = "QuickLook preview does not support link navigation";

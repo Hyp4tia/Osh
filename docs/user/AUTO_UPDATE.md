@@ -1,6 +1,6 @@
-# Sparkle Auto Update (FluxMarkdown)
+# Sparkle Auto Update (Osh)
 
-> 目标：让 **FluxMarkdown** 使用 Sparkle 实现应用内自动更新。
+> 目标：让 **Osh** 使用 Sparkle 实现应用内自动更新。
 > 
 > 结论：**不需要启用 GitHub Pages**。推荐直接使用 `raw.githubusercontent.com` 托管 `appcast.xml`。
 
@@ -16,7 +16,7 @@ Sparkle 需要访问 `appcast.xml` 来检查更新。
 
 ```xml
 <key>SUFeedURL</key>
-<string>https://raw.githubusercontent.com/xykong/flux-markdown/master/appcast.xml</string>
+<string>https://raw.githubusercontent.com/Zeyadistired/Osh/main/appcast.xml</string>
 ```
 
 优点：
@@ -47,7 +47,7 @@ Sparkle 需要访问 `appcast.xml` 来检查更新。
 ### 2.1 生成签名并更新 appcast
 
 ```bash
-./scripts/generate-appcast.sh build/artifacts/FluxMarkdown.dmg
+./scripts/generate-appcast.sh build/artifacts/Osh.dmg
 ```
 
 脚本会：
@@ -98,7 +98,7 @@ git push
 
 修复：改成 raw：
 
-`https://raw.githubusercontent.com/xykong/flux-markdown/master/appcast.xml`
+`https://raw.githubusercontent.com/Zeyadistired/Osh/main/appcast.xml`
 
 ### 4.2 签名校验失败
 
@@ -108,5 +108,5 @@ git push
 修复：
 
 ```bash
-./scripts/generate-appcast.sh build/artifacts/FluxMarkdown.dmg
+./scripts/generate-appcast.sh build/artifacts/Osh.dmg
 ```

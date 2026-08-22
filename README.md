@@ -1,4 +1,4 @@
-# FluxMarkdown
+# Osh
 
 <p align="center">
   <em>Beautiful Markdown previews in macOS Finder QuickLook</em><br>
@@ -32,14 +32,14 @@
 
 ## ✨ Demo
 
-![FluxMarkdown Demo](docs/assets/demo.gif)
+![Osh Demo](docs/assets/demo.gif)
 
 <p align="center">
   <strong>Press <code>Space</code> in Finder → Instant preview with diagrams, math, and more.</strong>
 </p>
 
 <p align="center">
-  <em>👋 If FluxMarkdown helps you, consider giving it a</em>
+  <em>👋 If Osh helps you, consider giving it a</em>
   <a href="https://github.com/Zeyadistired/Osh/stargazers">⭐ star on GitHub</a>!
 </p>
 
@@ -49,9 +49,9 @@
 
 ### Manual (DMG)
 
-1. Download the latest `FluxMarkdown.dmg` from [Releases](https://github.com/Zeyadistired/Osh/releases)
+1. Download the latest `Osh.dmg` from [Releases](https://github.com/Zeyadistired/Osh/releases)
 2. Open the DMG
-3. Drag **FluxMarkdown.app** to **Applications**
+3. Drag **Osh.app** to **Applications**
 
 ### Homebrew
 
@@ -63,7 +63,7 @@
 
 ---
 
-## 💡 Why FluxMarkdown?
+## 💡 Why Osh?
 
 | Feature | Description |
 |---------|-------------|
@@ -84,7 +84,7 @@
 
 ## ⚙️ Settings (Cmd+,)
 
-FluxMarkdown includes a dedicated Settings window to customize your experience:
+Osh includes a dedicated Settings window to customize your experience:
 
 - **Appearance**: Switch between Light, Dark, or System themes.
 - **Rendering**: Toggle Mermaid, KaTeX, or Emoji support.
@@ -111,7 +111,7 @@ FluxMarkdown includes a dedicated Settings window to customize your experience:
 
 Run this in Terminal:
 ```bash
-xattr -cr "/Applications/FluxMarkdown.app"
+xattr -cr "/Applications/Osh.app"
 ```
 </details>
 
@@ -140,7 +140,7 @@ qlmanage -r
 
 ## Comparison (QuickLook Markdown plugins)
 
-| Feature | FluxMarkdown | [QLMarkdown](https://github.com/sbarex/QLMarkdown) | [qlmarkdown](https://github.com/whomwah/qlmarkdown) | [PreviewMarkdown](https://github.com/smittytone/PreviewMarkdown) |
+| Feature | Osh | [QLMarkdown](https://github.com/sbarex/QLMarkdown) | [qlmarkdown](https://github.com/whomwah/qlmarkdown) | [PreviewMarkdown](https://github.com/smittytone/PreviewMarkdown) |
 | --- | --- | --- | --- | --- |
 | Install | brew cask / DMG | brew cask / DMG | manual | App Store / DMG |
 | Mermaid | Yes | Yes ([ref](https://github.com/sbarex/QLMarkdown/blob/main/README.md#mermaid-diagrams)) | Not mentioned | Not mentioned |
@@ -170,7 +170,7 @@ make install
 
 ## 📄 License
 
-**FluxMarkdown is licensed under GPL-3.0:**
+**Osh is licensed under GPL-3.0:**
 - ✅ **Free** for personal, educational, and open-source use
 - ✅ Any modifications must also be open-sourced under GPL-3.0
 - 📜 See [`LICENSE`](LICENSE) for full terms

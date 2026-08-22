@@ -1,10 +1,10 @@
 #!/bin/bash
 set -e
 
-APP_NAME="FluxMarkdown"
+APP_NAME="Osh"
 APP_BUNDLE="${APP_NAME}.app"
-BUILD_DIR="${HOME}/Library/Developer/Xcode/DerivedData/FluxMarkdown-*"
-DMG_NAME="FluxMarkdown.dmg"
+BUILD_DIR="${HOME}/Library/Developer/Xcode/DerivedData/Osh-*"
+DMG_NAME="Osh.dmg"
 OUTPUT_DIR="build/artifacts"
 
 echo "🚀 Starting DMG creation for ${APP_NAME}..."

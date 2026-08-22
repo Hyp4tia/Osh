@@ -1,6 +1,6 @@
 # Images: Support, Behavior, and Internals
 
-This document consolidates historical docs about image handling in FluxMarkdown.
+This document consolidates historical docs about image handling in Osh.
 
 Archived originals are kept under `docs/history/images/`.
 
@@ -8,7 +8,7 @@ Archived originals are kept under `docs/history/images/`.
 
 ## 1. What is supported
 
-FluxMarkdown primarily supports local images by **reading image files in Swift** and converting them into **Base64 data URLs** passed to the renderer.
+Osh primarily supports local images by **reading image files in Swift** and converting them into **Base64 data URLs** passed to the renderer.
 
 ### Supported image sources
 

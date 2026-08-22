@@ -1,8 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
-TARGET_PATH="${1:-build/artifacts/FluxMarkdown.dmg}"
-APP_NAME="FluxMarkdown.app"
+TARGET_PATH="${1:-build/artifacts/Osh.dmg}"
+APP_NAME="Osh.app"
 APPEX_RELATIVE_PATH="Contents/PlugIns/MarkdownPreview.appex"
 REQUIRED_ENTITLEMENT="com.apple.security.app-sandbox"
 FORBIDDEN_RELEASE_ENTITLEMENTS=(
@@ -71,7 +71,7 @@ fi
 echo "🔐 Checking app release entitlements..."
 APP_ENTITLEMENTS=$(/usr/bin/codesign -d --entitlements :- "$APP_PATH" 2>/dev/null || true)
 if printf '%s\n' "$APP_ENTITLEMENTS" | grep -q "com.apple.security.get-task-allow"; then
-    fail "FluxMarkdown.app release entitlements must not include com.apple.security.get-task-allow"
+    fail "Osh.app release entitlements must not include com.apple.security.get-task-allow"
 fi
 
 echo "✅ Release artifact preserves MarkdownPreview.appex sandbox entitlement"

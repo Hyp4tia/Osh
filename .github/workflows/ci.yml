@@ -64,7 +64,7 @@ jobs:
 
       - name: Generate Xcode project
         run: |
-          rm -rf FluxMarkdown.xcodeproj
+          rm -rf Osh.xcodeproj
           FULL_V="$(cat .version)"
           BUILD="$(echo "$FULL_V" | cut -d'.' -f3)"
           MARKETING_VERSION="$FULL_V" CURRENT_PROJECT_VERSION="$BUILD" xcodegen generate --quiet
@@ -72,7 +72,7 @@ jobs:
       - name: Run Swift tests (skip benchmarks)
         run: |
           xcodebuild test \
-            -project FluxMarkdown.xcodeproj \
+            -project Osh.xcodeproj \
             -scheme Markdown \
             -configuration Debug \
             -destination 'platform=macOS' \

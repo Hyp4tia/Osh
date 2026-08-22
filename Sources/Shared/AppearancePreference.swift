@@ -38,7 +38,7 @@ public class AppearancePreference: ObservableObject {
     
     // File-based store for settings shared between main app and QuickLook extension.
     // Replaces App Group UserDefaults which fails on macOS 26 (Tahoe) for ad-hoc signed apps.
-    // See: https://github.com/xykong/flux-markdown/issues/13
+    // See: https://github.com/Zeyadistired/Osh/issues/13
     private let sharedStore: SharedPreferenceStore
     private var pendingSyncWorkItem: DispatchWorkItem?
 

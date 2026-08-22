@@ -21,7 +21,7 @@ sed -i.bak 's/^1\.[0-9]*/1.6/' .version
 make app CONFIGURATION=Release
 
 # 保存旧版本 app
-OLD_APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "FluxMarkdown.app" -path "*/Build/Products/Release/*" | head -n 1)
+OLD_APP_PATH=$(find ~/Library/Developer/Xcode/DerivedData -name "Osh.app" -path "*/Build/Products/Release/*" | head -n 1)
 if [ -z "$OLD_APP_PATH" ]; then
     echo "❌ 找不到构建的应用"
     git stash pop || true
@@ -29,7 +29,7 @@ if [ -z "$OLD_APP_PATH" ]; then
 fi
 
 TMP_DIR=$(mktemp -d)
-cp -R "$OLD_APP_PATH" "$TMP_DIR/FluxMarkdown v93.app"
+cp -R "$OLD_APP_PATH" "$TMP_DIR/Osh v93.app"
 echo "   ✓ 旧版本已保存到: $TMP_DIR"
 
 # 2. 恢复修复，构建新版本 (1.6.95)
@@ -50,7 +50,7 @@ make dmg
 echo ""
 echo "📝 步骤 3/5: 创建本地 appcast.xml..."
 
-DMG_PATH="$PROJECT_ROOT/build/artifacts/FluxMarkdown.dmg"
+DMG_PATH="$PROJECT_ROOT/build/artifacts/Osh.dmg"
 DMG_SIZE=$(stat -f%z "$DMG_PATH")
 NEW_VERSION=$(defaults read "$OLD_APP_PATH/Contents/Info.plist" CFBundleShortVersionString)
 
@@ -61,7 +61,7 @@ cat > "$TMP_DIR/appcast.xml" <<EOF
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle">
     <channel>
-        <title>FluxMarkdown (本地测试)</title>
+        <title>Osh (本地测试)</title>
         <item>
             <title>Version $NEW_VERSION</title>
             <sparkle:version>95</sparkle:version>
@@ -90,15 +90,15 @@ echo "   ✓ 本地 appcast.xml 已创建"
 # 4. 修改旧版本的 Info.plist 指向本地 appcast
 echo ""
 echo "🔧 步骤 4/5: 配置旧版本使用本地 appcast..."
-/usr/libexec/PlistBuddy -c "Set :SUFeedURL file://$TMP_DIR/appcast.xml" "$TMP_DIR/FluxMarkdown v93.app/Contents/Info.plist"
+/usr/libexec/PlistBuddy -c "Set :SUFeedURL file://$TMP_DIR/appcast.xml" "$TMP_DIR/Osh v93.app/Contents/Info.plist"
 echo "   ✓ SUFeedURL 已设置为本地路径"
 
 # 5. 安装旧版本
 echo ""
 echo "📲 步骤 5/5: 安装旧版本 (v1.6.93)..."
-rm -rf "/Applications/FluxMarkdown.app"
-cp -R "$TMP_DIR/FluxMarkdown v93.app" "/Applications/FluxMarkdown.app"
-xattr -cr "/Applications/FluxMarkdown.app"
+rm -rf "/Applications/Osh.app"
+cp -R "$TMP_DIR/Osh v93.app" "/Applications/Osh.app"
+xattr -cr "/Applications/Osh.app"
 
 echo ""
 echo "════════════════════════════════════════════════════════════════"
@@ -112,7 +112,7 @@ echo "   • DMG 路径: $DMG_PATH"
 echo "   • Appcast: $TMP_DIR/appcast.xml"
 echo ""
 echo "🧪 开始测试:"
-echo "   1. 打开 'FluxMarkdown' 应用"
+echo "   1. 打开 'Osh' 应用"
 echo "   2. 点击 '检查更新...' 或按 ⌘U"
 echo "   3. 应该检测到 v1.6.95"
 echo "   4. 点击 'Install' 按钮"

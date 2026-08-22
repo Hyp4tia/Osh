@@ -17,7 +17,7 @@
     <!-- Read main-app preferences without embedding a build-machine absolute home path. -->
     <key>com.apple.security.temporary-exception.files.home-relative-path.read-only</key>
     <array>
-        <string>/Library/Application Support/FluxMarkdown/</string>
+        <string>/Library/Application Support/Osh/</string>
     </array>
 
     <!-- Allow network access for WebView and remote images. -->

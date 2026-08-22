@@ -121,7 +121,7 @@ struct MarkdownApp: App {
             }
 
             CommandGroup(replacing: .help) {
-                Button(NSLocalizedString("FluxMarkdown Help", comment: "Help menu item")) {
+                Button(NSLocalizedString("Osh Help", comment: "Help menu item")) {
                     if let url = URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP.md") {
                         NSWorkspace.shared.open(url)
                     }

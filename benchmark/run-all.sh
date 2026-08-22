@@ -6,7 +6,7 @@ WARMUP="${WARMUP:-3}"
 ITERATIONS="${ITERATIONS:-10}"
 
 echo "═══════════════════════════════════════════════════════════"
-echo "  FluxMarkdown Full Benchmark Suite"
+echo "  Osh Full Benchmark Suite"
 echo "═══════════════════════════════════════════════════════════"
 echo "  Warmup: $WARMUP  Iterations: $ITERATIONS"
 echo ""

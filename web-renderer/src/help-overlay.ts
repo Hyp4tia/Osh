@@ -33,9 +33,9 @@ interface I18n {
 
 const STRINGS: Record<Lang, I18n> = {
     zh: {
-        title: '⌨️ FluxMarkdown 功能指南',
+        title: '⌨️ Osh 功能指南',
         contextBadgeQL: 'QuickLook 预览',
-        contextBadgeApp: 'FluxMarkdown App',
+        contextBadgeApp: 'Osh App',
         badgeApp: 'App',
         qlBannerText: 'QuickLook 系统会拦截键盘事件。仅 <strong>Cmd+滚轮</strong> 和<strong>捏合手势</strong>可用；其余操作请点击右上角按钮，或双击文件用 App 打开。',
         footerQL: '点击遮罩或右上角 <kbd>✕</kbd> 关闭',
@@ -67,9 +67,9 @@ const STRINGS: Record<Lang, I18n> = {
         },
     },
     en: {
-        title: '⌨️ FluxMarkdown Feature Guide',
+        title: '⌨️ Osh Feature Guide',
         contextBadgeQL: 'QuickLook Preview',
-        contextBadgeApp: 'FluxMarkdown App',
+        contextBadgeApp: 'Osh App',
         badgeApp: 'App',
         qlBannerText: 'QuickLook intercepts keyboard events. Only <strong>Cmd+scroll</strong> and <strong>pinch gesture</strong> work; use toolbar buttons or double-click to open in App for full access.',
         footerQL: 'Click backdrop or <kbd>✕</kbd> to close',
@@ -101,9 +101,9 @@ const STRINGS: Record<Lang, I18n> = {
         },
     },
     de: {
-        title: '⌨️ FluxMarkdown Funktionsübersicht',
+        title: '⌨️ Osh Funktionsübersicht',
         contextBadgeQL: 'QuickLook-Vorschau',
-        contextBadgeApp: 'FluxMarkdown-App',
+        contextBadgeApp: 'Osh-App',
         badgeApp: 'App',
         qlBannerText: 'QuickLook fängt Tastatureingaben ab. Nur <strong>Cmd+Scrollen</strong> und <strong>Pinch-Geste</strong> funktionieren; benutze die Symbolleisten-Buttons oder öffne die Datei per Doppelklick in der App, um auf alle Funktionen zuzugreifen.',
         footerQL: 'Klick auf den Hintergrund oder <kbd>✕</kbd>, um zu schließen',
@@ -135,9 +135,9 @@ const STRINGS: Record<Lang, I18n> = {
         },
     },
     fr: {
-        title: '⌨️ Guide des fonctionnalités de FluxMarkdown',
+        title: '⌨️ Guide des fonctionnalités de Osh',
         contextBadgeQL: 'Aperçu Coup d’œil',
-        contextBadgeApp: 'FluxMarkdown App',
+        contextBadgeApp: 'Osh App',
         badgeApp: 'App',
         qlBannerText: 'Coup d’œil intercepte les événements clavier. Seuls <strong>Cmd+défilement</strong> et le <strong>geste de pincement</strong> fonctionnent ; utilisez les boutons de la barre d’outils ou double-cliquez pour ouvrir dans l’app et accéder à toutes les fonctions.',
         footerQL: 'Cliquer sur le fond ou <kbd>✕</kbd> pour fermer',

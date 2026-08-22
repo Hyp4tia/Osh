@@ -2,7 +2,7 @@
 
 ## Purpose
 
-FluxMarkdown 是一个 macOS QuickLook 扩展，让用户在 Finder 中按 Space 即可即时预览 Markdown 文件。支持 Mermaid 图表、KaTeX 数学公式、GFM、代码高亮、TOC、缩放、滚动记忆和主题切换。
+Osh 是一个 macOS QuickLook 扩展，让用户在 Finder 中按 Space 即可即时预览 Markdown 文件。支持 Mermaid 图表、KaTeX 数学公式、GFM、代码高亮、TOC、缩放、滚动记忆和主题切换。
 
 ## Tech Stack
 

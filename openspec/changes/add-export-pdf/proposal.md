@@ -2,7 +2,7 @@
 
 ## Why
 
-Markdown 文档在技术写作、会议纪要、项目文档等场景中被广泛使用，用户通常需要将其转化为 PDF 进行正式分发或打印。当前 FluxMarkdown 不提供任何导出能力，用户只能依赖截图或手动打印，流程繁琐且格式不可控。`WKWebView.createPDF(configuration:)` 是 macOS 11+ 提供的原生 API，在 App Sandbox 中完全可用，无需任何外部依赖。
+Markdown 文档在技术写作、会议纪要、项目文档等场景中被广泛使用，用户通常需要将其转化为 PDF 进行正式分发或打印。当前 Osh 不提供任何导出能力，用户只能依赖截图或手动打印，流程繁琐且格式不可控。`WKWebView.createPDF(configuration:)` 是 macOS 11+ 提供的原生 API，在 App Sandbox 中完全可用，无需任何外部依赖。
 
 ## What Changes
 

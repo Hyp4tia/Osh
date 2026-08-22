@@ -28,7 +28,7 @@ fi
 echo "🔍 Locating built application..."
 APP_PATH=""
 
-for path in ~/Library/Developer/Xcode/DerivedData/FluxMarkdown-*/Build/Products/"$CONFIGURATION"/"FluxMarkdown.app"; do
+for path in ~/Library/Developer/Xcode/DerivedData/Osh-*/Build/Products/"$CONFIGURATION"/"Osh.app"; do
     if [ -d "$path" ]; then
         if [ -z "$APP_PATH" ] || [ "$path" -nt "$APP_PATH" ]; then
             APP_PATH="$path"
@@ -38,7 +38,7 @@ done
 
 if [ -z "$APP_PATH" ]; then
     echo "❌ Error: Could not find built application in DerivedData."
-    echo "   Expected path: .../Build/Products/$CONFIGURATION/FluxMarkdown.app"
+    echo "   Expected path: .../Build/Products/$CONFIGURATION/Osh.app"
     echo "   Please check if the build succeeded."
     exit 1
 fi
@@ -46,11 +46,11 @@ fi
 echo "📋 Found app at: $APP_PATH"
 echo "📋 Configuration: $CONFIGURATION"
 echo "📋 Installing to /Applications..."
-rm -rf "/Applications/FluxMarkdown.app"
+rm -rf "/Applications/Osh.app"
 cp -R "$APP_PATH" /Applications/
 
 if [ "$INSTALL_MODE" = "development" ]; then
-    INSTALLED_APP_PATH="/Applications/FluxMarkdown.app"
+    INSTALLED_APP_PATH="/Applications/Osh.app"
     APP_ENTITLEMENTS="$PROJECT_ROOT/Sources/Markdown/Markdown.entitlements"
     QUICKLOOK_EXTENSION_PATH="$INSTALLED_APP_PATH/Contents/PlugIns/MarkdownPreview.appex"
     QUICKLOOK_ENTITLEMENTS="$PROJECT_ROOT/Sources/MarkdownPreview/MarkdownPreview.entitlements"
@@ -80,11 +80,11 @@ fi
 
 # 3. Remove quarantine attribute
 echo "🔓 Removing quarantine attribute..."
-/usr/bin/xattr -cr "/Applications/FluxMarkdown.app"
+/usr/bin/xattr -cr "/Applications/Osh.app"
 
 # 4. Register with LaunchServices
 echo "🔧 Registering with system..."
-/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "/Applications/FluxMarkdown.app"
+/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -f "/Applications/Osh.app"
 
 # 5. Reset QuickLook cache (before launching app)
 echo "🔄 Resetting QuickLook cache..."
@@ -92,30 +92,30 @@ qlmanage -r
 
 # 5a. Enable QuickLook extension (required on macOS Ventura+)
 echo "🔌 Enabling QuickLook extension..."
-pluginkit -e use -i com.xykong.Markdown.QuickLook
+pluginkit -e use -i com.zeyadistired.osh.QuickLook
 
-# 5b. Ensure FluxMarkdown is first in the QuickLook extension display order.
+# 5b. Ensure Osh is first in the QuickLook extension display order.
 # macOS stores a user-ordered list in this plist; if a previously-installed
 # Markdown previewer (e.g. QLMarkdown) is still in the list but now missing,
-# it silently wins priority over FluxMarkdown, causing fallback to plain-text.
+# it silently wins priority over Osh, causing fallback to plain-text.
 echo "📋 Setting QuickLook extension priority..."
 CURRENT_ORDER=$(defaults read com.apple.preferences.extensions.QuickLook displayOrder 2>/dev/null | tr -d '(),"' | tr -s ' \n' ' ' | xargs)
-if echo "$CURRENT_ORDER" | grep -qv "com.xykong.Markdown.QuickLook"; then
+if echo "$CURRENT_ORDER" | grep -qv "com.zeyadistired.osh.QuickLook"; then
     defaults write com.apple.preferences.extensions.QuickLook displayOrder -array \
-        "com.xykong.Markdown.QuickLook" \
-        $(defaults read com.apple.preferences.extensions.QuickLook displayOrder 2>/dev/null | grep -v "com.xykong.Markdown.QuickLook" | grep '"' | sed 's/.*"\(.*\)".*/\1/' | xargs -I{} echo '"{}"' | tr '\n' ' ')
+        "com.zeyadistired.osh.QuickLook" \
+        $(defaults read com.apple.preferences.extensions.QuickLook displayOrder 2>/dev/null | grep -v "com.zeyadistired.osh.QuickLook" | grep '"' | sed 's/.*"\(.*\)".*/\1/' | xargs -I{} echo '"{}"' | tr '\n' ' ')
     defaults write com.apple.preferences.extensions.QuickLook userHasOrdered -bool true
 fi
 qlmanage -r cache
 
 # 6. Launch app once to complete system registration
 echo "🚀 Launching application to complete registration..."
-open -g "/Applications/FluxMarkdown.app" --args --register-only
+open -g "/Applications/Osh.app" --args --register-only
 sleep 2
 
 # 7. Set as default handler for .md files
 echo "🔗 Setting as default handler for Markdown files..."
-BUNDLE_ID="com.xykong.Markdown"
+BUNDLE_ID="com.zeyadistired.osh"
 
 # Try using duti if available (more reliable)
 if command -v duti >/dev/null 2>&1; then
@@ -140,7 +140,7 @@ func setDefaultHandler(bundleId: String, contentType: String) -> Bool {
     return result == noErr
 }
 
-let bundleId = "com.xykong.Markdown"
+let bundleId = "com.zeyadistired.osh"
 let types = ["net.daringfireball.markdown", "public.markdown"]
 
 var allSuccess = true
@@ -166,7 +166,7 @@ echo "════════════════════════�
 echo "  ✅ Installation Complete - $CONFIGURATION Configuration"
 echo "════════════════════════════════════════════════════════════════"
 echo ""
-echo "🎉 FluxMarkdown has been automatically configured!"
+echo "🎉 Osh has been automatically configured!"
 echo ""
 echo "📋 What was done:"
 echo "   ✓ Application installed to /Applications"

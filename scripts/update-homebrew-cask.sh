@@ -2,7 +2,7 @@
 set -e
 
 VERSION_FILE=".version"
-DMG_PATH="build/artifacts/FluxMarkdown.dmg"
+DMG_PATH="build/artifacts/Osh.dmg"
 CASK_FILE="../homebrew-tap/Casks/flux-markdown.rb"
 OFFICIAL_CASK_FILE="../homebrew-tap/Drafts/flux-markdown-official.rb"
 

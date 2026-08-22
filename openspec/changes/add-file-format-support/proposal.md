@@ -2,7 +2,7 @@
 
 ## Why
 
-当前 FluxMarkdown 仅注册了 `.md` 文件的 UTI（通用类型标识符），无法预览技术社区中广泛使用的其他 Markdown 变体格式。`.mdx`（React 文档生态）、`.rmd`（数据科学 / R Markdown）、`.qmd`（Quarto 学术写作）、`.mdoc`（Markdoc 文档平台）等格式在各自领域有大量用户，这些用户目前无法使用 FluxMarkdown 进行 QuickLook 预览。扩展文件格式支持是零技术成本、高用户覆盖率的改进。
+当前 Osh 仅注册了 `.md` 文件的 UTI（通用类型标识符），无法预览技术社区中广泛使用的其他 Markdown 变体格式。`.mdx`（React 文档生态）、`.rmd`（数据科学 / R Markdown）、`.qmd`（Quarto 学术写作）、`.mdoc`（Markdoc 文档平台）等格式在各自领域有大量用户，这些用户目前无法使用 Osh 进行 QuickLook 预览。扩展文件格式支持是零技术成本、高用户覆盖率的改进。
 
 ## What Changes
 

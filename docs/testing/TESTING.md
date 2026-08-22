@@ -10,11 +10,11 @@ make app
 ### Step 2: Run the Host App
 After build succeeds, run:
 ```bash
-open ~/Library/Developer/Xcode/DerivedData/FluxMarkdown-*/Build/Products/Debug/FluxMarkdown.app
+open ~/Library/Developer/Xcode/DerivedData/Osh-*/Build/Products/Debug/Osh.app
 ```
 
 Or in Xcode:
-1. Open `FluxMarkdown.xcodeproj`
+1. Open `Osh.xcodeproj`
 2. **重要**: 在顶部工具栏确保选择的是 **Markdown** scheme (不是 MarkdownPreview)
    - 点击 scheme 下拉菜单（在 Run/Stop 按钮旁边）
    - 选择 "Markdown"
@@ -194,7 +194,7 @@ qlmanage -r cache
 4. Use mouse wheel zoom (CMD + scroll) or pinch gesture as alternative
 
 ### No log output?
-- Make sure the app is installed: `/Applications/FluxMarkdown.app`
+- Make sure the app is installed: `/Applications/Osh.app`
 - Check if the process is running: `ps aux | grep MarkdownPreview`
 
 ### Still not working?

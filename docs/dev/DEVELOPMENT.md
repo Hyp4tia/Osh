@@ -55,12 +55,12 @@ make generate
 ```
 This command will:
 1. Build the web renderer (npm install & build)
-2. Generate `FluxMarkdown.xcodeproj` from `project.yml`
+2. Generate `Osh.xcodeproj` from `project.yml`
 
 ### Building the App
 ```bash
 make app
 ```
-Or open `FluxMarkdown.xcodeproj` in Xcode.
+Or open `Osh.xcodeproj` in Xcode.
 
-**Note**: Do not commit `FluxMarkdown.xcodeproj` to git. Commit `project.yml` instead.
+**Note**: Do not commit `Osh.xcodeproj` to git. Commit `project.yml` instead.

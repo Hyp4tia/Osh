@@ -48,7 +48,7 @@ PR 合并后，Homebrew 的 `BrewTestBot` 会自动通过 livecheck 检测新版
 
 ```bash
 VERSION="<NEW_VERSION>"
-SHA256=$(shasum -a 256 build/artifacts/FluxMarkdown.dmg | awk '{print $1}')
+SHA256=$(shasum -a 256 build/artifacts/Osh.dmg | awk '{print $1}')
 
 cd ~/your-fork/homebrew-cask
 git fetch upstream && git merge upstream/master

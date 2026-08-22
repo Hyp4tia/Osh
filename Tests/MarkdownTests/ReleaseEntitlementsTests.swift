@@ -33,7 +33,7 @@ final class ReleaseEntitlementsTests: XCTestCase {
         XCTAssertFalse(previewRelease.contains("$HOME"))
         XCTAssertFalse(previewRelease.contains("/Users/"))
         XCTAssertTrue(previewRelease.contains("temporary-exception.files.home-relative-path.read-only"))
-        XCTAssertTrue(previewRelease.contains("/Library/Application Support/FluxMarkdown/"))
+        XCTAssertTrue(previewRelease.contains("/Library/Application Support/Osh/"))
         XCTAssertTrue(previewRelease.contains("com.apple.security.app-sandbox"))
     }
 
