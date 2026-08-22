@@ -1,5 +1,5 @@
 {
-  "name": "markdown-quicklook-renderer",
+  "name": "osh-renderer",
   "version": "1.0.0",
   "description": "Web renderer for macOS Quick Look Extension",
   "main": "index.js",
