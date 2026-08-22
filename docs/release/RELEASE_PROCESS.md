@@ -163,10 +163,10 @@ ca72b7201410962f0f5d272149b2405a5d191a8e692d9526f23ecad3882cd306  build/artifact
 
 ### 3.2 更新 Homebrew Cask
 
-编辑 `../homebrew-tap/Casks/flux-markdown.rb`：
+编辑 `../homebrew-tap/Casks/osh.rb`：
 
 ```ruby
-cask 'flux-markdown' do
+cask 'osh' do
   version '1.3.73'  # 更新版本号
   sha256 'ca72b7201410962f0f5d272149b2405a5d191a8e692d9526f23ecad3882cd306'  # 更新 SHA256
   
@@ -178,8 +178,8 @@ end
 
 ```bash
 cd ../homebrew-tap
-git add Casks/flux-markdown.rb
-git commit -m "chore(cask): update flux-markdown to v<VERSION>"
+git add Casks/osh.rb
+git commit -m "chore(cask): update osh to v<VERSION>"
 git push origin master
 ```
 
@@ -190,10 +190,10 @@ git push origin master
 brew update
 
 # 升级应用
-brew upgrade flux-markdown
+brew upgrade osh
 
 # 或全新安装测试
-brew install --cask flux-markdown
+brew install --cask osh
 ```
 
 ---
@@ -246,13 +246,13 @@ ca72b7201410962f0f5d272149b2405a5d191a8e692d9526f23ecad3882cd306
 
 # 7. 更新 Homebrew Cask
 $ cd ../homebrew-tap
-$ vim Casks/flux-markdown.rb  # 更新 version 和 sha256
-$ git add Casks/flux-markdown.rb
-$ git commit -m "chore(cask): update flux-markdown to v1.3.73"
+$ vim Casks/osh.rb  # 更新 version 和 sha256
+$ git add Casks/osh.rb
+$ git commit -m "chore(cask): update osh to v1.3.73"
 $ git push origin master
 
 # 8. 验证
-$ brew upgrade flux-markdown
+$ brew upgrade osh
 ```
 
 ---
@@ -457,7 +457,7 @@ Fixed in [vX.Y.Z](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
 
 **To update:**
 \`\`\`bash
-brew update && brew upgrade --cask flux-markdown
+brew update && brew upgrade --cask osh
 \`\`\`
 Or download the DMG from the [Releases page](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
 ```
@@ -471,7 +471,7 @@ Or download the DMG from the [Releases page](https://github.com/Zeyadistired/Osh
 
 **更新方式：**
 \`\`\`bash
-brew update && brew upgrade --cask flux-markdown
+brew update && brew upgrade --cask osh
 \`\`\`
 或从 [Releases 页面](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z) 直接下载 DMG。
 ```

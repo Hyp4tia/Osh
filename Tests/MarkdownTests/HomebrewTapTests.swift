@@ -12,10 +12,10 @@ final class HomebrewTapTests: XCTestCase {
             encoding: .utf8
         )
 
-        XCTAssertTrue(updateScript.contains("../homebrew-tap/Drafts/flux-markdown-official.rb"))
-        XCTAssertTrue(submitScript.contains("../homebrew-tap/Drafts/flux-markdown-official.rb"))
-        XCTAssertFalse(updateScript.contains("../homebrew-tap/Casks/flux-markdown-official.rb"))
-        XCTAssertFalse(submitScript.contains("../homebrew-tap/Casks/flux-markdown-official.rb"))
+        XCTAssertTrue(updateScript.contains("../homebrew-tap/Drafts/osh-official.rb"))
+        XCTAssertTrue(submitScript.contains("../homebrew-tap/Drafts/osh-official.rb"))
+        XCTAssertFalse(updateScript.contains("../homebrew-tap/Casks/osh-official.rb"))
+        XCTAssertFalse(submitScript.contains("../homebrew-tap/Casks/osh-official.rb"))
     }
 
     func testOfficialCaskDraftIsNotStoredInTapCasksDirectory() throws {
@@ -27,11 +27,11 @@ final class HomebrewTapTests: XCTestCase {
         }
 
         XCTAssertFalse(
-            FileManager.default.fileExists(atPath: tapRoot.appendingPathComponent("Casks/flux-markdown-official.rb").path),
-            "The official cask draft uses cask \"flux-markdown\", so storing it under Casks/flux-markdown-official.rb breaks tap validation."
+            FileManager.default.fileExists(atPath: tapRoot.appendingPathComponent("Casks/osh-official.rb").path),
+            "The official cask draft uses cask \"osh\", so storing it under Casks/osh-official.rb breaks tap validation."
         )
         XCTAssertTrue(
-            FileManager.default.fileExists(atPath: tapRoot.appendingPathComponent("Drafts/flux-markdown-official.rb").path)
+            FileManager.default.fileExists(atPath: tapRoot.appendingPathComponent("Drafts/osh-official.rb").path)
         )
     }
 

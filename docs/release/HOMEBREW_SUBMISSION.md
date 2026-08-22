@@ -4,8 +4,8 @@
 
 | 版本 | 文件 | 安装方式 | 特性 |
 |------|------|----------|------|
-| **功能版（tap）** | `../homebrew-tap/Casks/flux-markdown.rb` | `brew install --cask xykong/tap/flux-markdown` | duti 默认关联、auto_updates、Sparkle livecheck |
-| **官方版草稿** | `../homebrew-tap/Drafts/flux-markdown-official.rb` | 提交到 homebrew/homebrew-cask 后：`brew install --cask flux-markdown` | 符合官方规范，无 formula 依赖 |
+| **功能版（tap）** | `../homebrew-tap/Casks/osh.rb` | `brew install --cask Zeyadistired/tap/osh` | duti 默认关联、auto_updates、Sparkle livecheck |
+| **官方版草稿** | `../homebrew-tap/Drafts/osh-official.rb` | 提交到 homebrew/homebrew-cask 后：`brew install --cask osh` | 符合官方规范，无 formula 依赖 |
 
 ---
 
@@ -52,16 +52,16 @@ SHA256=$(shasum -a 256 build/artifacts/Osh.dmg | awk '{print $1}')
 
 cd ~/your-fork/homebrew-cask
 git fetch upstream && git merge upstream/master
-git checkout -b "bump-flux-markdown-${VERSION}"
+git checkout -b "bump-osh-${VERSION}"
 
-sed -i '' "s/version \".*\"/version \"${VERSION}\"/" Casks/f/flux-markdown.rb
-sed -i '' "s/sha256 \".*\"/sha256 \"${SHA256}\"/" Casks/f/flux-markdown.rb
+sed -i '' "s/version \".*\"/version \"${VERSION}\"/" Casks/f/osh.rb
+sed -i '' "s/sha256 \".*\"/sha256 \"${SHA256}\"/" Casks/f/osh.rb
 
-brew style Casks/f/flux-markdown.rb
+brew style Casks/f/osh.rb
 
-git add Casks/f/flux-markdown.rb
-git commit -m "flux-markdown ${VERSION}"
-gh pr create --repo Homebrew/homebrew-cask --title "flux-markdown ${VERSION}" --body "Version bump."
+git add Casks/f/osh.rb
+git commit -m "osh ${VERSION}"
+gh pr create --repo Homebrew/homebrew-cask --title "osh ${VERSION}" --body "Version bump."
 ```
 
 ---
@@ -89,11 +89,11 @@ gh pr create --repo Homebrew/homebrew-cask --title "flux-markdown ${VERSION}" --
 **Q: 官方合并后与 tap 版如何共存？**
 
 完全兼容。用户可以选择：
-- `brew install --cask flux-markdown` — 官方版（精简）
-- `brew install --cask xykong/tap/flux-markdown` — tap 版（完整功能）
+- `brew install --cask osh` — 官方版（精简）
+- `brew install --cask Zeyadistired/tap/osh` — tap 版（完整功能）
 
 从官方版切换到 tap 版：
 ```bash
-brew uninstall --cask flux-markdown
-brew install --cask xykong/tap/flux-markdown
+brew uninstall --cask osh
+brew install --cask Zeyadistired/tap/osh
 ```

@@ -1,6 +1,6 @@
-# FluxMarkdown Demo - "The Finder Markdown HUD"
+# Osh Demo - "The Finder Markdown HUD"
 
-> This is a *showcase* file for FluxMarkdown.
+> This is a *showcase* file for Osh.
 > 
 > Recording script (10-15s): select `demo.md` -> press Space -> click a TOC item -> pause at Mermaid -> pause at KaTeX -> show code highlight -> zoom once.
 
@@ -47,7 +47,7 @@
 flowchart LR
   A[Finder selection] --> B[Space]
   B --> C[QuickLook]
-  C --> D[FluxMarkdown Preview]
+  C --> D[Osh Preview]
 
   subgraph Preview[Preview pipeline]
     D --> E[Markdown + GFM]
@@ -89,18 +89,18 @@ $$
 ```swift
 import Foundation
 
-struct FluxMarkdown {
-  let name = "FluxMarkdown"
+struct Osh {
+  let name = "Osh"
   let features = ["GFM", "Mermaid", "KaTeX", "TOC", "Zoom"]
 }
 
-print("\(FluxMarkdown().name) - Ready in Finder")
+print("\(Osh().name) - Ready in Finder")
 ```
 
 ### Shell
 
 ```bash
-brew install --cask xykong/tap/flux-markdown
+brew install --cask Zeyadistired/tap/osh
 
 # Refresh QuickLook cache
 qlmanage -r
@@ -110,7 +110,7 @@ qlmanage -r
 
 ```json
 {
-  "app": "FluxMarkdown",
+  "app": "Osh",
   "platform": "macOS",
   "entry": "QuickLook",
   "features": ["gfm", "mermaid", "katex", "toc", "zoom", "scroll-memory"]
@@ -121,7 +121,7 @@ qlmanage -r
 
 ## Links: External / Local / Anchor
 
-- External: https://github.com/xykong/flux-markdown
+- External: https://github.com/Zeyadistired/Osh
 - Anchor: [Jump to Mermaid](#mermaid-architecture)
 - Local relative (main app): [demo.md](./demo.md)
 
@@ -131,12 +131,12 @@ qlmanage -r
 
 ### Neon paragraphs
 
-FluxMarkdown makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
+Osh makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
 
-FluxMarkdown makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
+Osh makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
 
-FluxMarkdown makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
+Osh makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
 
-FluxMarkdown makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
+Osh makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
 
-FluxMarkdown makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
+Osh makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.

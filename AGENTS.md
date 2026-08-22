@@ -47,8 +47,8 @@ macOS QuickLook extension for Markdown files. Hybrid architecture: Native Swift 
 | **Rendering** | `web-renderer/src/index.ts` | Markdown parsing (see subdir AGENTS.md). |
 | **Rules** | `.clinerules` | TDD & Doc-first requirements. |
 | **Release Process** | `docs/release/RELEASE_PROCESS.md` | Complete PR handling and release workflow. |
-| **Homebrew Cask (tap)** | `../homebrew-tap/Casks/flux-markdown.rb` | Full-featured version. Updated automatically by `update-homebrew-cask.sh`. |
-| **Homebrew Cask (official)** | `../homebrew-tap/Casks/flux-markdown-official.rb` | Official-compliant draft for homebrew/homebrew-cask submission. No formula deps. |
+| **Homebrew Cask (tap)** | `../homebrew-tap/Casks/osh.rb` | Full-featured version. Updated automatically by `update-homebrew-cask.sh`. |
+| **Homebrew Cask (official)** | `../homebrew-tap/Casks/osh-official.rb` | Official-compliant draft for homebrew/homebrew-cask submission. No formula deps. |
 | **Homebrew Submission Guide** | `docs/release/HOMEBREW_SUBMISSION.md` | How to submit and maintain the official cask. |
 
 ## ARCHITECTURE & PATTERNS
@@ -104,7 +104,7 @@ Fixed in [vX.Y.Z](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
 
 **To update:**
 \`\`\`bash
-brew update && brew upgrade --cask flux-markdown
+brew update && brew upgrade --cask osh
 \`\`\`
 Or download the DMG from the [Releases page](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
 ```
@@ -118,7 +118,7 @@ Or download the DMG from the [Releases page](https://github.com/Zeyadistired/Osh
 
 **更新方式：**
 \`\`\`bash
-brew update && brew upgrade --cask flux-markdown
+brew update && brew upgrade --cask osh
 \`\`\`
 或从 [Releases 页面](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z) 直接下载 DMG。
 ```

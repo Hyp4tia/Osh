@@ -1,5 +1,5 @@
 #!/bin/bash
-# Creates a MacPorts-compatible source tarball for flux-markdown.
+# Creates a MacPorts-compatible source tarball for Osh.
 #
 # What's included vs. the default GitHub source tarball:
 #   - web-renderer/dist    (pre-built; MacPorts sandbox has no npm)

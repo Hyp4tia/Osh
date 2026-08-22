@@ -3,8 +3,8 @@ set -e
 
 VERSION_FILE=".version"
 DMG_PATH="build/artifacts/Osh.dmg"
-CASK_FILE="../homebrew-tap/Casks/flux-markdown.rb"
-OFFICIAL_CASK_FILE="../homebrew-tap/Drafts/flux-markdown-official.rb"
+CASK_FILE="../homebrew-tap/Casks/osh.rb"
+OFFICIAL_CASK_FILE="../homebrew-tap/Drafts/osh-official.rb"
 
 if [ ! -f "$VERSION_FILE" ]; then
     echo "❌ Error: Version file not found: $VERSION_FILE"
@@ -66,8 +66,8 @@ echo ""
 cd "$(dirname "$CASK_FILE")/.."
 
 CHANGED_FILES=()
-git diff --quiet Casks/flux-markdown.rb || CHANGED_FILES+=("Casks/flux-markdown.rb")
-git diff --quiet Drafts/flux-markdown-official.rb 2>/dev/null || CHANGED_FILES+=("Drafts/flux-markdown-official.rb")
+git diff --quiet Casks/osh.rb || CHANGED_FILES+=("Casks/osh.rb")
+git diff --quiet Drafts/osh-official.rb 2>/dev/null || CHANGED_FILES+=("Drafts/osh-official.rb")
 
 if [ ${#CHANGED_FILES[@]} -gt 0 ]; then
     echo "📝 Changes detected in: ${CHANGED_FILES[*]}"
@@ -80,7 +80,7 @@ if [ ${#CHANGED_FILES[@]} -gt 0 ]; then
         echo "⚠️  Non-interactive mode: skipping commit/push. Please commit manually:"
         echo "   cd $(pwd)"
         echo "   git add ${CHANGED_FILES[*]}"
-        echo "   git commit -m 'chore(cask): update flux-markdown to v$VERSION'"
+        echo "   git commit -m 'chore(cask): update osh to v$VERSION'"
         echo "   git push origin master"
     else
         read -p "👉 Commit and push changes? (y/n) " -n 1 -r
@@ -88,14 +88,14 @@ if [ ${#CHANGED_FILES[@]} -gt 0 ]; then
 
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             git add "${CHANGED_FILES[@]}"
-            git commit -m "chore(cask): update flux-markdown to v$VERSION"
+            git commit -m "chore(cask): update osh to v$VERSION"
             git push origin master
             echo "✅ Changes committed and pushed to homebrew-tap"
         else
             echo "⚠️  Changes not committed. Please commit manually:"
             echo "   cd $(pwd)"
             echo "   git add ${CHANGED_FILES[*]}"
-            echo "   git commit -m 'chore(cask): update flux-markdown to v$VERSION'"
+            echo "   git commit -m 'chore(cask): update osh to v$VERSION'"
             echo "   git push origin master"
         fi
     fi
@@ -105,7 +105,7 @@ fi
 
 echo ""
 echo "🎉 Done! Users can now install v$VERSION with:"
-echo "   brew update && brew upgrade flux-markdown"
+echo "   brew update && brew upgrade osh"
 echo ""
 echo "📋 To submit to official homebrew-cask:"
 echo "   ./scripts/submit-to-homebrew.sh"

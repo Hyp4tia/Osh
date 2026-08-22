@@ -13,6 +13,10 @@
  */
 
 /* ── Lists: mirror bullets / numbering to the right side ─────────────── */
+/* Selectors cover both cases: dir stamped directly on the list by
+   applyBlockDirection(), and lists inheriting dir from an RTL ancestor. */
+ul[dir='rtl'],
+ol[dir='rtl'],
 [dir='rtl'] ul,
 [dir='rtl'] ol {
     padding-left: 0 !important;
@@ -29,6 +33,7 @@
 }
 
 /* ── Blockquotes: accent bar on the right ────────────────────────────── */
+blockquote[dir='rtl'],
 [dir='rtl'] blockquote {
     border-left: none;
     border-right: 0.25em solid var(--color-border-default, #d0d7de);

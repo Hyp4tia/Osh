@@ -10,7 +10,7 @@ categories          aqua sysutils
 platforms           {darwin >= 21}
 supported_archs     x86_64 arm64
 license             GPL-3
-maintainers         {@xykong gmail.com:xy.kong} openmaintainer
+maintainers         {@Zeyadistired gmail.com:ziadm4772} openmaintainer
 
 description         Markdown previews in Finder QuickLook with diagrams and math
 long_description    Osh is a macOS QuickLook extension for Markdown files. \

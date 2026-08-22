@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-OFFICIAL_CASK_FILE="../homebrew-tap/Drafts/flux-markdown-official.rb"
+OFFICIAL_CASK_FILE="../homebrew-tap/Drafts/osh-official.rb"
 VERSION_FILE=".version"
 
 if [ ! -f "$VERSION_FILE" ]; then
@@ -24,7 +24,7 @@ if [ -z "$GITHUB_USER" ]; then
     exit 1
 fi
 
-echo "🍺 Preparing to submit flux-markdown v$VERSION to homebrew/homebrew-cask"
+echo "🍺 Preparing to submit osh v$VERSION to homebrew/homebrew-cask"
 echo "   GitHub user: $GITHUB_USER"
 echo ""
 
@@ -43,25 +43,25 @@ git fetch upstream
 git checkout master
 git merge upstream/master
 
-BRANCH="add-flux-markdown-${VERSION}"
+BRANCH="add-osh-${VERSION}"
 git checkout -b "$BRANCH"
 
 mkdir -p Casks/f
-cp "$OLDPWD/$OFFICIAL_CASK_FILE" "Casks/f/flux-markdown.rb"
+cp "$OLDPWD/$OFFICIAL_CASK_FILE" "Casks/f/osh.rb"
 
 echo ""
 echo "📄 Cask to be submitted:"
 echo "─────────────────────────────────"
-cat Casks/f/flux-markdown.rb
+cat Casks/f/osh.rb
 echo "─────────────────────────────────"
 echo ""
 
-brew style Casks/f/flux-markdown.rb
+brew style Casks/f/osh.rb
 echo "✅ Final style check passed"
 echo ""
 
-git add Casks/f/flux-markdown.rb
-git commit -m "Add flux-markdown"
+git add Casks/f/osh.rb
+git commit -m "Add osh"
 
 git push origin "$BRANCH"
 
@@ -70,8 +70,8 @@ echo "🚀 Creating PR to Homebrew/homebrew-cask..."
 
 PR_URL=$(gh pr create \
     --repo Homebrew/homebrew-cask \
-    --title "Add flux-markdown" \
-    --body "## flux-markdown
+    --title "Add osh" \
+    --body "## osh
 
 - **Name:** Osh
 - **Homepage:** https://github.com/Zeyadistired/Osh
@@ -81,9 +81,9 @@ PR_URL=$(gh pr create \
 
 **Checklist:**
 - [x] I have read the [contribution guidelines](https://github.com/Homebrew/homebrew-cask/blob/master/CONTRIBUTING.md)
-- [x] \`brew style --cask flux-markdown\` passes
-- [x] \`brew audit --cask --online flux-markdown\` passes (run locally before submitting)
-- [x] Verified install works: \`brew install --cask ./Casks/f/flux-markdown.rb\`
+- [x] \`brew style --cask osh\` passes
+- [x] \`brew audit --cask --online osh\` passes (run locally before submitting)
+- [x] Verified install works: \`brew install --cask ./Casks/f/osh.rb\`
 
 **About:**
 Osh is a macOS QuickLook extension for Markdown files.
