@@ -1,0 +1,83 @@
+/* CSS 变量定义（由 data-theme attribute 驱动） */
+:root {
+    --source-bg: #ffffff;
+    --source-fg: #24292e;
+}
+
+[data-theme="dark"] {
+    --source-bg: #161b22;
+    --source-fg: #e6edf3;
+}
+
+.source-view {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 保留原有 class（供 renderSource 设置，确保向后兼容） */
+.source-view-light {
+    background-color: var(--source-bg, #ffffff);
+    color: var(--source-fg, #24292e);
+}
+
+.source-view-dark {
+    background-color: var(--source-bg, #161b22);
+    color: var(--source-fg, #e6edf3);
+}
+
+.source-view .source-pre {
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    tab-size: 4;
+}
+
+.source-view-light .source-pre,
+.source-view-dark .source-pre {
+    background-color: transparent;
+    border: none;
+}
+
+.source-view .source-pre code {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.source-view .hljs {
+    background: transparent;
+    padding: 0;
+    overflow: visible;
+}
+
+body:has(#markdown-preview.source-mode) {
+  padding: 0;
+}
+
+#markdown-preview.source-mode {
+  padding: 0 !important;
+  border-left: none !important;
+}
+
+/* Hide line number gutter in source view when line numbers are disabled */
+html[data-line-numbers="false"] .source-diff-gutter {
+  display: none;
+}
+
+html[data-line-numbers="false"] .source-diff-wrap {
+  grid-template-columns: 1fr;
+}
+

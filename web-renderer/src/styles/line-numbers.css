@@ -1,0 +1,59 @@
+/*
+ * Line number gutter for rendered Markdown preview.
+ *
+ * Requires: data-source-line="N" on block elements (injected by markdown-it renderToken hook).
+ * Activated by: data-line-numbers="true" on <html>.
+ *
+ * Strategy: Only DIRECT children of #markdown-preview get a gutter number.
+ * Using `>` child combinator prevents li/blockquote nested elements from
+ * also showing numbers (they carry data-source-line too, which caused
+ * duplication and mis-positioned numbers inside lists and blockquotes).
+ * Font size is fixed in px (not em) to avoid inheriting heading sizes.
+ */
+
+/* Activate gutter: add left padding to create gutter space */
+html[data-line-numbers="true"] #markdown-preview:not(.source-mode) {
+  padding-left: 3.5em !important;
+  position: relative;
+  border-left: 1px solid var(--line-num-border, rgba(128,128,128,0.2));
+  box-sizing: border-box;
+}
+
+/* Only direct children get position:relative — prevents nested li/p inside
+   ul/blockquote from creating a new positioning context for ::before */
+html[data-line-numbers="true"] #markdown-preview:not(.source-mode) > [data-source-line] {
+  position: relative;
+}
+
+/* Gutter number: only on direct children, pulled into the left padding area */
+html[data-line-numbers="true"] #markdown-preview:not(.source-mode) > [data-source-line]::before {
+  content: attr(data-source-line);
+  position: absolute;
+  left: -3.5em;
+  width: 3em;
+  top: 0;
+  text-align: right;
+  padding-right: 0.4em;
+  font-size: 12px;          /* Fixed px — never inherits heading/large font sizes */
+  line-height: 1.5;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  color: var(--line-num-color, rgba(128,128,128,0.45));
+  user-select: none;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+/* Dark theme */
+html[data-theme="dark"][data-line-numbers="true"] #markdown-preview {
+  --line-num-color: rgba(200,200,200,0.3);
+  --line-num-border: rgba(200,200,200,0.15);
+}
+
+/* Don't show line numbers on code blocks (pre is a direct child but has its own
+   line numbering via highlight.js; suppress the gutter number there) */
+html[data-line-numbers="true"] #markdown-preview:not(.source-mode) > pre[data-source-line]::before {
+  display: none;
+}
+html[data-line-numbers="true"] #markdown-preview:not(.source-mode) > pre[data-source-line] {
+  position: static;
+}

@@ -1,0 +1,112 @@
+/* Finder column-view / preview pane — compact, minimal rendering.
+ * Activated when Swift detects the extension is hosted in Finder's preview pane
+ * and passes context="finder" to the JS renderer, which sets data-context="finder"
+ * on <html>.
+ *
+ * Goals:
+ *   - Remove padding/chrome that wastes space in the narrow column
+ *   - Hide overlay UI (TOC, search, collapse buttons, link status bar)
+ *   - Tighten typography for scanability
+ */
+
+/* ── Hide overlay UI ────────────────────────────────────── */
+[data-context="finder"] #toc-container,
+[data-context="finder"] #search-container,
+[data-context="finder"] #collapse-btn-container,
+[data-context="finder"] #link-status-bar {
+    display: none !important;
+}
+
+/* ── Compact body padding ───────────────────────────────── */
+[data-context="finder"] body {
+    padding: 8px;
+}
+
+[data-context="finder"] .markdown-body {
+    padding: 8px;
+}
+
+/* ── Tighter heading sizes ──────────────────────────────── */
+[data-context="finder"] .markdown-body h1 {
+    font-size: 1.4em;
+    margin-top: 0.4em;
+    margin-bottom: 0.3em;
+    padding-bottom: 0.2em;
+}
+
+[data-context="finder"] .markdown-body h2 {
+    font-size: 1.2em;
+    margin-top: 0.4em;
+    margin-bottom: 0.3em;
+    padding-bottom: 0.15em;
+}
+
+[data-context="finder"] .markdown-body h3 {
+    font-size: 1.1em;
+    margin-top: 0.3em;
+    margin-bottom: 0.2em;
+}
+
+[data-context="finder"] .markdown-body h4,
+[data-context="finder"] .markdown-body h5,
+[data-context="finder"] .markdown-body h6 {
+    font-size: 1em;
+    margin-top: 0.3em;
+    margin-bottom: 0.2em;
+}
+
+/* ── Tighter paragraph/list spacing ─────────────────────── */
+[data-context="finder"] .markdown-body p {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+}
+
+[data-context="finder"] .markdown-body ul,
+[data-context="finder"] .markdown-body ol {
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    padding-left: 1.5em;
+}
+
+[data-context="finder"] .markdown-body li + li {
+    margin-top: 0.15em;
+}
+
+/* ── Compact code blocks ────────────────────────────────── */
+[data-context="finder"] .markdown-body pre {
+    padding: 8px;
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    font-size: 0.9em;
+}
+
+[data-context="finder"] .markdown-body code {
+    font-size: 0.9em;
+}
+
+/* ── Compact tables ─────────────────────────────────────── */
+[data-context="finder"] .markdown-body table {
+    font-size: 0.9em;
+}
+
+[data-context="finder"] .markdown-body table th,
+[data-context="finder"] .markdown-body table td {
+    padding: 4px 8px;
+}
+
+/* ── Compact blockquotes ────────────────────────────────── */
+[data-context="finder"] .markdown-body blockquote {
+    margin: 0.3em 0;
+    padding: 0.2em 0.8em;
+}
+
+/* ── Compact images — prevent oversized images ──────────── */
+[data-context="finder"] .markdown-body img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ── Compact horizontal rules ───────────────────────────── */
+[data-context="finder"] .markdown-body hr {
+    margin: 0.4em 0;
+}

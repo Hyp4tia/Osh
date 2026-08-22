@@ -1,0 +1,48 @@
+# 图片测试说明
+
+## 快速测试
+
+### 1. 启动日志监控
+```bash
+./Tests/watch-console.sh
+```
+
+### 2. 预览测试文档
+在 Finder 中打开 `Tests/fixtures/images-test.md`，按空格键预览
+
+### 3. 观察结果
+- 查看哪些图片能正常显示
+- 查看终端日志中的错误信息
+
+## 测试文件
+
+- `images-test.md` - 主测试文档（包含各种图片路径场景）
+- `test-image.png` - 同目录测试图片
+- `images/test-image.png` - 子目录测试图片
+- `images/logo.png` - Logo 测试图片
+- `test1.png`, `test2.png`, `test3.png` - 并排显示测试图片
+
+## 预期结果
+
+✅ **应该显示：**
+- 同目录下的图片 (`./test-image.png`)
+- 子目录下的图片 (`./images/test-image.png`)
+- 上级目录的图片 (`../test-image.png`) - 通过 Base64 转换
+- 用户主目录内的绝对路径 (`/Users/username/Desktop/pic.png`)
+- 网络图片 (HTTPS)
+- Base64 内嵌图片
+
+⚠️ **不会显示：**
+- 用户主目录外的绝对路径（如 `/Users/Shared/...`）
+- 系统目录的图片（如 `/System/...`）
+- HTTP 图片（安全策略可能阻止）
+- 不存在的图片
+
+## 诊断日志关键词
+
+在终端日志中查找：
+- `🔵 Start loading resource:` - 开始加载资源
+- `🟢 Successfully loaded:` - 加载成功
+- `🔴 Failed to load resource:` - 加载失败
+- `Image found:` - 发现图片（如果启用了增强日志）
+- `Image transformed:` - 路径转换（如果启用了增强日志）

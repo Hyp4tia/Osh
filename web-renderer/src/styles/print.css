@@ -1,0 +1,117 @@
+@media print {
+  @page {
+    margin: 15mm 15mm 15mm 15mm;
+    size: A4 portrait;
+  }
+
+  html {
+    font-size: var(--print-font-size, 16px) !important;
+  }
+
+  body {
+    -webkit-print-color-adjust: exact !important;
+    color-adjust: exact !important;
+    font-size: var(--print-font-size, 16px) !important;
+    line-height: 1.5;
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  .markdown-body {
+    font-size: var(--print-font-size, 16px) !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  p, li, blockquote {
+    page-break-inside: avoid;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /*
+   * github-markdown-css sets:
+   *   .markdown-body pre > code { white-space: pre; word-break: normal }
+   * Override with !important and specific selectors to force line wrapping in print.
+   * Use break-word (not break-all) to prefer breaking at word boundaries.
+   */
+  pre,
+  code,
+  .markdown-body pre,
+  .markdown-body code,
+  .markdown-body pre > code,
+  .highlight pre,
+  .highlight code {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+  }
+
+  pre {
+    overflow: visible !important;
+    max-width: 100% !important;
+  }
+
+  pre::-webkit-scrollbar {
+    display: none;
+  }
+
+  img {
+    page-break-inside: avoid;
+    max-width: 100% !important;
+    max-height: 90vh !important;
+  }
+
+  table {
+    display: table;
+    max-width: 100% !important;
+    table-layout: auto;
+    width: 100%;
+  }
+
+  td, th {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: none;
+  }
+
+  td code, th code {
+    font-size: 0.75em !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: anywhere !important;
+    word-break: break-word !important;
+  }
+
+  .mermaid, .vega-embed, .graphviz {
+    page-break-inside: avoid;
+    max-width: 100% !important;
+  }
+
+  .pagebreak, .newpage {
+    page-break-before: always;
+  }
+
+  #toc-container,
+  #search-container,
+  #outline-panel,
+  .toc-toggle-btn,
+  .search-toggle-btn,
+  .md-sidebar-toc {
+    display: none !important;
+  }
+
+  a[href]:after {
+    content: "";
+  }
+
+  .markdown-body,
+  .markdown-body.dark {
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
