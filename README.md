@@ -6,24 +6,24 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/xykong/flux-markdown/stargazers">
-    <img src="https://img.shields.io/github/stars/xykong/flux-markdown?style=social" alt="GitHub stars">
+  <a href="https://github.com/Zeyadistired/Osh/stargazers">
+    <img src="https://img.shields.io/github/stars/Zeyadistired/Osh?style=social" alt="GitHub stars">
   </a>
-  <a href="https://github.com/xykong/flux-markdown/releases">
-    <img src="https://img.shields.io/github/v/release/xykong/flux-markdown?style=flat-square" alt="Latest release">
+  <a href="https://github.com/Zeyadistired/Osh/releases">
+    <img src="https://img.shields.io/github/v/release/Zeyadistired/Osh?style=flat-square" alt="Latest release">
   </a>
-  <a href="https://github.com/xykong/flux-markdown/releases">
-    <img src="https://img.shields.io/github/downloads/xykong/flux-markdown/total?style=flat-square" alt="Downloads">
+  <a href="https://github.com/Zeyadistired/Osh/releases">
+    <img src="https://img.shields.io/github/downloads/Zeyadistired/Osh/total?style=flat-square" alt="Downloads">
   </a>
   <a href="LICENSE">
-    <img src="https://img.shields.io/github/license/xykong/flux-markdown?style=flat-square" alt="License">
+    <img src="https://img.shields.io/github/license/Zeyadistired/Osh?style=flat-square" alt="License">
   </a>
 </p>
 
 <p align="center">
   <a href="README.md">English</a> •
   <a href="README_ES.md">Español</a> •
-  <a href="README_ZH.md">中文文档</a> •
+  <a href="README_AR.md">العربية</a> •
   <a href="#-quick-install-30-seconds">Install</a> •
   <a href="#-troubleshooting">Troubleshooting</a>
 </p>
@@ -40,33 +40,26 @@
 
 <p align="center">
   <em>👋 If FluxMarkdown helps you, consider giving it a</em>
-  <a href="https://github.com/xykong/flux-markdown/stargazers">⭐ star on GitHub</a>!
+  <a href="https://github.com/Zeyadistired/Osh/stargazers">⭐ star on GitHub</a>!
 </p>
 
 ---
 
 ## 🚀 Quick Install (30 seconds)
 
-### Homebrew (Recommended)
-
-```bash
-brew install --cask xykong/tap/flux-markdown
-```
-
-If Homebrew reports that `xykong/tap` is not trusted, this is Homebrew's third-party tap trust warning, not a FluxMarkdown install failure. Prefer trusting only this cask:
-
-```bash
-brew trust --cask xykong/tap/flux-markdown
-brew install --cask xykong/tap/flux-markdown
-```
-
-See [Tap Trust](https://docs.brew.sh/Tap-Trust) for Homebrew's security model.
-
 ### Manual (DMG)
 
-1. Download the latest `FluxMarkdown.dmg` from [Releases](https://github.com/xykong/flux-markdown/releases)
+1. Download the latest `FluxMarkdown.dmg` from [Releases](https://github.com/Zeyadistired/Osh/releases)
 2. Open the DMG
 3. Drag **FluxMarkdown.app** to **Applications**
+
+### Homebrew
+
+> Coming soon — a dedicated tap for this fork is not published yet.
+> In the meantime, you can also install the original upstream build:
+> ```bash
+> brew install --cask xykong/tap/flux-markdown
+> ```
 
 ---
 
@@ -170,27 +163,25 @@ qlmanage -r
 ## Build from source
 
 ```bash
-git clone https://github.com/xykong/flux-markdown.git
-cd flux-markdown
+git clone https://github.com/Zeyadistired/Osh.git
+cd Osh
 make install
 ```
 
 ## 📄 License
 
-**FluxMarkdown is dual-licensed:**
-
-### Open Source License: GPL-3.0
+**FluxMarkdown is licensed under GPL-3.0:**
 - ✅ **Free** for personal, educational, and open-source use
 - ✅ Any modifications must also be open-sourced under GPL-3.0
 - 📜 See [`LICENSE`](LICENSE) for full terms
 
-### Commercial License
-- 💼 Required for **closed-source** or proprietary products
-- 💼 Allows distribution without open-sourcing your modifications
-- 📧 Contact: **xy.kong@gmail.com** for licensing inquiries
-- 📜 See [`LICENSE.COMMERCIAL`](LICENSE.COMMERCIAL) for details
+The original upstream project is dual-licensed by its author; commercial licensing for the original FluxMarkdown is handled by **@xykong** — see [`LICENSE.COMMERCIAL`](LICENSE.COMMERCIAL) or contact **xy.kong@gmail.com**.
 
-**Why dual licensing?** This ensures FluxMarkdown remains free and open for the community while allowing commercial use without GPL obligations for those who need it.
+---
+
+## 🙏 Attribution
+
+This project is based on [FluxMarkdown](https://github.com/xykong/flux-markdown) by [@xykong](https://github.com/xykong), licensed under GPL-3.0. All credit for the original design and implementation goes to the upstream author and its contributors ([@timokox](https://github.com/timokox), [@marko-cancar](https://github.com/marko-cancar), [@withsivram](https://github.com/withsivram), [@TeroRERO](https://github.com/TeroRERO)).
 
 ---
 

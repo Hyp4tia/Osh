@@ -122,7 +122,7 @@ struct MarkdownApp: App {
 
             CommandGroup(replacing: .help) {
                 Button(NSLocalizedString("FluxMarkdown Help", comment: "Help menu item")) {
-                    if let url = URL(string: "https://github.com/xykong/flux-markdown/blob/master/docs/user/HELP.md") {
+                    if let url = URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP.md") {
                         NSWorkspace.shared.open(url)
                     }
                 }
@@ -131,13 +131,13 @@ struct MarkdownApp: App {
                 Divider()
                 
                 Button(NSLocalizedString("README", comment: "README menu item")) {
-                    if let url = URL(string: "https://github.com/xykong/flux-markdown#readme") {
+                    if let url = URL(string: "https://github.com/Zeyadistired/Osh#readme") {
                         NSWorkspace.shared.open(url)
                     }
                 }
                 
                 Button(NSLocalizedString("Report an Issue", comment: "Report issue menu item")) {
-                    if let url = URL(string: "https://github.com/xykong/flux-markdown/issues") {
+                    if let url = URL(string: "https://github.com/Zeyadistired/Osh/issues") {
                         NSWorkspace.shared.open(url)
                     }
                 }
@@ -145,7 +145,7 @@ struct MarkdownApp: App {
                 Divider()
                 
                 Button(NSLocalizedString("Release Notes", comment: "Release notes menu item")) {
-                    if let url = URL(string: "https://github.com/xykong/flux-markdown/releases") {
+                    if let url = URL(string: "https://github.com/Zeyadistired/Osh/releases") {
                         NSWorkspace.shared.open(url)
                     }
                 }
