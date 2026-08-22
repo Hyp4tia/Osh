@@ -1,0 +1,56 @@
+/**
+ * RTL refinements.
+ *
+ * Setting `dir="rtl"` on blocks gives correct base direction and text
+ * alignment via the Unicode Bidirectional Algorithm. These rules fix the
+ * physical properties that GitHub-style CSS hardcodes for LTR:
+ * list marker padding, blockquote accent bars, and isolation of embedded
+ * LTR runs (inline code) so their punctuation cannot leak into the
+ * surrounding RTL run.
+ *
+ * Table column order is mirrored natively by `dir="rtl"` on <table>
+ * (table layout follows direction), no CSS needed for that.
+ */
+
+/* ── Lists: mirror bullets / numbering to the right side ─────────────── */
+[dir='rtl'] ul,
+[dir='rtl'] ol {
+    padding-left: 0 !important;
+    padding-right: 2em !important;
+}
+
+/* Nested lists keep the same inset from the right. */
+[dir='rtl'] ul ul,
+[dir='rtl'] ol ol,
+[dir='rtl'] ul ol,
+[dir='rtl'] ol ul {
+    padding-right: 2em;
+    padding-left: 0;
+}
+
+/* ── Blockquotes: accent bar on the right ────────────────────────────── */
+[dir='rtl'] blockquote {
+    border-left: none;
+    border-right: 0.25em solid var(--color-border-default, #d0d7de);
+    padding-left: 0;
+    padding-right: 16px;
+}
+
+/* ── Embedded LTR runs: isolate inline code per UBA ──────────────────── */
+[dir='rtl'] code,
+[dir='rtl'] kbd,
+[dir='rtl'] samp {
+    direction: ltr;
+    unicode-bidi: isolate;
+}
+
+/* Links keep surrounding punctuation on the correct side. */
+[dir='rtl'] a {
+    unicode-bidi: normal;
+}
+
+/* Default cell alignment follows direction; explicit align="" wins. */
+[dir='rtl'] table th:not([align]),
+[dir='rtl'] table td:not([align]) {
+    text-align: start;
+}

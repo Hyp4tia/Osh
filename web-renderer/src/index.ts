@@ -136,6 +136,7 @@ import './styles/diff-animations.css';
 import './styles/line-numbers.css';
 import './styles/finder-pane.css';
 import './styles/typst.css';
+import './styles/rtl.css';
 
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js/lib/core';
@@ -274,7 +275,7 @@ import { SearchEngine } from './search';
 import { SearchUI } from './search-ui';
 import { HelpOverlay } from './help-overlay';
 import { BlockquoteCollapse } from './blockquote-collapse';
-import { detectRtlContent } from './rtl';
+import { applyBlockDirection } from './rtl';
 import { DiffAnimator } from './diff-animator';
 import { computeLineDiff } from './diff-engine';
 
@@ -883,11 +884,10 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
             blockquoteCollapse.setInitialState(options.collapseBlockquotes === true);
         }
 
-        if (detectRtlContent(renderBody)) {
-            outputDiv.setAttribute('dir', 'rtl');
-        } else {
-            outputDiv.removeAttribute('dir');
-        }
+        // Per-block RTL: stamp dir on paragraphs/headings/lists/tables whose
+        // dominant script is Arabic/Hebrew. Embedded LTR runs are handled by
+        // the Unicode Bidirectional Algorithm plus styles/rtl.css isolation.
+        applyBlockDirection(outputDiv);
 
         if (mermaidBlocks.length > 0) {
             try {
