@@ -220,6 +220,14 @@ describe('applyBlockDirection (DOM stamping)', () => {
         expect(root.querySelector('table')!.getAttribute('dir')).toBeNull();
     });
 
+    test('stamps blockquote wrappers so RTL chrome mirrors', () => {
+        root.innerHTML = '<blockquote><p>اقتباس عربي مهم</p></blockquote>';
+        applyBlockDirection(root);
+
+        expect(root.querySelector('blockquote')!.getAttribute('dir')).toBe('rtl');
+        expect(root.querySelector('blockquote p')!.getAttribute('dir')).toBe('rtl');
+    });
+
     test('clears stale dir attributes on re-application (re-render)', () => {
         root.innerHTML = '<p dir="rtl">Now English content instead</p>';
         applyBlockDirection(root);

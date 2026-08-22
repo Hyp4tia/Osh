@@ -96,6 +96,13 @@ export function applyBlockDirection(root: HTMLElement): void {
         setBlockDirection(el as HTMLElement, detectBlockDirection(itemsText));
     });
 
+    root.querySelectorAll('blockquote').forEach((el) => {
+        if (isInCodeContext(el)) return;
+        // Stamp the wrapper too so RTL-specific chrome (mirrored accent
+        // bar via styles/rtl.css) applies alongside the inner blocks.
+        setBlockDirection(el as HTMLElement, detectBlockDirection(el.textContent || ''));
+    });
+
     root.querySelectorAll('table').forEach((el) => {
         if (isInCodeContext(el)) return;
         setBlockDirection(el as HTMLElement, detectBlockDirection(el.textContent || ''));
