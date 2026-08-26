@@ -53,6 +53,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func application(_ application: NSApplication, openFile filename: String) -> Bool {
         let fileURL = URL(fileURLWithPath: filename)
         UpdateRestorationManager.shared.saveLastOpenedFile(url: fileURL)
+        RecentFilesStore.shared.record(url: fileURL)
         return false
     }
 
@@ -369,6 +370,7 @@ private struct DocumentPreviewScene: View {
         .onAppear {
             if let fileURL = file.fileURL {
                 UpdateRestorationManager.shared.saveLastOpenedFile(url: fileURL)
+                RecentFilesStore.shared.record(url: fileURL)
             }
         }
         .onChange(of: editingSession.isEditing) { _ in

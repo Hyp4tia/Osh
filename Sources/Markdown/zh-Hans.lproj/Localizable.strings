@@ -111,3 +111,10 @@
 "Discard Changes" = "放弃更改";
 "Cancel" = "取消";
 "Export as Word…" = "\u5bfc\u51fa\u4e3a Word…";
+
+/* === Welcome === */
+"A quiet reader for Markdown." = "安静的 Markdown 阅读器。";
+"or drop files here" = "或将文件拖到此处";
+"Recent" = "最近打开";
+"Settings" = "设置";
+"Help" = "帮助";

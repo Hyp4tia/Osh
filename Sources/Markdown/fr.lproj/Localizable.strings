@@ -111,3 +111,10 @@
 "Discard Changes" = "Ignorer les modifications";
 "Cancel" = "Annuler";
 "Export as Word…" = "Exporter en Word…";
+
+/* === Welcome === */
+"A quiet reader for Markdown." = "Un lecteur Markdown paisible.";
+"or drop files here" = "ou déposez des fichiers ici";
+"Recent" = "Récents";
+"Settings" = "Réglages";
+"Help" = "Aide";
