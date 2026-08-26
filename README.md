@@ -1,200 +1,139 @@
-# Osh
-
 <p align="center">
-  <em>Beautiful Markdown previews in macOS Finder QuickLook</em><br>
-  Mermaid • KaTeX • GFM • TOC • Charts • Export
-</p>
-
-<p align="center">
-  <a href="https://github.com/Zeyadistired/Osh/stargazers">
-    <img src="https://img.shields.io/github/stars/Zeyadistired/Osh?style=social" alt="GitHub stars">
-  </a>
-  <a href="https://github.com/Zeyadistired/Osh/releases">
-    <img src="https://img.shields.io/github/v/release/Zeyadistired/Osh?style=flat-square" alt="Latest release">
-  </a>
-  <a href="https://github.com/Zeyadistired/Osh/releases">
-    <img src="https://img.shields.io/github/downloads/Zeyadistired/Osh/total?style=flat-square" alt="Downloads">
-  </a>
-  <a href="LICENSE">
-    <img src="https://img.shields.io/github/license/Zeyadistired/Osh?style=flat-square" alt="License">
-  </a>
-</p>
-
-<p align="center">
-  <a href="README.md">English</a> •
-  <a href="README_ES.md">Español</a> •
-  <a href="README_AR.md">العربية</a> •
-  <a href="#-quick-install-30-seconds">Install</a> •
-  <a href="#-troubleshooting">Troubleshooting</a>
+  <h1 align="center">Osh <samp>ⲱϣ</samp></h1>
+  <p align="center"><strong>A quiet, beautiful Markdown reader & QuickLook extension for macOS.</strong></p>
+  <p align="center">
+    <a href="https://github.com/Zeyadistired/Osh/releases/latest"><img src="https://img.shields.io/github/v/release/Zeyadistired/Osh?style=flat-square&color=blue" alt="Release"></a>
+    <a href="https://github.com/Zeyadistired/Osh/stargazers"><img src="https://img.shields.io/github/stars/Zeyadistired/Osh?style=flat-square&color=gold" alt="Stars"></a>
+    <a href="https://github.com/Zeyadistired/Osh/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Zeyadistired/Osh?style=flat-square" alt="License"></a>
+    <img src="https://img.shields.io/badge/platform-macOS%2011%2B-lightgrey?style=flat-square" alt="macOS">
+  </p>
+  <p align="center">
+    <a href="README.md">English</a> •
+    <a href="README_ES.md">Español</a> •
+    <a href="README_AR.md">العربية</a> •
+    <a href="#installation">Installation</a> •
+    <a href="#features">Features</a> •
+    <a href="#shortcuts">Shortcuts</a>
+  </p>
 </p>
 
 > [!NOTE]
-> **Osh is currently in Public Beta (v1.0.0 Beta).** Features and functionality are actively being polished. If you encounter any issues or have feedback, please [open an issue](https://github.com/Zeyadistired/Osh/issues)!
+> **Osh is currently in Public Beta (v1.0.0 Beta).** Features and polish are evolving rapidly. If you run into anything unexpected or have suggestions, please feel free to [open an issue](https://github.com/Zeyadistired/Osh/issues)!
 
 ---
 
-## 📖 The Name
+## What is Osh?
 
-**Osh** (ⲱϣ) is Coptic for **“to read”** — minimal and sharp. It reflects the pure reading/viewing experience, without editor clutter.
+**Osh** (ⲱϣ) takes its name from the ancient Coptic word for **“to read”**. 
 
----
+Unlike heavy text editors or bloated browser plugins, Osh is built specifically for macOS to do one thing exceptionally well: provide an effortless, distraction-free reading experience for Markdown documents.
 
-## ✨ Demo
-
-![Osh Demo](docs/assets/demo.gif)
+Select any file in Finder, press `Space`, and enjoy instant, beautifully rendered Markdown with rich diagrams, crisp mathematical equations, and tailored color palettes.
 
 <p align="center">
-  <strong>Press <code>Space</code> in Finder → Instant preview with diagrams, math, and more.</strong>
-</p>
-
-<p align="center">
-  <em>👋 If Osh helps you, consider giving it a</em>
-  <a href="https://github.com/Zeyadistired/Osh/stargazers">⭐ star on GitHub</a>!
+  <img src="docs/assets/demo.gif" alt="Osh Preview Demo" width="85%">
 </p>
 
 ---
 
-## 🚀 Quick Install (30 seconds)
+## ✨ Features at a Glance
 
-### Manual (DMG)
+### ⚡ Seamless QuickLook & Standalone Reader
+- **Instant Spacebar Preview**: Inspect documents directly in Finder without launching external tools.
+- **Finder Column View**: Automatically formats previews inside Finder's preview pane with custom font scaling.
+- **Recent Files & Standalone Viewer**: Open documents directly in Osh with full zoom, search, and navigation controls.
 
-1. Download the latest `Osh.dmg` from [Releases](https://github.com/Zeyadistired/Osh/releases)
-2. Open the DMG
-3. Drag **Osh.app** to **Applications**
+### 🎨 5 Refined Reading Themes
+- **System, Light & Dark**: Dynamically harmonizes with macOS appearance settings.
+- **Tailored Palettes**: Choose between **Default**, **Sepia**, **Paper**, **Midnight**, and **Nord**.
+- **High-Contrast Dark Mode**: Carefully calibrated typography ensures optimal contrast across all reading modes.
 
-### Homebrew
+### 📐 Diagrams & Scientific Math
+- **Mermaid Diagrams**: Renders flowcharts, sequence diagrams, state machines, and Gantt charts.
+- **KaTeX & Typst Math**: Full inline (`$E=mc^2$`) and block LaTeX equations alongside modern Typst math blocks.
+- **Interactive Visualizations**: Built-in support for Vega-Lite charts and Graphviz (DOT).
 
-> Coming soon — a dedicated tap for this fork is not published yet.
-> In the meantime, you can also install the original upstream build:
-> ```bash
-> brew install --cask xykong/tap/flux-markdown
-> ```
+### 🌐 First-Class Multilingual & RTL
+- **Native Right-to-Left Layout**: Dedicated bidirectional text rendering and UI mirroring for **Arabic** and **Hebrew**.
+- **Localized Interface**: Complete translations in English, Arabic, French, German, Spanish, and Simplified Chinese.
+- **Context-Aware Help**: In-app Help documentation routes directly to beginner guides in your selected language.
 
----
-
-## 💡 Why Osh?
-
-| Feature | Description |
-|---------|-------------|
-| 📊 **Mermaid Diagrams** | Architecture diagrams, flowcharts, sequence diagrams |
-| 🧮 **KaTeX & Typst Math** | Inline and block mathematical expressions |
-| 📝 **GFM Support** | Tables, task lists, strikethrough, and GitHub Alerts |
-| 🌍 **RTL & Multilingual** | Full Arabic & Hebrew RTL layout and text direction, multi-language UI |
-| 🎨 **Code Highlighting** | Syntax highlighting for 40+ languages (GitHub, Monokai, Atom One Dark) |
-| 📊 **Charts & Graphs** | Vega, Vega-Lite, and Graphviz (DOT) support |
-| 📑 **TOC Panel** | Interactive table of contents with section tracking |
-| 📄 **YAML Metadata** | Auto-parses frontmatter into a clean table |
-| 📤 **Export** | PDF (Cmd+Shift+P) / HTML (Cmd+Shift+E) / DOCX Word |
-| 🔍 **Zoom & Pan** | Cmd +/-/0, Cmd+scroll, pinch gestures |
-| 💾 **Position Memory** | Remembers scroll position and last-viewed file |
-| 🌓 **Themes & Palettes** | Light, Dark, and System modes + 5 reading palettes (Default, Sepia, Paper, Midnight, Nord) |
-| 📂 **File Formats** | Supports .md, .mdx, .rmd, .qmd, .mdoc, .mdc, .mmd, .livemd, .mkd, .mkdn, .mkdown, .mdwn, .mdown, .markdown |
+### 🛠️ Developer & Writer Comfort
+- **Code Syntax Highlighting**: Clean highlighting powered by highlight.js with selectable themes (Default, GitHub, Monokai, Atom One Dark).
+- **GitHub Alerts & Task Lists**: Native callout blocks (`[!NOTE]`, `[!TIP]`, `[!WARNING]`) and interactive checklists.
+- **Collapsible Blockquotes**: Keep long documents neat with automatic blockquote collapsing.
+- **One-Click Export**: Export cleanly formatted **PDF**, **HTML**, and **DOCX** files with all styling embedded.
 
 ---
 
-## ⚙️ Settings (Cmd+,)
+## 🚀 Installation
 
-Osh includes a dedicated Settings window to customize your experience:
+### Download DMG
+1. Download the latest **`Osh.dmg`** or **`Osh 1.0.0 Beta.dmg`** from the [GitHub Releases](https://github.com/Zeyadistired/Osh/releases) page.
+2. Open the disk image and drag **Osh.app** into your **Applications** folder.
+3. Launch Osh once from Applications to register the QuickLook plugin with macOS.
 
-- **Appearance**: Switch between Light, Dark, or System themes, change interface language, and select reading palettes.
-- **Rendering**: Toggle Mermaid, KaTeX, Typst math, line numbers, or Emoji support.
-- **Editor**: Adjust base font size, Finder preview font size, and code syntax highlighting themes.
+<details>
+<summary><strong>Troubleshooting QuickLook after install</strong></summary>
+
+If pressing `Space` in Finder still shows plain text after installing:
+1. Open **System Settings** → **Extensions** → **Quick Look** and ensure **Osh** is enabled.
+2. If macOS cached an older plugin, run this in Terminal:
+   ```bash
+   qlmanage -r
+   qlmanage -r cache
+   killall Finder
+   ```
+3. If macOS Gatekeeper shows an unidentified developer dialog:
+   ```bash
+   xattr -cr /Applications/Osh.app
+   ```
+</details>
 
 ---
 
-## ⌨️ Keyboard Shortcuts
+## ⌨️ Shortcuts
 
 | Shortcut | Action |
-|----------|--------|
-| `Space` | Open QuickLook preview (Finder) |
-| `Cmd` + `+` / `-` / `0` | Zoom in / out / reset |
-| `Cmd` + `Shift` + `E` | Export as HTML |
-| `Cmd` + `Shift` + `P` | Export as PDF |
-| `Cmd` + `,` | Open Settings |
+|:---|:---|
+| `Space` | Toggle QuickLook preview in Finder |
+| `⌘` + `+` | Zoom in document |
+| `⌘` + `-` | Zoom out document |
+| `⌘` + `0` | Reset zoom to default |
+| `⌘` + `,` | Open Settings |
+| `⌘` + `F` | Search document contents |
+| `⌘` + `⇧` + `P` | Export as PDF |
+| `⌘` + `⇧` + `E` | Export as HTML |
+| `⌘` + `?` | Open Language-Aware User Guide |
 
 ---
 
-## 🛠️ Troubleshooting
+## 📁 Supported Extensions
 
-<details>
-<summary><strong>"App is damaged" / "Unidentified developer"</strong></summary>
+Osh natively recognizes and previews a wide range of Markdown dialects and scientific notes:
 
-Run this in Terminal:
-```bash
-xattr -cr "/Applications/Osh.app"
 ```
-</details>
-
-<details>
-<summary><strong>QuickLook not showing updates</strong></summary>
-
-Reset QuickLook cache:
-```bash
-qlmanage -r
+.md  .markdown  .mdown  .mkdn  .mkd  .mdwn  .mdx  .rmd  .qmd  .mdoc  .mdc  .mmd  .livemd
 ```
-</details>
-
-<details>
-<summary><strong>Preview not working at all</strong></summary>
-
-1. Check if the app is in `/Applications/`
-2. Try restarting Finder: `killall Finder`
-3. Check `pluginkit -m -v` for active QuickLook extensions
-</details>
-
-**📚 More help:** See [`docs/user/TROUBLESHOOTING.md`](docs/user/TROUBLESHOOTING.md) and [`docs/user/AUTO_UPDATE.md`](docs/user/AUTO_UPDATE.md)
-
-**📖 Documentation index:** [`docs/README.md`](docs/README.md)
 
 ---
 
-## Comparison (QuickLook Markdown plugins)
+## 🛠️ Building from Source
 
-| Feature | Osh | [QLMarkdown](https://github.com/sbarex/QLMarkdown) | [qlmarkdown](https://github.com/whomwah/qlmarkdown) | [PreviewMarkdown](https://github.com/smittytone/PreviewMarkdown) |
-| --- | --- | --- | --- | --- |
-| Install | brew cask / DMG | brew cask / DMG | manual | App Store / DMG |
-| Mermaid | Yes | Yes ([ref](https://github.com/sbarex/QLMarkdown/blob/main/README.md#mermaid-diagrams)) | Not mentioned | Not mentioned |
-| KaTeX / Math | Yes | Yes ([ref](https://github.com/sbarex/QLMarkdown/blob/main/README.md#mathematical-expressions)) | Not mentioned | Not mentioned |
-| GFM / Alerts | Yes | Yes (cmark-gfm; [ref](https://github.com/sbarex/QLMarkdown/releases/tag/1.0.18)) | Partial (Discount; [ref](https://github.com/whomwah/qlmarkdown#introduction)) | Not mentioned |
-| TOC panel | Yes | Not mentioned | No | Not mentioned |
-| Charts (Vega/DOT) | Yes | Not mentioned | No | No |
-| Export (PDF/HTML) | Yes | No | No | No |
-| YAML Frontmatter | Yes | Yes | No | No |
-| Themes | Light/Dark/System | CSS-based ([ref](https://github.com/sbarex/QLMarkdown/blob/main/README.md#extensions)) | Not mentioned | Basic controls ([ref](https://github.com/smittytone/PreviewMarkdown#adjusting-the-preview)) |
-| Zoom | Yes | Not mentioned | No | Not mentioned |
-| Scroll restore | Yes | Not mentioned | No | Not mentioned |
-
-> Notes:
-> - Entries are based on public README/release notes at the cited links.
-> - If a feature isn't mentioned in sources, we mark it as "Not mentioned".
-
----
-
-## Build from source
+Requirements: macOS 11+, Xcode, Node.js 18+, and `xcodegen` (`brew install xcodegen`).
 
 ```bash
+# Clone the repository
 git clone https://github.com/Zeyadistired/Osh.git
 cd Osh
+
+# Build and install locally
 make install
 ```
 
-## 📄 License
-
-**Osh is licensed under GPL-3.0:**
-- ✅ **Free** for personal, educational, and open-source use
-- ✅ Any modifications must also be open-sourced under GPL-3.0
-- 📜 See [`LICENSE`](LICENSE) for full terms
-
-The original upstream project is dual-licensed by its author; commercial licensing for the original FluxMarkdown is handled by **@xykong** — see [`LICENSE.COMMERCIAL`](LICENSE.COMMERCIAL) or contact **xy.kong@gmail.com**.
-
 ---
 
-## 🙏 Attribution
+## 📄 License & Attribution
 
-This project is based on [FluxMarkdown](https://github.com/xykong/flux-markdown) by [@xykong](https://github.com/xykong), licensed under GPL-3.0. All credit for the original design and implementation goes to the upstream author and its contributors ([@timokox](https://github.com/timokox), [@marko-cancar](https://github.com/marko-cancar), [@withsivram](https://github.com/withsivram), [@TeroRERO](https://github.com/TeroRERO)).
-
----
-
-<p align="center">
-  <sub>Inspired by and partially based on <a href="https://github.com/shd101wyy/markdown-preview-enhanced">markdown-preview-enhanced</a></sub>
-</p>
+- Osh is open-source software licensed under the **[GPL-3.0 License](LICENSE)**.
+- Based upon [FluxMarkdown](https://github.com/xykong/flux-markdown) by [@xykong](https://github.com/xykong) and community contributors.
