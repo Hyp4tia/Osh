@@ -137,6 +137,7 @@ import './styles/line-numbers.css';
 import './styles/finder-pane.css';
 import './styles/typst.css';
 import './styles/rtl.css';
+import './styles/reading-themes.css';
 
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js/lib/core';
@@ -420,6 +421,7 @@ let lastShowLineNumbers: boolean = false;
 interface RenderOptions {
     baseUrl?: string;
     theme?: string;
+    readingTheme?: string;
     imageData?: Record<string, string>;
     fontSize?: number;
     codeHighlightTheme?: string;
@@ -535,6 +537,7 @@ declare global {
         updateTheme: (theme: string) => void;
         exportHTML: () => string;
         exportDocxModel: () => unknown;
+        updateReadingTheme: (theme: string) => void;
         setZoomLevel: (level: number) => void;
         setFontSize: (px: number) => void;
         adjustFontSize: (delta: number) => void;
@@ -775,6 +778,7 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
     }
     const mermaidTheme = currentTheme === 'dark' ? 'dark' : 'default';
     document.documentElement.setAttribute('data-theme', currentTheme);
+    applyReadingTheme(options.readingTheme);
 
     try {
         if (!toc) {
@@ -981,6 +985,7 @@ window.renderSource = function(text: string, theme: string, prevContent?: string
     document.documentElement.setAttribute('data-line-numbers', lastShowLineNumbers ? 'true' : 'false');
     const normalizedTheme = (theme === 'light') ? 'default' : theme;
     document.documentElement.setAttribute('data-theme', normalizedTheme);
+    applyReadingTheme(currentReadingTheme);
     const outputDiv = document.getElementById('markdown-preview');
     const loadingDiv = document.getElementById('loading-status');
 
@@ -1431,6 +1436,24 @@ window.exportDocxModel = function(): unknown {
     flushTable();
 
     return { blocks, images };
+};
+
+
+// --- Reading themes -------------------------------------------------------
+let currentReadingTheme = '';
+
+function applyReadingTheme(theme: string | undefined): void {
+    const t = theme || '';
+    currentReadingTheme = t;
+    if (t && t !== 'default') {
+        document.documentElement.setAttribute('data-reading-theme', t);
+    } else {
+        document.documentElement.removeAttribute('data-reading-theme');
+    }
+}
+
+window.updateReadingTheme = function(theme: string): void {
+    applyReadingTheme(theme);
 };
 
 logToSwift("rendererReady");

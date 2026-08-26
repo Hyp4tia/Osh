@@ -268,7 +268,8 @@ private struct DocumentPreviewScene: View {
                 enableTypst: preference.enableTypst,
                 codeHighlightTheme: preference.codeHighlightTheme,
                 collapseBlockquotesByDefault: preference.collapseBlockquotesByDefault,
-                showLineNumbers: preference.showLineNumbers
+                showLineNumbers: preference.showLineNumbers,
+                readingTheme: preference.readingTheme
             )
             }
 

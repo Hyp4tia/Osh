@@ -118,3 +118,12 @@
 "Recent" = "最近打开";
 "Settings" = "设置";
 "Help" = "帮助";
+
+/* === Reading Themes === */
+"Reading Theme" = "阅读主题";
+"Color palette for the rendered document" = "文档阅读配色";
+"Default" = "默认";
+"Sepia" = "羊皮纸";
+"Paper" = "纸张";
+"Midnight" = "午夜";
+"Nord" = "Nord";

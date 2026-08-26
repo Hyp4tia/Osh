@@ -118,3 +118,12 @@
 "Recent" = "Recent";
 "Settings" = "Settings";
 "Help" = "Help";
+
+/* === Reading Themes === */
+"Reading Theme" = "Reading Theme";
+"Color palette for the rendered document" = "Color palette for the rendered document";
+"Default" = "Default";
+"Sepia" = "Sepia";
+"Paper" = "Paper";
+"Midnight" = "Midnight";
+"Nord" = "Nord";

@@ -192,6 +192,30 @@ struct AppearanceSettingsView: View {
                     .stroke(Color(NSColor.separatorColor), lineWidth: 1)
             )
 
+            SettingsSectionHeader(
+                title: NSLocalizedString("Reading Theme", comment: "Reading theme section title"),
+                description: NSLocalizedString("Color palette for the rendered document", comment: "Reading theme section description")
+            )
+
+            HStack(spacing: 0) {
+                readingThemeButton(preference, id: "default", label: NSLocalizedString("Default", comment: "Default reading theme"))
+                Divider()
+                readingThemeButton(preference, id: "sepia", label: NSLocalizedString("Sepia", comment: "Sepia reading theme"))
+                Divider()
+                readingThemeButton(preference, id: "paper", label: NSLocalizedString("Paper", comment: "Paper reading theme"))
+                Divider()
+                readingThemeButton(preference, id: "midnight", label: NSLocalizedString("Midnight", comment: "Midnight reading theme"))
+                Divider()
+                readingThemeButton(preference, id: "nord", label: NSLocalizedString("Nord", comment: "Nord reading theme"))
+            }
+            .background(Color(NSColor.controlBackgroundColor))
+            .cornerRadius(8)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+            )
+            .noFocusRing()
+
             if preference.uiLanguage != LocalizationManager.launchPreference {
                 HStack(spacing: 10) {
                     Image(systemName: "arrow.triangle.2.circlepath")
@@ -532,6 +556,41 @@ struct SettingsSectionHeader: View {
             Text(description)
                 .font(.caption)
                 .foregroundColor(.secondary)
+        }
+    }
+}
+
+extension AppearanceSettingsView {
+    fileprivate func readingThemeButton(_ preference: AppearancePreference, id: String, label: String) -> some View {
+        Button(action: { preference.readingTheme = id }) {
+            VStack(spacing: 6) {
+                RoundedRectangle(cornerRadius: 5, style: .continuous)
+                    .fill(ReadingThemePalette.swatch(for: id))
+                    .frame(width: 34, height: 22)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+                            .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+                    )
+                Text(label)
+                    .font(.system(size: 11))
+                    .foregroundColor(preference.readingTheme == id ? .accentColor : .primary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 8)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+}
+
+struct ReadingThemePalette {
+    static func swatch(for id: String) -> Color {
+        switch id {
+        case "sepia": return Color(red: 0.957, green: 0.925, blue: 0.847)
+        case "paper": return Color(red: 0.992, green: 0.992, blue: 0.984)
+        case "midnight": return Color(red: 0.0, green: 0.0, blue: 0.0)
+        case "nord": return Color(red: 0.180, green: 0.204, blue: 0.251)
+        default: return Color(red: 0.98, green: 0.98, blue: 0.98)
         }
     }
 }

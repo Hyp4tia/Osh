@@ -1,0 +1,146 @@
+/* ==========================================================================
+   Osh reading themes.
+   Each preset defines a complete reading palette (page, text, links, code,
+   tables, quotes, alerts) on html[data-reading-theme="..."], layered on top
+   of github-markdown-css so every element stays readable. The default preset
+   is absent by design: github-markdown-css light/dark remains the baseline.
+   ========================================================================== */
+
+/* --- Sepia: warm paper for long-form daylight reading --- */
+html[data-reading-theme="sepia"] body {
+  background-color: #f4ecd8;
+}
+html[data-reading-theme="sepia"] .markdown-body {
+  color: #5b4636;
+  --bg-color: #f4ecd8;
+  --fg-color: #5b4636;
+  --border-color: #d9c7a7;
+  --color-border-default: #d9c7a7;
+  --color-fg-muted: #8a704d;
+  --color-accent-fg: #9a6b2f;
+  --color-prettylights-syntax-comment: #a08a63;
+}
+html[data-reading-theme="sepia"] .markdown-body a {
+  color: #8c4a1d;
+}
+html[data-reading-theme="sepia"] .markdown-body blockquote {
+  color: #7a5f42;
+  border-left-color: #c9b088;
+}
+html[data-reading-theme="sepia"] .markdown-body code,
+html[data-reading-theme="sepia"] .markdown-body pre {
+  background-color: #ece0c4;
+}
+html[data-reading-theme="sepia"] .markdown-body table tr,
+html[data-reading-theme="sepia"] .markdown-body h1,
+html[data-reading-theme="sepia"] .markdown-body h2 {
+  border-bottom-color: #d9c7a7 !important;
+  border-top-color: transparent;
+}
+html[data-reading-theme="sepia"] .markdown-body img {
+  background-color: transparent;
+}
+
+/* --- Paper: high-contrast print-like grayscale --- */
+html[data-reading-theme="paper"] body {
+  background-color: #fdfdfb;
+}
+html[data-reading-theme="paper"] .markdown-body {
+  color: #1a1a1a;
+  --bg-color: #fdfdfb;
+  --fg-color: #1a1a1a;
+  --color-fg-muted: #555555;
+  --color-accent-fg: #000000;
+  max-width: 46rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+html[data-reading-theme="paper"] .markdown-body a {
+  color: #000000;
+  text-decoration-color: #888888;
+}
+html[data-reading-theme="paper"] .markdown-body blockquote {
+  color: #444444;
+  border-left-color: #1a1a1a;
+}
+html[data-reading-theme="paper"] .markdown-body code,
+html[data-reading-theme="paper"] .markdown-body pre {
+  background-color: #f0f0ec;
+}
+html[data-reading-theme="paper"] .markdown-body table tr,
+html[data-reading-theme="paper"] .markdown-body h1,
+html[data-reading-theme="paper"] .markdown-body h2 {
+  border-bottom-color: #d8d8d4 !important;
+}
+
+/* --- Midnight: true black OLED-friendly dark --- */
+html[data-reading-theme="midnight"] body {
+  background-color: #000000;
+}
+html[data-reading-theme="midnight"] .markdown-body {
+  color: #d4d4d4;
+  --bg-color: #000000;
+  --fg-color: #d4d4d4;
+  --color-fg-muted: #909090;
+  --color-border-default: #262626;
+  --color-accent-fg: #6cb2ff;
+  --color-prettylights-syntax-comment: #767676;
+}
+html[data-reading-theme="midnight"] .markdown-body a {
+  color: #6cb2ff;
+}
+html[data-reading-theme="midnight"] .markdown-body blockquote {
+  color: #aaaaaa;
+  border-left-color: #404040;
+}
+html[data-reading-theme="midnight"] .markdown-body code,
+html[data-reading-theme="midnight"] .markdown-body pre {
+  background-color: #101010;
+}
+html[data-reading-theme="midnight"] .markdown-body table tr {
+  background-color: #000000;
+  border-top-color: #262626;
+}
+html[data-reading-theme="midnight"] .markdown-body table tr:nth-child(2n) {
+  background-color: #0d0d0d;
+}
+html[data-reading-theme="midnight"] .markdown-body h1,
+html[data-reading-theme="midnight"] .markdown-body h2 {
+  border-bottom-color: #262626 !important;
+}
+
+/* --- Nord: cool blue-slate palette (nordtheme.com) --- */
+html[data-reading-theme="nord"] body {
+  background-color: #2e3440;
+}
+html[data-reading-theme="nord"] .markdown-body {
+  color: #d8dee9;
+  --bg-color: #2e3440;
+  --fg-color: #d8dee9;
+  --color-fg-muted: #8892a4;
+  --color-border-default: #3b4252;
+  --color-accent-fg: #88c0d0;
+  --color-prettylights-syntax-comment: #6f7d95;
+}
+html[data-reading-theme="nord"] .markdown-body a {
+  color: #88c0d0;
+}
+html[data-reading-theme="nord"] .markdown-body blockquote {
+  color: #b9c2cf;
+  border-left-color: #4c566a;
+}
+html[data-reading-theme="nord"] .markdown-body code,
+html[data-reading-theme="nord"] .markdown-body pre {
+  background-color: #353c48;
+}
+html[data-reading-theme="nord"] .markdown-body table tr {
+  background-color: #2e3440;
+  border-top-color: #3b4252;
+}
+html[data-reading-theme="nord"] .markdown-body table tr:nth-child(2n) {
+  background-color: #333a47;
+}
+html[data-reading-theme="nord"] .markdown-body h1,
+html[data-reading-theme="nord"] .markdown-body h2 {
+  border-bottom-color: #3b4252 !important;
+}
