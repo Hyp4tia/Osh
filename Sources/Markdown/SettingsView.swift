@@ -482,7 +482,7 @@ struct EditorSettingsView: View {
 
                 VStack(spacing: 0) {
                     CodeThemeRow(name: NSLocalizedString("Default", comment: "Default code theme"),
-                                 id: "default", color: Color(NSColor.textColor))
+                                 id: "default", color: .primary)
                     Divider().padding(.horizontal, 12)
                     CodeThemeRow(name: "GitHub", id: "github", color: Color(red: 0.141, green: 0.161, blue: 0.243))
                     Divider().padding(.horizontal, 12)

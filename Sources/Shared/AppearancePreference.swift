@@ -52,6 +52,23 @@ public class AppearancePreference: ObservableObject {
             _currentMode = newValue
             sharedStore.set(newValue.rawValue, forKey: key)
             scheduleSyncToSharedStore()
+            applyAppAppearance(newValue)
+        }
+    }
+
+    public func applyAppAppearance(_ mode: AppearanceMode) {
+        guard Bundle.main.bundleIdentifier?.hasSuffix(".QuickLook") != true else { return }
+        let appearance = mode.nsAppearance
+        let updateBlock = {
+            NSApp.appearance = appearance
+            for window in NSApp.windows {
+                window.appearance = appearance
+            }
+        }
+        if Thread.isMainThread {
+            updateBlock()
+        } else {
+            DispatchQueue.main.async(execute: updateBlock)
         }
     }
     

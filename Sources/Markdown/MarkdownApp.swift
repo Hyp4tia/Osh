@@ -23,6 +23,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         )
 
         UpdateRestorationManager.shared.restoreLastOpenedFile()
+        AppearancePreference.shared.applyAppAppearance(AppearancePreference.shared.currentMode)
     }
 
     @objc func handleURLEvent(_ event: NSAppleEventDescriptor, withReplyEvent replyEvent: NSAppleEventDescriptor) {
