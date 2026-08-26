@@ -351,98 +351,201 @@
 }
 
 
+/* --- Dark Mode via data-theme --- */
+html[data-theme="dark"] .help-dialog {
+    background: #0d1117;
+    border-color: #30363d;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="dark"] .help-header {
+    border-bottom-color: #30363d;
+}
+
+html[data-theme="dark"] .help-title {
+    color: #c9d1d9;
+}
+
+html[data-theme="dark"] .help-close {
+    border-color: #30363d;
+    color: #8b949e;
+}
+
+html[data-theme="dark"] .help-close:hover {
+    background: #161b22;
+    color: #c9d1d9;
+}
+
+html[data-theme="dark"] .help-ql-banner {
+    background: #272115;
+    border-bottom-color: #bb800933;
+    color: #e3b341;
+}
+
+html[data-theme="dark"] .help-body::-webkit-scrollbar-thumb {
+    background-color: #30363d;
+}
+
+html[data-theme="dark"] .help-group-title {
+    color: #8b949e;
+    border-bottom-color: #21262d;
+}
+
+html[data-theme="dark"] .help-keys kbd {
+    color: #c9d1d9;
+    background: #161b22;
+    border-color: #30363d;
+}
+
+html[data-theme="dark"] .help-label {
+    color: #8b949e;
+}
+
+html[data-theme="dark"] .help-badge-app {
+    background: #272115;
+    color: #bb8009;
+    border-color: #bb800933;
+}
+
+html[data-theme="dark"] .help-item-dimmed .help-label {
+    color: #484f58;
+}
+
+html[data-theme="dark"] .help-footer {
+    border-top-color: #30363d;
+    color: #484f58;
+}
+
+html[data-theme="dark"] .help-footer kbd {
+    color: #8b949e;
+    background: #161b22;
+    border-color: #30363d;
+}
+
+html[data-theme="dark"] .help-checkbox-label {
+    color: #8b949e;
+}
+
+html[data-theme="dark"] .help-checkbox-label input[type="checkbox"] {
+    accent-color: #3fb950;
+}
+
+html[data-theme="dark"] .help-context-ql {
+    background: #1c2128;
+    color: #58a6ff;
+    border-color: #388bfd4d;
+}
+
+html[data-theme="dark"] .help-context-app {
+    background: #1b2a23;
+    color: #3fb950;
+    border-color: #2ea04326;
+}
+
+/* RTL layout */
+[dir="rtl"] #help-overlay,
+html[dir="rtl"] #help-overlay {
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] .help-close,
+html[dir="rtl"] .help-close {
+    margin-left: 0;
+    margin-right: auto;
+}
+
 @media (prefers-color-scheme: dark) {
-    .help-dialog {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-dialog {
         background: #0d1117;
         border-color: #30363d;
         box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5), 0 4px 16px rgba(0, 0, 0, 0.3);
     }
 
-    .help-header {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-header {
         border-bottom-color: #30363d;
     }
 
-    .help-title {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-title {
         color: #c9d1d9;
     }
 
-    .help-close {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-close {
         border-color: #30363d;
         color: #8b949e;
     }
 
-    .help-close:hover {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-close:hover {
         background: #161b22;
         color: #c9d1d9;
     }
 
-    .help-ql-banner {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-ql-banner {
         background: #272115;
         border-bottom-color: #bb800933;
         color: #e3b341;
     }
 
-    .help-body::-webkit-scrollbar-thumb {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-body::-webkit-scrollbar-thumb {
         background-color: #30363d;
     }
 
-    .help-group-title {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-group-title {
         color: #8b949e;
         border-bottom-color: #21262d;
     }
 
-    .help-keys kbd {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-keys kbd {
         color: #c9d1d9;
         background: #161b22;
         border-color: #30363d;
     }
 
-    .help-label {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-label {
         color: #8b949e;
     }
 
-    .help-badge-app {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-badge-app {
         background: #272115;
         color: #bb8009;
         border-color: #bb800933;
     }
 
-    .help-item-dimmed .help-label {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-item-dimmed .help-label {
         color: #484f58;
     }
 
-    .help-footer {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-footer {
         border-top-color: #30363d;
         color: #484f58;
     }
 
-    .help-footer kbd {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-footer kbd {
         color: #8b949e;
         background: #161b22;
         border-color: #30363d;
     }
 
-    .help-checkbox-label {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-checkbox-label {
         color: #8b949e;
     }
 
-    .help-checkbox-label input[type="checkbox"] {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-checkbox-label input[type="checkbox"] {
         accent-color: #3fb950;
     }
 
-    .help-context-ql {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-context-ql {
         background: #1c2128;
         color: #58a6ff;
         border-color: #388bfd4d;
     }
 
-    .help-context-app {
+    html:not([data-theme="default"]):not([data-theme="light"]) .help-context-app {
         background: #1b2a23;
         color: #3fb950;
         border-color: #2ea04326;
     }
 }
-
 
 @media (max-width: 500px) {
     .help-body {

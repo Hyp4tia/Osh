@@ -9,12 +9,26 @@
             margin: 0;
             padding: 20px;
             background-color: #ffffff; /* Default light */
+            color: #1f2328;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
         }
         
         /* Dark mode support */
+        html[data-theme="dark"] body,
+        html[data-theme="dark"] {
+            background-color: #0d1117;
+            color: #c9d1d9;
+        }
+
+        html[data-theme="default"] body,
+        html[data-theme="light"] body {
+            background-color: #ffffff;
+            color: #1f2328;
+        }
+
         @media (prefers-color-scheme: dark) {
-            body {
+            html:not([data-theme="default"]):not([data-theme="light"]) body,
+            html:not([data-theme="default"]):not([data-theme="light"]) {
                 background-color: #0d1117;
                 color: #c9d1d9;
             }
@@ -44,6 +58,10 @@
             text-align: center;
         }
         
+        html[data-theme="dark"] #loading-status {
+            color: #8b949e;
+        }
+
         @media (prefers-color-scheme: dark) {
             #loading-status {
                 color: #8b949e;
@@ -85,6 +103,13 @@
         #link-status-bar .status-icon {
             margin-right: 4px;
             opacity: 0.7;
+        }
+
+        html[data-theme="dark"] #link-status-bar {
+            background: rgba(22, 27, 34, 0.93);
+            color: #c9d1d9;
+            border-top-color: rgba(255, 255, 255, 0.1);
+            border-right-color: rgba(255, 255, 255, 0.1);
         }
 
         @media (prefers-color-scheme: dark) {

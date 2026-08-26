@@ -94,6 +94,9 @@ struct SettingsView: View {
             }
         }
         .frame(width: 600, height: 440)
+        .id("\(preference.uiLanguage)-\(preference.currentMode.rawValue)")
+        .environment(\.layoutDirection, LocalizationManager.isRTL(preference.uiLanguage) ? .rightToLeft : .leftToRight)
+        .preferredColorScheme(preference.currentMode == .dark ? .dark : preference.currentMode == .light ? .light : nil)
     }
 
     private func SidebarRow(title: String, icon: String, isSelected: Bool, action: @escaping () -> Void) -> some View {

@@ -228,11 +228,11 @@ public class AppearancePreference: ObservableObject {
     public var uiLanguage: String {
         get { sharedStore.string(forKey: uiLanguageKey) ?? "system" }
         set {
-            objectWillChange.send()
             sharedStore.set(newValue, forKey: uiLanguageKey)
-            scheduleSyncToSharedStore()
             LocalizationManager.apply(languageCode: newValue)
             LocalizationManager.applyAppleLanguages(for: newValue)
+            objectWillChange.send()
+            scheduleSyncToSharedStore()
         }
     }
 

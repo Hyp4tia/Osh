@@ -48,14 +48,20 @@ struct SourceEditorView: NSViewRepresentable {
         scrollView.borderType = .noBorder
 
         textView.string = coordinator.text.wrappedValue
+        textView.alignment = .natural
+        textView.baseWritingDirection = LocalizationManager.isRTL(AppearancePreference.shared.uiLanguage) ? .rightToLeft : .natural
+        textView.appearance = appearanceMode.nsAppearance
+        scrollView.appearance = appearanceMode.nsAppearance
 
         return scrollView
     }
 
     func updateNSView(_ scrollView: NSScrollView, context: Context) {
         context.coordinator.onSave = onSave
+        scrollView.appearance = appearanceMode.nsAppearance
         guard let textView = scrollView.documentView as? EditorTextView else { return }
         textView.appearance = appearanceMode.nsAppearance
+        textView.baseWritingDirection = LocalizationManager.isRTL(AppearancePreference.shared.uiLanguage) ? .rightToLeft : .natural
         let current = context.coordinator.text.wrappedValue
         // Only replace content when it changed outside the editor (e.g. new
         // document opened). Never stomp in-flight typing.

@@ -594,12 +594,14 @@ struct MarkdownWebView: NSViewRepresentable {
                 options["baseUrl"] = baseUrlString
             }
 
-            let appearanceName = webView.effectiveAppearance.name
-            var theme = "system"
-            if appearanceName == .darkAqua || appearanceName == .vibrantDark || appearanceName == .accessibilityHighContrastDarkAqua || appearanceName == .accessibilityHighContrastVibrantDark {
+            let theme: String
+            switch appearanceMode {
+            case .dark:
                 theme = "dark"
-            } else if appearanceName == .aqua || appearanceName == .vibrantLight || appearanceName == .accessibilityHighContrastAqua || appearanceName == .accessibilityHighContrastVibrantLight {
+            case .light:
                 theme = "light"
+            case .system:
+                theme = "system"
             }
             options["theme"] = theme
 
@@ -627,12 +629,7 @@ struct MarkdownWebView: NSViewRepresentable {
             
             let js: String
             if viewMode == .source {
-                var themeStr = "light"
-                if let appearance = appearanceMode.nsAppearance?.name {
-                    if appearance == .darkAqua {
-                        themeStr = "dark"
-                    }
-                }
+                let themeStr = theme
                 if !previousContent.isEmpty && previousContent != content,
                    let prevData = try? JSONSerialization.data(withJSONObject: [previousContent]),
                    let prevJson = String(data: prevData, encoding: .utf8) {

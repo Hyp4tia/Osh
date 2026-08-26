@@ -159,45 +159,88 @@
     margin-top: 2px;
 }
 
+/* --- Explicit data-theme="dark" --- */
+html[data-theme="dark"] .toc-toggle {
+    border-color: #30363d;
+    background-color: #0d1117;
+    color: #c9d1d9;
+}
+
+html[data-theme="dark"] .toc-toggle:hover {
+    background-color: #161b22;
+}
+
+html[data-theme="dark"] .toc-nav {
+    background-color: #0d1117;
+    border-color: #30363d;
+}
+
+html[data-theme="dark"] .toc-nav::-webkit-scrollbar-thumb {
+    background-color: #30363d;
+}
+
+html[data-theme="dark"] .toc-nav::-webkit-scrollbar-thumb:hover {
+    background-color: #484f58;
+}
+
+html[data-theme="dark"] .toc-title {
+    color: #c9d1d9;
+    border-bottom-color: #30363d;
+}
+
+html[data-theme="dark"] .toc-link {
+    color: #8b949e;
+}
+
+html[data-theme="dark"] .toc-link:hover {
+    background-color: #161b22;
+    color: #58a6ff;
+}
+
+html[data-theme="dark"] .toc-link.active {
+    background-color: #1c2128;
+    color: #58a6ff;
+}
+
 @media (prefers-color-scheme: dark) {
-    .toc-toggle {
+    html:not([data-theme="default"]):not([data-theme="light"]) .toc-toggle {
         border-color: #30363d;
         background-color: #0d1117;
         color: #c9d1d9;
     }
 
-    .toc-toggle:hover {
+    html:not([data-theme="default"]):not([data-theme="light"]) .toc-toggle:hover {
         background-color: #161b22;
     }
 
-    .toc-nav {
+    html:not([data-theme="default"]):not([data-theme="light"]) .toc-nav {
         background-color: #0d1117;
         border-color: #30363d;
     }
 
-    .toc-nav::-webkit-scrollbar-thumb {
+    html:not([data-theme="default"]):not([data-theme="light"]) .toc-nav::-webkit-scrollbar-thumb {
         background-color: #30363d;
     }
 
-    .toc-nav::-webkit-scrollbar-thumb:hover {
+    html:not([data-theme="default"]):not([data-theme="light"]) .toc-nav::-webkit-scrollbar-thumb:hover {
         background-color: #484f58;
     }
 
-    .toc-title {
+    html:not([data-theme="default"]):not([data-theme="light"]) .toc-title {
         color: #c9d1d9;
         border-bottom-color: #30363d;
     }
 
-    .toc-link {
+    html:not([data-theme="default"]):not([data-theme="light"]) .toc-link {
         color: #8b949e;
     }
 
-    .toc-link:hover {
+    html:not([data-theme="default"]):not([data-theme="light"]) .toc-link:hover {
         background-color: #161b22;
         color: #58a6ff;
     }
 
-    .toc-link.active {
+    html:not([data-theme="default"]):not([data-theme="light"]) .toc-link.active {
         background-color: #1c2128;
         color: #58a6ff;
     }

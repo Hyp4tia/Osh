@@ -2,9 +2,100 @@
    Osh reading themes.
    Each preset defines a complete reading palette (page, text, links, code,
    tables, quotes, alerts) on html[data-reading-theme="..."], layered on top
-   of github-markdown-css so every element stays readable. The default preset
-   is absent by design: github-markdown-css light/dark remains the baseline.
+   of github-markdown-css so every element stays readable.
    ========================================================================== */
+
+/* --- Base GitHub Dark Mode (applies whenever data-theme="dark") --- */
+html[data-theme="dark"] .markdown-body {
+  color-scheme: dark;
+  --focus-outlineColor: #1f6feb;
+  --fgColor-default: #f0f6fc;
+  --fgColor-muted: #9198a1;
+  --fgColor-accent: #4493f8;
+  --fgColor-success: #3fb950;
+  --fgColor-attention: #d29922;
+  --fgColor-danger: #f85149;
+  --fgColor-done: #ab7df8;
+  --bgColor-default: #0d1117;
+  --bgColor-muted: #151b23;
+  --bgColor-neutral-muted: #656c7633;
+  --bgColor-attention-muted: #bb800926;
+  --borderColor-default: #3d444d;
+  --borderColor-muted: #3d444db3;
+  --borderColor-neutral-muted: #3d444db3;
+  --borderColor-accent-emphasis: #1f6feb;
+  --borderColor-success-emphasis: #238636;
+  --borderColor-attention-emphasis: #9e6a03;
+  --borderColor-danger-emphasis: #da3633;
+  --borderColor-done-emphasis: #8957e5;
+  color: #f0f6fc;
+  background-color: #0d1117;
+}
+
+html[data-theme="dark"] .markdown-body code:not(pre code) {
+  background-color: rgba(110, 118, 129, 0.4);
+  color: #f0f6fc;
+}
+
+html[data-theme="dark"] .markdown-body pre {
+  background-color: #161b22;
+  border-color: #3d444d;
+}
+
+html[data-theme="dark"] .markdown-body blockquote {
+  color: #9198a1;
+  border-left-color: #3d444d;
+}
+
+html[data-theme="dark"] .markdown-body hr {
+  background-color: #3d444d;
+}
+
+html[data-theme="dark"] .markdown-body table tr {
+  background-color: #0d1117;
+  border-top-color: #3d444d;
+}
+
+html[data-theme="dark"] .markdown-body table tr:nth-child(2n) {
+  background-color: #151b23;
+}
+
+html[data-theme="dark"] .markdown-body table th,
+html[data-theme="dark"] .markdown-body table td {
+  border-color: #3d444d;
+}
+
+html[data-theme="dark"] .markdown-body h1,
+html[data-theme="dark"] .markdown-body h2 {
+  border-bottom-color: #3d444d !important;
+}
+
+/* --- Base GitHub Light Mode --- */
+html[data-theme="default"] .markdown-body,
+html[data-theme="light"] .markdown-body,
+html:not([data-theme="dark"]) .markdown-body {
+  color-scheme: light;
+  --focus-outlineColor: #0969da;
+  --fgColor-default: #1f2328;
+  --fgColor-muted: #59636e;
+  --fgColor-accent: #0969da;
+  --fgColor-success: #1a7f37;
+  --fgColor-attention: #9a6700;
+  --fgColor-danger: #d1242f;
+  --fgColor-done: #8250df;
+  --bgColor-default: #ffffff;
+  --bgColor-muted: #f6f8fa;
+  --bgColor-neutral-muted: #818b981f;
+  --bgColor-attention-muted: #fff8c5;
+  --borderColor-default: #d1d9e0;
+  --borderColor-muted: #d1d9e0b3;
+  --borderColor-neutral-muted: #d1d9e0b3;
+  --borderColor-accent-emphasis: #0969da;
+  --borderColor-success-emphasis: #1a7f37;
+  --borderColor-attention-emphasis: #9a6700;
+  --borderColor-danger-emphasis: #cf222e;
+  --borderColor-done-emphasis: #8250df;
+}
 
 /* --- Sepia: warm paper for long-form daylight reading --- */
 html[data-reading-theme="sepia"] body {

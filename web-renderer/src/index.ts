@@ -768,16 +768,16 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
 
     if (options.uiLanguage) {
         (window as any).__fluxLang = options.uiLanguage === 'system' ? undefined : options.uiLanguage;
+        if (options.uiLanguage === 'ar') {
+            document.documentElement.setAttribute('dir', 'rtl');
+        } else if (options.uiLanguage !== 'system') {
+            document.documentElement.removeAttribute('dir');
+        }
     }
 
-    let currentTheme = options.theme || 'default';
-    if (currentTheme === 'system') {
-        currentTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default';
-    } else if (currentTheme === 'light') {
-        currentTheme = 'default';
-    }
+    applyResolvedTheme(options.theme || 'system');
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'default';
     const mermaidTheme = currentTheme === 'dark' ? 'dark' : 'default';
-    document.documentElement.setAttribute('data-theme', currentTheme);
     applyReadingTheme(options.readingTheme);
 
     try {
@@ -980,11 +980,42 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
     }
 };
 
+let currentConfiguredTheme = 'system';
+
+function applyResolvedTheme(theme: string = 'system'): void {
+    currentConfiguredTheme = theme;
+    let resolved = theme;
+    if (theme === 'system') {
+        resolved = (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            ? 'dark' : 'default';
+    } else if (theme === 'light') {
+        resolved = 'default';
+    }
+    if (typeof document !== 'undefined' && document.documentElement) {
+        document.documentElement.setAttribute('data-theme', resolved);
+    }
+}
+
+if (typeof window !== 'undefined' && window.matchMedia) {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleSystemThemeChange = (e: MediaQueryListEvent | MediaQueryList) => {
+        if (currentConfiguredTheme === 'system') {
+            if (typeof document !== 'undefined' && document.documentElement) {
+                document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'default');
+            }
+        }
+    };
+    if (mediaQuery.addEventListener) {
+        mediaQuery.addEventListener('change', handleSystemThemeChange);
+    } else if ((mediaQuery as any).addListener) {
+        (mediaQuery as any).addListener(handleSystemThemeChange);
+    }
+}
+
 window.renderSource = function(text: string, theme: string, prevContent?: string) {
     logToSwift(`[renderSource] START textLen=${text.length} theme=${theme}`);
     document.documentElement.setAttribute('data-line-numbers', lastShowLineNumbers ? 'true' : 'false');
-    const normalizedTheme = (theme === 'light') ? 'default' : theme;
-    document.documentElement.setAttribute('data-theme', normalizedTheme);
+    applyResolvedTheme(theme);
     applyReadingTheme(currentReadingTheme);
     const outputDiv = document.getElementById('markdown-preview');
     const loadingDiv = document.getElementById('loading-status');
@@ -1031,14 +1062,7 @@ window.clearDiffMarks = function() {
 };
 
 window.updateTheme = function(theme: string) {
-    let normalizedTheme = theme;
-    if (theme === 'system') {
-        normalizedTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-            ? 'dark' : 'default';
-    } else if (theme === 'light') {
-        normalizedTheme = 'default';
-    }
-    document.documentElement.setAttribute('data-theme', normalizedTheme);
+    applyResolvedTheme(theme);
 };
 
 function compressMultipleHyphens(text: string): string {

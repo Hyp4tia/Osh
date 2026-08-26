@@ -9,7 +9,7 @@ declare global {
     }
 }
 
-type Lang = 'zh' | 'en' | 'de' | 'fr';
+type Lang = 'zh' | 'en' | 'de' | 'fr' | 'ar';
 
 interface I18n {
     title: string;
@@ -32,6 +32,40 @@ interface I18n {
 }
 
 const STRINGS: Record<Lang, I18n> = {
+    ar: {
+        title: '⌨️ دليل ميزات Osh',
+        contextBadgeQL: 'معاينة اللمحة السريعة',
+        contextBadgeApp: 'تطبيق Osh',
+        badgeApp: 'التطبيق',
+        qlBannerText: 'تعترض اللمحة السريعة اختصارات لوحة المفاتيح. يعمل فقط <strong>Cmd+التمرير</strong> و<strong>إيماءة التصغير والتكبير</strong>؛ استخدم أزرار شريط الأدوات أو انقر نقرًا مزدوجًا لفتح الملف في التطبيق للوصول الكامل.',
+        footerQL: 'انقر على الخلفية أو <kbd>✕</kbd> للإغلاق',
+        footerApp: 'اضغط <kbd>?</kbd> أو <kbd>Esc</kbd> للإغلاق · اضغط مطولاً على <kbd>⌘</kbd> لمدة ثانيتين لإعادة الفتح',
+        toastText: '💡 اضغط <kbd>?</kbd> أو انقر على <strong>?</strong> في شريط الأدوات لعرض جميع الاختصارات',
+        closeLabel: 'إغلاق',
+        cmdHoldCheckboxLabel: 'فتح هذه اللوحة تلقائيًا بالضغط مطولاً على ⌘ لمدة ثانيتين',
+        groups: {
+            searchNav: {
+                title: 'البحث والتنقل',
+                items: ['فتح / إغلاق البحث', 'المطابقة التالية', 'المطابقة السابقة', 'إغلاق البحث', 'زر الفهرس (أعلى اليمين)'],
+            },
+            zoom: {
+                title: 'التكبير والتصغير',
+                items: ['تكبير', 'تصغير', 'الحجم الأصلي', 'التكبير بالتمرير', 'التكبير بالقرص'],
+            },
+            view: {
+                title: 'العرض',
+                items: ['تبديل المعاينة / المصدر', 'زر المصدر (أعلى اليمين </>)', 'تبديل المظهر (☀/🌙 أعلى اليمين)'],
+            },
+            export: {
+                title: 'التصدير',
+                items: ['تصدير كـ HTML', 'تصدير كـ PDF'],
+            },
+            settings: {
+                title: 'الإعدادات',
+                items: ['فتح الإعدادات', 'التحقق من التحديثات', 'زر المساعدة (? أعلى اليمين)', 'إظهار لوحة المساعدة هذه'],
+            },
+        },
+    },
     zh: {
         title: '⌨️ Osh 功能指南',
         contextBadgeQL: 'QuickLook 预览',
@@ -230,11 +264,12 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
 
 function detectLang(): Lang {
     const stored = window.__fluxLang;
-    if (stored === 'zh' || stored === 'en' || stored === 'de' || stored === 'fr') return stored;
+    if (stored === 'zh' || stored === 'en' || stored === 'de' || stored === 'fr' || stored === 'ar') return stored;
     const sys = (navigator.language || '').toLowerCase();
     if (sys.startsWith('zh')) return 'zh';
     if (sys.startsWith('de')) return 'de';
     if (sys.startsWith('fr')) return 'fr';
+    if (sys.startsWith('ar')) return 'ar';
     return 'en';
 }
 

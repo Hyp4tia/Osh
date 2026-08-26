@@ -71,6 +71,7 @@ struct MarkdownApp: App {
     var body: some Scene {
         WindowGroup {
             WelcomeView()
+                .preferredColorScheme(preference.currentMode == .dark ? .dark : preference.currentMode == .light ? .light : nil)
                 .environment(\.layoutDirection, uiLayoutDirection)
         }
         .windowStyle(.titleBar)
@@ -248,7 +249,7 @@ private struct DocumentPreviewScene: View {
     }
 
     var body: some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack {
             if editingSession.isEditing {
                 SourceEditorView(
                     text: $editingSession.draftText,
@@ -257,114 +258,119 @@ private struct DocumentPreviewScene: View {
                 )
             } else {
                 MarkdownWebView(
-                content: file.document.text,
-                fileURL: file.fileURL,
-                appearanceMode: preference.currentMode,
-                viewMode: viewMode,
-                baseFontSize: preference.baseFontSize,
-                enableMermaid: preference.enableMermaid,
-                enableKatex: preference.enableKatex,
-                enableEmoji: preference.enableEmoji,
-                enableTypst: preference.enableTypst,
-                codeHighlightTheme: preference.codeHighlightTheme,
-                collapseBlockquotesByDefault: preference.collapseBlockquotesByDefault,
-                showLineNumbers: preference.showLineNumbers,
-                readingTheme: preference.readingTheme
-            )
+                    content: file.document.text,
+                    fileURL: file.fileURL,
+                    appearanceMode: preference.currentMode,
+                    viewMode: viewMode,
+                    baseFontSize: preference.baseFontSize,
+                    enableMermaid: preference.enableMermaid,
+                    enableKatex: preference.enableKatex,
+                    enableEmoji: preference.enableEmoji,
+                    enableTypst: preference.enableTypst,
+                    codeHighlightTheme: preference.codeHighlightTheme,
+                    collapseBlockquotesByDefault: preference.collapseBlockquotesByDefault,
+                    showLineNumbers: preference.showLineNumbers,
+                    readingTheme: preference.readingTheme
+                )
             }
 
-            if let version = DisplayVersion.text(in: .main) {
-                Text("v\(version)")
-                    .font(.system(size: 10, weight: .regular, design: .monospaced))
-                    .foregroundColor(Color.secondary.opacity(0.5))
-                    .padding(.top, 48)
-                    .padding(.trailing, 88)
-            }
+            // Top-right controls overlay: pinned to physical top-right so it never collides
+            // with macOS window traffic lights on the top-left in RTL mode.
+            VStack(alignment: .trailing, spacing: 4) {
+                HStack(spacing: 8) {
+                    CircularToolbarIconButton(
+                        systemName: "square.and.pencil",
+                        foregroundColor: editingSession.isEditing ? .blue : Color(NSColor.labelColor),
+                        helpText: NSLocalizedString("Edit Markdown (⌘E)", comment: "Edit toggle tooltip"),
+                        appearance: preference.currentMode.nsAppearance
+                    ) {
+                        toggleEditing(documentText: file.document.text, fileURL: file.fileURL)
+                    }
 
-            HStack(spacing: 8) {
-                CircularToolbarIconButton(
-                    systemName: "square.and.pencil",
-                    foregroundColor: editingSession.isEditing ? .blue : Color(NSColor.labelColor),
-                    helpText: NSLocalizedString("Edit Markdown (⌘E)", comment: "Edit toggle tooltip"),
-                    appearance: preference.currentMode.nsAppearance
-                ) {
-                    toggleEditing(documentText: file.document.text, fileURL: file.fileURL)
-                }
+                    CircularToolbarIconButton(
+                        systemName: "arrow.clockwise",
+                        foregroundColor: Color(NSColor.labelColor),
+                        helpText: NSLocalizedString("Reload File (⌘R)", comment: "Reload file tooltip"),
+                        appearance: preference.currentMode.nsAppearance
+                    ) {
+                        showToolbarToast(reloadSuccessToastMessage)
+                        NotificationCenter.default.post(name: .reloadFile, object: nil)
+                    }
 
-                CircularToolbarIconButton(
-                    systemName: "arrow.clockwise",
-                    foregroundColor: Color(NSColor.labelColor),
-                    helpText: NSLocalizedString("Reload File (⌘R)", comment: "Reload file tooltip"),
-                    appearance: preference.currentMode.nsAppearance
-                ) {
-                    showToolbarToast(reloadSuccessToastMessage)
-                    NotificationCenter.default.post(name: .reloadFile, object: nil)
-                }
+                    CircularToolbarIconButton(
+                        systemName: "textformat.size.smaller",
+                        foregroundColor: Color(NSColor.labelColor),
+                        helpText: NSLocalizedString("Zoom Out", comment: "Zoom out tooltip"),
+                        appearance: preference.currentMode.nsAppearance
+                    ) {
+                        NotificationCenter.default.post(name: .zoomOut, object: nil)
+                    }
 
-                CircularToolbarIconButton(
-                    systemName: "textformat.size.smaller",
-                    foregroundColor: Color(NSColor.labelColor),
-                    helpText: NSLocalizedString("Zoom Out", comment: "Zoom out tooltip"),
-                    appearance: preference.currentMode.nsAppearance
-                ) {
-                    NotificationCenter.default.post(name: .zoomOut, object: nil)
-                }
+                    CircularToolbarIconButton(
+                        systemName: "arrow.uturn.backward",
+                        foregroundColor: Color(NSColor.labelColor),
+                        helpText: NSLocalizedString("Reset Zoom (⌘0)", comment: "Reset zoom tooltip"),
+                        appearance: preference.currentMode.nsAppearance
+                    ) {
+                        showToolbarToast(resetZoomToastMessage)
+                        NotificationCenter.default.post(name: .resetZoom, object: nil)
+                    }
 
-                CircularToolbarIconButton(
-                    systemName: "arrow.uturn.backward",
-                    foregroundColor: Color(NSColor.labelColor),
-                    helpText: NSLocalizedString("Reset Zoom (⌘0)", comment: "Reset zoom tooltip"),
-                    appearance: preference.currentMode.nsAppearance
-                ) {
-                    showToolbarToast(resetZoomToastMessage)
-                    NotificationCenter.default.post(name: .resetZoom, object: nil)
-                }
+                    CircularToolbarIconButton(
+                        systemName: "textformat.size.larger",
+                        foregroundColor: Color(NSColor.labelColor),
+                        helpText: NSLocalizedString("Zoom In", comment: "Zoom in tooltip"),
+                        appearance: preference.currentMode.nsAppearance
+                    ) {
+                        NotificationCenter.default.post(name: .zoomIn, object: nil)
+                    }
 
-                CircularToolbarIconButton(
-                    systemName: "textformat.size.larger",
-                    foregroundColor: Color(NSColor.labelColor),
-                    helpText: NSLocalizedString("Zoom In", comment: "Zoom in tooltip"),
-                    appearance: preference.currentMode.nsAppearance
-                ) {
-                    NotificationCenter.default.post(name: .zoomIn, object: nil)
-                }
+                    CircularToolbarIconButton(
+                        systemName: "questionmark.circle",
+                        foregroundColor: Color(NSColor.labelColor),
+                        helpText: NSLocalizedString("Show Help", comment: "Show help tooltip"),
+                        appearance: preference.currentMode.nsAppearance
+                    ) {
+                        NotificationCenter.default.post(name: .toggleHelp, object: nil)
+                    }
 
-                CircularToolbarIconButton(
-                    systemName: "questionmark.circle",
-                    foregroundColor: Color(NSColor.labelColor),
-                    helpText: NSLocalizedString("Show Help", comment: "Show help tooltip"),
-                    appearance: preference.currentMode.nsAppearance
-                ) {
-                    NotificationCenter.default.post(name: .toggleHelp, object: nil)
-                }
+                    CircularToolbarIconButton(
+                        systemName: viewMode == .source ? "eye.fill" : "doc.text.fill",
+                        foregroundColor: viewMode == .source ? .blue : Color(NSColor.labelColor),
+                        helpText: viewMode == .source
+                            ? NSLocalizedString("Show Preview", comment: "Show preview tooltip")
+                            : NSLocalizedString("Show Source", comment: "Show source tooltip"),
+                        appearance: preference.currentMode.nsAppearance
+                    ) {
+                        viewMode = (viewMode == .preview) ? .source : .preview
+                    }
 
-                CircularToolbarIconButton(
-                    systemName: viewMode == .source ? "eye.fill" : "doc.text.fill",
-                    foregroundColor: viewMode == .source ? .blue : Color(NSColor.labelColor),
-                    helpText: viewMode == .source
-                        ? NSLocalizedString("Show Preview", comment: "Show preview tooltip")
-                        : NSLocalizedString("Show Source", comment: "Show source tooltip"),
-                    appearance: preference.currentMode.nsAppearance
-                ) {
-                    viewMode = (viewMode == .preview) ? .source : .preview
-                }
-
-                CircularToolbarIconButton(
-                    systemName: preference.currentMode == .light ? "sun.max.fill" : preference.currentMode == .dark ? "moon.fill" : "circle.lefthalf.filled",
-                    foregroundColor: preference.currentMode == .light ? .yellow : Color(NSColor.labelColor),
-                    helpText: NSLocalizedString("Toggle Theme (System / Light / Dark)", comment: "Theme toggle tooltip"),
-                    appearance: preference.currentMode.nsAppearance
-                ) {
-                    switch preference.currentMode {
-                    case .system: preference.currentMode = .light
-                    case .light:  preference.currentMode = .dark
-                    case .dark:   preference.currentMode = .system
+                    CircularToolbarIconButton(
+                        systemName: preference.currentMode == .light ? "sun.max.fill" : preference.currentMode == .dark ? "moon.fill" : "circle.lefthalf.filled",
+                        foregroundColor: preference.currentMode == .light ? .yellow : Color(NSColor.labelColor),
+                        helpText: NSLocalizedString("Toggle Theme (System / Light / Dark)", comment: "Theme toggle tooltip"),
+                        appearance: preference.currentMode.nsAppearance
+                    ) {
+                        switch preference.currentMode {
+                        case .system: preference.currentMode = .light
+                        case .light:  preference.currentMode = .dark
+                        case .dark:   preference.currentMode = .system
+                        }
                     }
                 }
+                .padding(.top, 10)
+                // Extra trailing inset keeps the icon row clear of the scrollbar.
+                .padding(.trailing, 26)
+
+                if let version = DisplayVersion.text(in: .main) {
+                    Text("v\(version)")
+                        .font(.system(size: 10, weight: .regular, design: .monospaced))
+                        .foregroundColor(Color.secondary.opacity(0.5))
+                        .padding(.trailing, 28)
+                }
             }
-            .padding(.top, 10)
-            // Extra trailing inset keeps the icon row clear of the scrollbar.
-            .padding(.trailing, 26)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            .environment(\.layoutDirection, .leftToRight)
 
             ToolbarFeedbackToastHost(toast: toolbarToast)
                 .allowsHitTesting(false)
@@ -401,11 +407,16 @@ private struct DocumentPreviewScene: View {
         )
         .environmentObject(preference)
         .environment(\.layoutDirection, LocalizationManager.isRTL(preference.uiLanguage) ? LayoutDirection.rightToLeft : .leftToRight)
+        .preferredColorScheme(preference.currentMode == .dark ? .dark : preference.currentMode == .light ? .light : nil)
+        .onChange(of: preference.currentMode) { newMode in
+            hostWindow?.appearance = newMode.nsAppearance
+        }
         .background(
             WindowAccessor()
         )
         .background(HostWindowCapture { window in
             hostWindow = window
+            window.appearance = preference.currentMode.nsAppearance
         })
         .background(ToolbarFeedbackObserver { result in
             switch result {
