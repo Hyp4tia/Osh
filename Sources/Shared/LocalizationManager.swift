@@ -36,6 +36,45 @@ public enum LocalizationManager {
         return false
     }
 
+    /// Returns the appropriate GitHub Help document URL corresponding to the
+    /// active UI language preference (or system language if set to "system").
+    public static func helpURL(for preference: String) -> URL {
+        let code: String
+        if preference == "system" {
+            let primary = Locale.preferredLanguages.first?.lowercased() ?? "en"
+            if primary.hasPrefix("fr") {
+                code = "fr"
+            } else if primary.hasPrefix("ar") {
+                code = "ar"
+            } else if primary.hasPrefix("de") {
+                code = "de"
+            } else if primary.hasPrefix("zh") {
+                code = "zh"
+            } else if primary.hasPrefix("es") {
+                code = "es"
+            } else {
+                code = "en"
+            }
+        } else {
+            code = preference.lowercased()
+        }
+
+        switch code {
+        case "fr":
+            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP_FR.md")!
+        case "ar":
+            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP_AR.md")!
+        case "de":
+            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP_DE.md")!
+        case "zh", "zh-hans", "zh-hant":
+            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP_ZH.md")!
+        case "es":
+            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP_ES.md")!
+        default:
+            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP.md")!
+        }
+    }
+
     /// The preference that was active when `bootstrap` first ran. Used by the
     /// Settings UI to detect "needs restart for system menus" situations,
     /// because `AppleLanguages` is only honored at process start by AppKit,

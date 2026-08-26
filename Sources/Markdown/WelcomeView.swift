@@ -184,16 +184,15 @@ struct WelcomeView: View {
             separatorDot
 
             Button(NSLocalizedString("Help", comment: "Help button")) {
-                if let url = URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP.md") {
-                    openURL(url)
-                }
+                let url = LocalizationManager.helpURL(for: AppearancePreference.shared.uiLanguage)
+                openURL(url)
             }
             .buttonStyle(BorderlessButtonStyle())
             .foregroundColor(.accentColor)
 
             Spacer()
 
-            Text("v\(DisplayVersion.text(in: .main) ?? "")")
+            Text(DisplayVersion.text(in: .main) ?? "1.0.0B")
                 .font(.system(size: 10, weight: .regular, design: .monospaced))
                 .foregroundColor(Color.secondary.opacity(0.55))
         }
