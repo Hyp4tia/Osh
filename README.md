@@ -74,16 +74,17 @@
 | Feature | Description |
 |---------|-------------|
 | 📊 **Mermaid Diagrams** | Architecture diagrams, flowcharts, sequence diagrams |
-| 🧮 **KaTeX Math** | Inline and block mathematical expressions |
+| 🧮 **KaTeX & Typst Math** | Inline and block mathematical expressions |
 | 📝 **GFM Support** | Tables, task lists, strikethrough, and GitHub Alerts |
-| 🎨 **Code Highlighting** | Syntax highlighting for 40+ languages |
+| 🌍 **RTL & Multilingual** | Full Arabic & Hebrew RTL layout and text direction, multi-language UI |
+| 🎨 **Code Highlighting** | Syntax highlighting for 40+ languages (GitHub, Monokai, Atom One Dark) |
 | 📊 **Charts & Graphs** | Vega, Vega-Lite, and Graphviz (DOT) support |
 | 📑 **TOC Panel** | Interactive table of contents with section tracking |
 | 📄 **YAML Metadata** | Auto-parses frontmatter into a clean table |
-| 📤 **Export** | PDF (Cmd+Shift+P) / HTML (Cmd+Shift+E) — V2EX 用户求的功能！ |
+| 📤 **Export** | PDF (Cmd+Shift+P) / HTML (Cmd+Shift+E) / DOCX Word |
 | 🔍 **Zoom & Pan** | Cmd +/-/0, Cmd+scroll, pinch gestures |
 | 💾 **Position Memory** | Remembers scroll position and last-viewed file |
-| 🌓 **Themes** | Light, Dark, and System-synchronized modes |
+| 🌓 **Themes & Palettes** | Light, Dark, and System modes + 5 reading palettes (Default, Sepia, Paper, Midnight, Nord) |
 | 📂 **File Formats** | Supports .md, .mdx, .rmd, .qmd, .mdoc, .mdc, .mmd, .livemd, .mkd, .mkdn, .mkdown, .mdwn, .mdown, .markdown |
 
 ---
@@ -92,9 +93,9 @@
 
 Osh includes a dedicated Settings window to customize your experience:
 
-- **Appearance**: Switch between Light, Dark, or System themes.
-- **Rendering**: Toggle Mermaid, KaTeX, or Emoji support.
-- **Editor**: Adjust base font size and choose code highlighting themes (GitHub, Monokai, Atom One Dark, etc.).
+- **Appearance**: Switch between Light, Dark, or System themes, change interface language, and select reading palettes.
+- **Rendering**: Toggle Mermaid, KaTeX, Typst math, line numbers, or Emoji support.
+- **Editor**: Adjust base font size, Finder preview font size, and code syntax highlighting themes.
 
 ---
 
