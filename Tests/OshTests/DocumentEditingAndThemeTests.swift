@@ -1,7 +1,6 @@
 import XCTest
 import SwiftUI
 import AppKit
-@testable import Osh
 
 @MainActor
 final class DocumentEditingAndThemeTests: XCTestCase {
