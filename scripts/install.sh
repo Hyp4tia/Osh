@@ -51,9 +51,9 @@ cp -R "$APP_PATH" /Applications/
 
 if [ "$INSTALL_MODE" = "development" ]; then
     INSTALLED_APP_PATH="/Applications/Osh.app"
-    APP_ENTITLEMENTS="$PROJECT_ROOT/Sources/Markdown/Markdown.entitlements"
-    QUICKLOOK_EXTENSION_PATH="$INSTALLED_APP_PATH/Contents/PlugIns/MarkdownPreview.appex"
-    QUICKLOOK_ENTITLEMENTS="$PROJECT_ROOT/Sources/MarkdownPreview/MarkdownPreview.entitlements"
+    APP_ENTITLEMENTS="$PROJECT_ROOT/Sources/OshApp/Osh.entitlements"
+    QUICKLOOK_EXTENSION_PATH="$INSTALLED_APP_PATH/Contents/PlugIns/OshQuickLook.appex"
+    QUICKLOOK_ENTITLEMENTS="$PROJECT_ROOT/Sources/OshQuickLook/OshQuickLook.entitlements"
 
     BASE_VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$INSTALLED_APP_PATH/Contents/Info.plist")
     DISPLAY_VERSION="${BASE_VERSION}-dev-$(date '+%Y%m%d-%H%M%S')"
@@ -61,7 +61,7 @@ if [ "$INSTALL_MODE" = "development" ]; then
     /usr/libexec/PlistBuddy -c "Set :FMDisplayVersion $DISPLAY_VERSION" "$INSTALLED_APP_PATH/Contents/Info.plist" 2>/dev/null || \
         /usr/libexec/PlistBuddy -c "Add :FMDisplayVersion string $DISPLAY_VERSION" "$INSTALLED_APP_PATH/Contents/Info.plist"
 
-    EXTENSION_INFO_PLIST="$INSTALLED_APP_PATH/Contents/PlugIns/MarkdownPreview.appex/Contents/Info.plist"
+    EXTENSION_INFO_PLIST="$INSTALLED_APP_PATH/Contents/PlugIns/OshQuickLook.appex/Contents/Info.plist"
     if [ -f "$EXTENSION_INFO_PLIST" ]; then
         /usr/libexec/PlistBuddy -c "Set :FMDisplayVersion $DISPLAY_VERSION" "$EXTENSION_INFO_PLIST" 2>/dev/null || \
             /usr/libexec/PlistBuddy -c "Add :FMDisplayVersion string $DISPLAY_VERSION" "$EXTENSION_INFO_PLIST"

@@ -100,12 +100,12 @@ from pathlib import Path
 staging = Path(sys.argv[1])
 
 # --- UpdateDelegate.swift: replace entire file with a stub ---
-ud = staging / "Sources/Markdown/UpdateDelegate.swift"
+ud = staging / "Sources/OshApp/UpdateDelegate.swift"
 ud.write_text("import Cocoa\n\n// Sparkle auto-updater disabled for MacPorts builds.\n")
 print("  ✅ UpdateDelegate.swift stubbed")
 
 # --- MarkdownApp.swift: remove Sparkle import + updaterController + CheckForUpdatesView ---
-ma = staging / "Sources/Markdown/MarkdownApp.swift"
+ma = staging / "Sources/OshApp/MarkdownApp.swift"
 content = ma.read_text()
 
 # Remove `import Sparkle`

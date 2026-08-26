@@ -298,20 +298,13 @@ public class AppearancePreference: ObservableObject {
         let isExtension = Bundle.main.bundleIdentifier?.hasSuffix(".QuickLook") == true
         self.init(
             sharedStore: SharedPreferenceStore(alwaysReload: isExtension),
-            localStore: UserDefaults.standard,
-            migrateFromAppGroup: true
+            localStore: UserDefaults.standard
         )
     }
 
-    init(sharedStore: SharedPreferenceStore, localStore: UserDefaults, migrateFromAppGroup: Bool) {
+    init(sharedStore: SharedPreferenceStore, localStore: UserDefaults) {
         self.sharedStore = sharedStore
         self.localStore = localStore
-
-        // Migrate preferences from pre-Tahoe App Group UserDefaults on first launch.
-        // Safe to call from extension too (no-op since canWrite is false).
-        if migrateFromAppGroup {
-            sharedStore.migrateFromAppGroupIfNeeded()
-        }
 
         // Sync @Published backing store from disk so views have the correct initial value.
         let raw = sharedStore.string(forKey: key) ?? AppearanceMode.system.rawValue

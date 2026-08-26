@@ -4,7 +4,7 @@ final class RendererBundleSchemeHandlerTests: XCTestCase {
     func testRendererURLUsesCustomSchemeOrigin() {
         let url = RendererBundleSchemeHandler.rendererURL()
 
-        XCTAssertEqual(url.scheme, "flux-renderer")
+        XCTAssertEqual(url.scheme, "osh-renderer")
         XCTAssertEqual(url.host, "bundle")
         XCTAssertEqual(url.path, "/index.html")
     }
@@ -20,7 +20,7 @@ final class RendererBundleSchemeHandlerTests: XCTestCase {
         try "console.log('ok')".write(to: jsURL, atomically: true, encoding: .utf8)
 
         let handler = RendererBundleSchemeHandler(rootDirectory: root)
-        let requestedURL = URL(string: "flux-renderer://bundle/assets/main.js")!
+        let requestedURL = URL(string: "osh-renderer://bundle/assets/main.js")!
 
         let resolved = try XCTUnwrap(handler.resolveContainedFileURL(from: requestedURL))
         XCTAssertEqual(resolved.standardizedFileURL.path, jsURL.standardizedFileURL.path)
@@ -34,7 +34,7 @@ final class RendererBundleSchemeHandlerTests: XCTestCase {
         defer { try? FileManager.default.removeItem(at: root) }
 
         let handler = RendererBundleSchemeHandler(rootDirectory: assets)
-        let requestedURL = URL(string: "flux-renderer://bundle/%2e%2e/index.html")!
+        let requestedURL = URL(string: "osh-renderer://bundle/%2e%2e/index.html")!
 
         XCTAssertNil(handler.resolveContainedFileURL(from: requestedURL))
     }
@@ -42,7 +42,7 @@ final class RendererBundleSchemeHandlerTests: XCTestCase {
     func testBuildResponseSetsJavaScriptMimeType() {
         let root = URL(fileURLWithPath: "/tmp/WebRenderer", isDirectory: true)
         let handler = RendererBundleSchemeHandler(rootDirectory: root)
-        let requestURL = URL(string: "flux-renderer://bundle/assets/main.js")!
+        let requestURL = URL(string: "osh-renderer://bundle/assets/main.js")!
         let fileURL = root.appendingPathComponent("assets/main.js")
         let response = handler.buildResponse(for: requestURL, fileURL: fileURL, data: Data())
 
@@ -52,11 +52,11 @@ final class RendererBundleSchemeHandlerTests: XCTestCase {
     func testWebViewsLoadRendererThroughCustomScheme() throws {
         let root = try projectRoot()
         let quickLookSource = try String(
-            contentsOf: root.appendingPathComponent("Sources/MarkdownPreview/PreviewViewController.swift"),
+            contentsOf: root.appendingPathComponent("Sources/OshQuickLook/PreviewViewController.swift"),
             encoding: .utf8
         )
         let mainWebViewSource = try String(
-            contentsOf: root.appendingPathComponent("Sources/Markdown/MarkdownWebView.swift"),
+            contentsOf: root.appendingPathComponent("Sources/OshApp/MarkdownWebView.swift"),
             encoding: .utf8
         )
 
@@ -72,7 +72,7 @@ final class RendererBundleSchemeHandlerTests: XCTestCase {
     func testQuickLookInitialBackgroundIsNotHardcodedWhite() throws {
         let root = try projectRoot()
         let quickLookSource = try String(
-            contentsOf: root.appendingPathComponent("Sources/MarkdownPreview/PreviewViewController.swift"),
+            contentsOf: root.appendingPathComponent("Sources/OshQuickLook/PreviewViewController.swift"),
             encoding: .utf8
         )
 

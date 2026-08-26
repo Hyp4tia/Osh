@@ -73,8 +73,8 @@ jobs:
         run: |
           xcodebuild test \
             -project Osh.xcodeproj \
-            -scheme Markdown \
+            -scheme Osh \
             -configuration Debug \
             -destination 'platform=macOS' \
-            -skip-testing:MarkdownTests/RenderBenchmarkTests \
+            -skip-testing:OshTests/RenderBenchmarkTests \
             CODE_SIGNING_ALLOWED=NO

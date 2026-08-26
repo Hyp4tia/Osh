@@ -28,11 +28,6 @@ public class SharedPreferenceStore {
 
     private static let relativePath = "Library/Application Support/Osh/shared-preferences.plist"
 
-    /// Legacy App Group identifier — used for one-time migration of preferences
-    /// from pre-Tahoe versions that used App Group UserDefaults.
-    static let legacyAppGroupIdentifier = "group.com.xykong.Markdown"
-    private static let migrationDoneKey = "_didMigrateFromAppGroup"
-
     private var cache: [String: Any]
     private let fileURL: URL
     private let canWrite: Bool
@@ -73,49 +68,6 @@ public class SharedPreferenceStore {
         } else {
             self.cache = [:]
             self.lastModificationDate = nil
-        }
-    }
-
-    // MARK: - One-time migration from App Group UserDefaults
-
-    /// Migrates preferences from the legacy App Group UserDefaults to this file-based store.
-    /// Safe to call multiple times — runs only once per installation.
-    /// Should be called from the main app's init path (not the extension).
-    public func migrateFromAppGroupIfNeeded() {
-        queue.sync {
-            guard canWrite else { return }
-            guard cache[Self.migrationDoneKey] == nil else { return }
-
-            guard let legacyDefaults = UserDefaults(suiteName: Self.legacyAppGroupIdentifier) else {
-                cache[Self.migrationDoneKey] = true
-                _synchronizeUnsafe()
-                return
-            }
-
-            let keysToMigrate = [
-                "preferredAppearanceMode",
-                "baseFontSize",
-                "codeHighlightTheme",
-                "enableMermaid",
-                "enableKatex",
-                "enableEmoji",
-                "enableTypst",
-                "uiLanguage",
-                "collapseBlockquotesByDefault"
-            ]
-
-            var migrated = 0
-            for key in keysToMigrate {
-                if cache[key] == nil, let value = legacyDefaults.object(forKey: key) {
-                    cache[key] = value
-                    migrated += 1
-                }
-            }
-
-            cache[Self.migrationDoneKey] = true
-            if _synchronizeUnsafe() && migrated > 0 {
-                NSLog("[SharedPreferenceStore] Migrated %d preference(s) from App Group UserDefaults", migrated)
-            }
         }
     }
 

@@ -12,8 +12,8 @@ echo ""
 
 # 1. 临时移除修复，构建旧版本 (1.6.93)
 echo "📦 步骤 1/5: 构建旧版本 (v1.6.93 - 无修复)..."
-git stash push -m "test-update: stash fixes" Sources/Markdown/Markdown.entitlements Sources/Markdown/Info.plist
-git checkout HEAD~1 -- Sources/Markdown/Markdown.entitlements Sources/Markdown/Info.plist 2>/dev/null || true
+git stash push -m "test-update: stash fixes" Sources/OshApp/Osh.entitlements Sources/OshApp/Info.plist
+git checkout HEAD~1 -- Sources/OshApp/Osh.entitlements Sources/OshApp/Info.plist 2>/dev/null || true
 
 # 手动设置版本号为 93
 OLD_VERSION="1.6.93"

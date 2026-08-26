@@ -6,8 +6,8 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
     func testMainAppAndQuickLookUseSharedNativeCircularToolbarButtons() throws {
         let root = try projectRoot()
         let sharedSourcePath = root.appendingPathComponent("Sources/Shared/CircularToolbarButton.swift").path
-        let mainAppSourcePath = root.appendingPathComponent("Sources/Markdown/MarkdownApp.swift").path
-        let quickLookSourcePath = root.appendingPathComponent("Sources/MarkdownPreview/PreviewViewController.swift").path
+        let mainAppSourcePath = root.appendingPathComponent("Sources/OshApp/MarkdownApp.swift").path
+        let quickLookSourcePath = root.appendingPathComponent("Sources/OshQuickLook/PreviewViewController.swift").path
 
         let sharedSource = try String(contentsOfFile: sharedSourcePath, encoding: .utf8)
         let mainAppSource = try String(contentsOfFile: mainAppSourcePath, encoding: .utf8)
@@ -58,8 +58,8 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
     func testCircularToolbarButtonsRegisterFullBoundsToolTips() throws {
         let root = try projectRoot()
         let sharedSourcePath = root.appendingPathComponent("Sources/Shared/CircularToolbarButton.swift").path
-        let mainAppSourcePath = root.appendingPathComponent("Sources/Markdown/MarkdownApp.swift").path
-        let quickLookSourcePath = root.appendingPathComponent("Sources/MarkdownPreview/PreviewViewController.swift").path
+        let mainAppSourcePath = root.appendingPathComponent("Sources/OshApp/MarkdownApp.swift").path
+        let quickLookSourcePath = root.appendingPathComponent("Sources/OshQuickLook/PreviewViewController.swift").path
 
         let sharedSource = try String(contentsOfFile: sharedSourcePath, encoding: .utf8)
         let mainAppSource = try String(contentsOfFile: mainAppSourcePath, encoding: .utf8)
@@ -86,7 +86,7 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
     func testMainAppToolbarButtonsReceiveTheSelectedPreviewAppearance() throws {
         // GIVEN the selected preview appearance can differ from the host window.
         let root = try projectRoot()
-        let mainAppSourcePath = root.appendingPathComponent("Sources/Markdown/MarkdownApp.swift").path
+        let mainAppSourcePath = root.appendingPathComponent("Sources/OshApp/MarkdownApp.swift").path
         let mainAppSource = try String(contentsOfFile: mainAppSourcePath, encoding: .utf8)
 
         // WHEN the eight floating toolbar buttons are constructed.
@@ -212,9 +212,9 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
         let sharedSourcePath = root.appendingPathComponent("Sources/Shared/CircularToolbarButton.swift").path
         let notificationSourcePath = root.appendingPathComponent("Sources/Shared/NotificationNames.swift").path
         let routerSourcePath = root.appendingPathComponent("Sources/Shared/ToolbarFeedbackNotificationRouter.swift").path
-        let mainAppSourcePath = root.appendingPathComponent("Sources/Markdown/MarkdownApp.swift").path
-        let mainWebViewSourcePath = root.appendingPathComponent("Sources/Markdown/MarkdownWebView.swift").path
-        let quickLookSourcePath = root.appendingPathComponent("Sources/MarkdownPreview/PreviewViewController.swift").path
+        let mainAppSourcePath = root.appendingPathComponent("Sources/OshApp/MarkdownApp.swift").path
+        let mainWebViewSourcePath = root.appendingPathComponent("Sources/OshApp/MarkdownWebView.swift").path
+        let quickLookSourcePath = root.appendingPathComponent("Sources/OshQuickLook/PreviewViewController.swift").path
 
         let sharedSource = try String(contentsOfFile: sharedSourcePath, encoding: .utf8)
         let notificationSource = try String(contentsOfFile: notificationSourcePath, encoding: .utf8)
@@ -282,7 +282,7 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
 
     func testMainAppToolbarFeedbackUsesAppKitToastHostAboveWebView() throws {
         let root = try projectRoot()
-        let mainAppSourcePath = root.appendingPathComponent("Sources/Markdown/MarkdownApp.swift").path
+        let mainAppSourcePath = root.appendingPathComponent("Sources/OshApp/MarkdownApp.swift").path
         let mainAppSource = try String(contentsOfFile: mainAppSourcePath, encoding: .utf8)
 
         XCTAssertTrue(
@@ -300,7 +300,7 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
 
     func testMainAppToolbarFeedbackUsesHistoricalUpperCenterPlacementAndStyle() throws {
         let root = try projectRoot()
-        let mainAppSourcePath = root.appendingPathComponent("Sources/Markdown/MarkdownApp.swift").path
+        let mainAppSourcePath = root.appendingPathComponent("Sources/OshApp/MarkdownApp.swift").path
         let mainAppSource = try String(contentsOfFile: mainAppSourcePath, encoding: .utf8)
 
         XCTAssertTrue(
@@ -334,7 +334,7 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
 
     func testMainAppToolbarOutcomeToastsKeepImmediateHistoricalFeedback() throws {
         let root = try projectRoot()
-        let mainAppSourcePath = root.appendingPathComponent("Sources/Markdown/MarkdownApp.swift").path
+        let mainAppSourcePath = root.appendingPathComponent("Sources/OshApp/MarkdownApp.swift").path
         let mainAppSource = try String(contentsOfFile: mainAppSourcePath, encoding: .utf8)
 
         XCTAssertEqual(
@@ -351,7 +351,7 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
 
     func testMainAppToolbarToastDismissalUsesStableIdentity() throws {
         let root = try projectRoot()
-        let mainAppSourcePath = root.appendingPathComponent("Sources/Markdown/MarkdownApp.swift").path
+        let mainAppSourcePath = root.appendingPathComponent("Sources/OshApp/MarkdownApp.swift").path
         let mainAppSource = try String(contentsOfFile: mainAppSourcePath, encoding: .utf8)
 
         XCTAssertTrue(

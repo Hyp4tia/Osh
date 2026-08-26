@@ -135,7 +135,7 @@ final class AppZoomTests: XCTestCase {
 
     func testMainAppRegistersMenuKeyboardShortcutsForZoomInOutAndReset() throws {
         let source = try String(
-            contentsOf: projectRoot().appendingPathComponent("Sources/Markdown/MarkdownApp.swift"),
+            contentsOf: projectRoot().appendingPathComponent("Sources/OshApp/MarkdownApp.swift"),
             encoding: .utf8
         )
 
@@ -149,7 +149,7 @@ final class AppZoomTests: XCTestCase {
 
     func testQuickLookKeyEventMonitorIsRemovedOnDeinit() throws {
         let source = try String(
-            contentsOf: projectRoot().appendingPathComponent("Sources/MarkdownPreview/PreviewViewController.swift"),
+            contentsOf: projectRoot().appendingPathComponent("Sources/OshQuickLook/PreviewViewController.swift"),
             encoding: .utf8
         )
 

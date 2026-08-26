@@ -53,11 +53,9 @@ echo ""
 SCOPE="TODO"
 CATEGORY="TODO"
 
-if echo "$FILES" | grep -q "Sources/MarkdownPreview/"; then
+if echo "$FILES" | grep -q "Sources/OshQuickLook/"; then
     SCOPE="QuickLook"
-fi
-
-if echo "$FILES" | grep -q "Sources/Markdown/"; then
+elif echo "$FILES" | grep -q "Sources/OshApp/"; then
     SCOPE="App"
 fi
 

@@ -33,7 +33,7 @@ macOS 通常只有在宿主应用程序首次打开后才会注册其 QuickLook 
 
 1. 打开**系统设置**
 2. 前往**扩展** → **快速查看（Quick Look）**
-3. 确保 **Osh / MarkdownPreview** 已勾选启用
+3. 确保 **Osh / OshQuickLook** 已勾选启用
 
 ---
 

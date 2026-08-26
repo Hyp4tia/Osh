@@ -33,7 +33,7 @@ Si appuyer sur Espace affiche toujours l'ancien aperçu :
 
 1. Ouvrez **Réglages Système**
 2. Allez dans **Extensions** → **Quick Look**
-3. Assurez-vous que l'élément **Osh / MarkdownPreview** est activé
+3. Assurez-vous que l'élément **Osh / OshQuickLook** est activé
 
 ---
 

@@ -24,8 +24,8 @@ the extension itself doesn't have App Sandbox enabled. `pkd` will refuse to regi
 Fix (already done in this repository):
 
 1. Added Entitlements files for both the host app and the extension:
-   - `Sources/Markdown/Markdown.entitlements`
-   - `Sources/MarkdownPreview/MarkdownPreview.entitlements`
+   - `Sources/OshApp/Osh.entitlements`
+   - `Sources/OshQuickLook/OshQuickLook.entitlements`
 
 2. Enabled sandboxing in both targets, with read-only access to user-selected files:
 
@@ -46,13 +46,17 @@ Fix (already done in this repository):
 3. Pointed both targets at their entitlements in `project.yml` (already configured in this repo):
 
    ```yaml
-   Markdown:
+   Osh:
      settings:
-       CODE_SIGN_ENTITLEMENTS: Sources/Markdown/Markdown.entitlements
+       configs:
+         Debug:
+           CODE_SIGN_ENTITLEMENTS: Sources/OshApp/Osh.entitlements
 
-   MarkdownPreview:
+   OshQuickLook:
      settings:
-       CODE_SIGN_ENTITLEMENTS: Sources/MarkdownPreview/MarkdownPreview.entitlements
+       configs:
+         Debug:
+           CODE_SIGN_ENTITLEMENTS: Sources/OshQuickLook/OshQuickLook.entitlements
    ```
 
 4. Regenerate and build the project:
@@ -119,10 +123,10 @@ log stream --predicate 'subsystem contains "QuickLook" OR subsystem contains "Ma
 APP_PATH=~/Library/Developer/Xcode/DerivedData/Osh-*/Build/Products/Debug/Osh.app
 
 # Check that the extension exists
-ls -la "$APP_PATH/Contents/PlugIns/MarkdownPreview.appex/Contents/MacOS"
+ls -la "$APP_PATH/Contents/PlugIns/OshQuickLook.appex/Contents/MacOS"
 
 # Check that web resources were copied correctly
-ls -la "$APP_PATH/Contents/PlugIns/MarkdownPreview.appex/Contents/Resources/dist"
+ls -la "$APP_PATH/Contents/PlugIns/OshQuickLook.appex/Contents/Resources/dist"
 ```
 
 ## Known Limitations
@@ -137,10 +141,10 @@ The macOS App Sandbox restricts file access. If a Markdown file references local
 ## Plain Text Preview Even Though Extension Is Registered
 
 ### Issue
-`pluginkit -m -A -D -p com.apple.quicklook.preview | grep -i markdownquicklook` shows:
+`pluginkit -m -A -D -p com.apple.quicklook.preview | grep -i osh` shows:
 
 ```bash
-com.markdownquicklook.app.MarkdownPreview(1.0)
+com.zeyadistired.osh.QuickLook(1.0)
 ```
 
 so the Quick Look extension is recognized and registered. But selecting a `.md` file in Finder and pressing Space still shows only **plain text**, with no Markdown rendering at all (it looks like an ordinary text preview).
@@ -152,12 +156,12 @@ When macOS picks a Quick Look Preview Extension, it prefers the app that **owns 
 If the host app (`Osh.app`) merely declares itself as an `Alternate` handler
 (`LSHandlerRank = Alternate`), the system keeps preferring the built-in
 Markdown/plain-text previewer and bypasses our
-`com.markdownquicklook.app.MarkdownPreview` extension entirely — making Quick Look
+`com.zeyadistired.osh.QuickLook` extension entirely — making Quick Look
 appear "plain-text only" as if the plugin were broken.
 
 **Already fixed in this repository:**
 
-In `Sources/Markdown/Info.plist`, the `CFBundleDocumentTypes`
+In `Sources/OshApp/Info.plist`, the `CFBundleDocumentTypes`
 `LSHandlerRank` was changed to:
 
 ```xml
@@ -170,7 +174,7 @@ with a comment explaining that we deliberately make the host app the default Own
 ### Fix Steps (to apply in your local environment)
 
 1. **Update your code** (if upgrading from an older version):
-   - Make sure `LSHandlerRank` in your local `Sources/Markdown/Info.plist` is `Owner`.
+   - Make sure `LSHandlerRank` in your local `Sources/OshApp/Info.plist` is `Owner`.
 
 2. **Regenerate and build the project**:
 
@@ -178,17 +182,11 @@ with a comment explaining that we deliberately make the host app the default Own
    make app
    ```
 
-   This step:
-   - Builds `web-renderer` (producing `dist/index.html`)
-   - Generates and builds the Xcode project, host app + extension
-
-3. **Run the host app to register the extension**:
-
    ```bash
    open ~/Library/Developer/Xcode/DerivedData/Osh-*/Build/Products/Debug/Osh.app
    ```
 
-   Or select the **Markdown** scheme in Xcode and press `Cmd+R`.
+   Or select the **Osh** scheme in Xcode and press `Cmd+R`.
 
 4. **Refresh the Quick Look cache**:
 
@@ -208,14 +206,14 @@ with a comment explaining that we deliberately make the host app the default Own
 6. **Optional: confirm the extension is being invoked via system logs**:
 
    ```bash
-   log stream --style compact --predicate 'process == "MarkdownPreview"'
+   log stream --style compact --predicate 'process == "OshQuickLook"'
    ```
 
    Then press Space on a `.md` file in Finder; the log should show lines like:
 
    ```text
-   MarkdownPreview: viewDidLoad called
-   MarkdownPreview: preparePreviewOfFile called for: /path/to/file.md
+   OshQuickLook: viewDidLoad called
+   OshQuickLook: preparePreviewOfFile called for: /path/to/file.md
    ```
 
    That means:

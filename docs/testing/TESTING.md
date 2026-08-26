@@ -15,9 +15,9 @@ open ~/Library/Developer/Xcode/DerivedData/Osh-*/Build/Products/Debug/Osh.app
 
 Or in Xcode:
 1. Open `Osh.xcodeproj`
-2. **Important**: make sure the **Markdown** scheme is selected in the toolbar (not MarkdownPreview)
+2. **Important**: make sure the **Osh** scheme is selected in the toolbar (not OshQuickLook)
    - Click the scheme dropdown (next to the Run/Stop buttons)
-   - Choose "Markdown"
+   - Choose "Osh"
 3. Press `Cmd+R` to run
 4. If macOS asks "Choose an app to run", pick any app (e.g. Finder) — this is normal for extension targets
 
@@ -178,7 +178,7 @@ All fixtures in this repo live under `Tests/fixtures/`.
 ### Extension not loading?
 1. Check if the app is running
 2. Run `qlmanage -m` to list registered extensions
-3. Look for `MarkdownPreview.appex`
+3. Look for `OshQuickLook.appex`
 
 ### Old version cached?
 ```bash
@@ -195,7 +195,7 @@ qlmanage -r cache
 
 ### No log output?
 - Make sure the app is installed: `/Applications/Osh.app`
-- Check if the process is running: `ps aux | grep MarkdownPreview`
+- Check if the process is running: `ps aux | grep OshQuickLook`
 
 ### Still not working?
 The issue may be that QuickLook system intercepts CMD+key combinations before they reach the extension. This is a known limitation. Use alternative input methods:
@@ -203,16 +203,8 @@ The issue may be that QuickLook system intercepts CMD+key combinations before th
 2. Pinch gesture - Natural for macOS users
 3. Use the Host App directly for full keyboard shortcut support
 
-## Helper Scripts (Repo)
-
-| Script | Purpose |
-|--------|---------|
-| `Tests/watch-console.sh` | Quick hint for inspecting logs |
-| `Tests/check-logs.sh` | Stream logs and filter image-related lines |
-| `Tests/scripts/watch-link-clicks.sh` | Stream link-click related logs |
-
 ## Automated Tests
 
-- Swift unit tests: `Tests/MarkdownTests/`
+- Swift unit tests: `Tests/OshTests/`
 - Renderer unit tests: `web-renderer/test/`
 - Benchmarks: `benchmark/` (see `benchmark/run-all.sh`)

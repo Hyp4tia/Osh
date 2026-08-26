@@ -3,7 +3,7 @@ set -euo pipefail
 
 TARGET_PATH="${1:-build/artifacts/Osh.dmg}"
 APP_NAME="Osh.app"
-APPEX_RELATIVE_PATH="Contents/PlugIns/MarkdownPreview.appex"
+APPEX_RELATIVE_PATH="Contents/PlugIns/OshQuickLook.appex"
 REQUIRED_ENTITLEMENT="com.apple.security.app-sandbox"
 FORBIDDEN_RELEASE_ENTITLEMENTS=(
     "com.apple.security.get-task-allow"
@@ -55,17 +55,17 @@ echo "🔐 Checking QuickLook extension sandbox entitlement..."
 ENTITLEMENTS=$(/usr/bin/codesign -d --entitlements :- "$APPEX_PATH" 2>/dev/null || true)
 
 if ! printf '%s\n' "$ENTITLEMENTS" | grep -q "$REQUIRED_ENTITLEMENT"; then
-    fail "MarkdownPreview.appex is missing $REQUIRED_ENTITLEMENT"
+    fail "OshQuickLook.appex is missing $REQUIRED_ENTITLEMENT"
 fi
 
 for forbidden in "${FORBIDDEN_RELEASE_ENTITLEMENTS[@]}"; do
     if printf '%s\n' "$ENTITLEMENTS" | grep -q "$forbidden"; then
-        fail "MarkdownPreview.appex release entitlements must not include $forbidden"
+        fail "OshQuickLook.appex release entitlements must not include $forbidden"
     fi
 done
 
 if printf '%s\n' "$ENTITLEMENTS" | grep -q "/Users/"; then
-    fail "MarkdownPreview.appex release entitlements must not include build-machine home paths"
+    fail "OshQuickLook.appex release entitlements must not include build-machine home paths"
 fi
 
 echo "🔐 Checking app release entitlements..."
@@ -74,4 +74,4 @@ if printf '%s\n' "$APP_ENTITLEMENTS" | grep -q "com.apple.security.get-task-allo
     fail "Osh.app release entitlements must not include com.apple.security.get-task-allow"
 fi
 
-echo "✅ Release artifact preserves MarkdownPreview.appex sandbox entitlement"
+echo "✅ Release artifact preserves OshQuickLook.appex sandbox entitlement"
