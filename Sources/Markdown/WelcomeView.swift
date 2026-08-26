@@ -17,6 +17,7 @@ struct WelcomeView: View {
 
     private let settingsWindowManager = SettingsWindowManager.shared
 
+    @Environment(\.colorScheme) private var colorScheme
     private let allowedContentTypes: [UTType] = {
         var types: [UTType] = []
         if let md = UTType(filenameExtension: "md") {
@@ -39,7 +40,7 @@ struct WelcomeView: View {
         .frame(width: 560)
         .frame(maxHeight: .infinity)
         .padding(.vertical, 28)
-        .background(Color(NSColor.windowBackgroundColor).ignoresSafeArea())
+        .background(colorScheme == .dark ? Color(white: 0.12).ignoresSafeArea() : Color(white: 0.98).ignoresSafeArea())
         .background(WelcomeWindowAccessor { window in
             self.window = window
         })
@@ -62,7 +63,7 @@ struct WelcomeView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(Color(NSColor.separatorColor).opacity(0.8), lineWidth: 1)
+                            .stroke(colorScheme == .dark ? Color.white.opacity(0.12) : Color.black.opacity(0.12), lineWidth: 1)
                     )
                     .shadow(color: Color.black.opacity(0.10), radius: 8, x: 0, y: 4)
                     .accessibilityLabel(Text(NSLocalizedString("Osh App Icon", comment: "App icon accessibility label")))
@@ -90,12 +91,12 @@ struct WelcomeView: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .strokeBorder(
-                        isTargeted ? Color.accentColor.opacity(0.95) : Color(NSColor.separatorColor).opacity(0.9),
+                        isTargeted ? Color.accentColor.opacity(0.95) : (colorScheme == .dark ? Color.white.opacity(0.15) : Color.black.opacity(0.15)),
                         style: StrokeStyle(lineWidth: 1.5, dash: isTargeted ? [] : [7, 5])
                     )
                     .background(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(isTargeted ? Color.accentColor.opacity(0.06) : Color(NSColor.controlBackgroundColor).opacity(0.5))
+                            .fill(isTargeted ? Color.accentColor.opacity(0.06) : (colorScheme == .dark ? Color(white: 0.16) : Color(white: 0.96)))
                     )
 
                 VStack(spacing: 8) {

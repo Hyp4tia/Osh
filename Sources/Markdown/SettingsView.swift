@@ -32,6 +32,7 @@ enum SettingsTab: String, CaseIterable, Identifiable {
 
 struct SettingsView: View {
     @ObservedObject private var preference = AppearancePreference.shared
+    @Environment(\.colorScheme) private var colorScheme
     @State private var selectedTab: SettingsTab = .appearance
 
     private var isRTL: Bool {
@@ -55,7 +56,7 @@ struct SettingsView: View {
             .padding(.vertical, 16)
             .padding(.horizontal, 10)
             .frame(width: 175)
-            .background(Color(NSColor.controlBackgroundColor).opacity(0.45))
+            .background(Color.settingsSidebarBackground(for: colorScheme))
 
             Divider()
 
@@ -106,8 +107,11 @@ struct SettingsView: View {
 
 // MARK: - Appearance Tab
 
+// MARK: - Appearance Tab
+
 struct AppearanceSettingsView: View {
     @ObservedObject var preference: AppearancePreference
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -135,11 +139,11 @@ struct AppearanceSettingsView: View {
                     preference.currentMode = .system
                 }
             }
-            .background(Color(NSColor.controlBackgroundColor))
+            .background(Color.settingsCardBackground(for: colorScheme))
             .cornerRadius(8)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+                    .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
             )
 
             SettingsSectionHeader(
@@ -173,11 +177,11 @@ struct AppearanceSettingsView: View {
                     preference.uiLanguage = "ar"
                 }
             }
-            .background(Color(NSColor.controlBackgroundColor))
+            .background(Color.settingsCardBackground(for: colorScheme))
             .cornerRadius(8)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+                    .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
             )
 
             SettingsSectionHeader(
@@ -196,11 +200,11 @@ struct AppearanceSettingsView: View {
                 Divider()
                 readingThemeButton(preference, id: "nord", label: NSLocalizedString("Nord", comment: "Nord reading theme"))
             }
-            .background(Color(NSColor.controlBackgroundColor))
+            .background(Color.settingsCardBackground(for: colorScheme))
             .cornerRadius(8)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+                    .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
             )
 
             if preference.uiLanguage != LocalizationManager.launchPreference {
@@ -261,7 +265,7 @@ struct AppearanceSettingsView: View {
                 if isSelected {
                     Color.accentColor.opacity(0.12)
                 } else {
-                    Color(NSColor.controlBackgroundColor)
+                    Color.settingsCardBackground(for: colorScheme)
                 }
                 VStack(spacing: 6) {
                     Image(systemName: icon)
@@ -287,6 +291,7 @@ struct AppearanceSettingsView: View {
 
 struct RenderingSettingsView: View {
     @ObservedObject var preference: AppearancePreference
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -338,11 +343,11 @@ struct RenderingSettingsView: View {
                     isOn: Binding(get: { preference.showLineNumbers }, set: { preference.showLineNumbers = $0 })
                 )
             }
-            .background(Color(NSColor.controlBackgroundColor))
+            .background(Color.settingsCardBackground(for: colorScheme))
             .cornerRadius(8)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+                    .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
             )
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -379,6 +384,7 @@ struct RenderingSettingsView: View {
 
 struct EditorSettingsView: View {
     @ObservedObject var preference: AppearancePreference
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
@@ -419,11 +425,11 @@ struct EditorSettingsView: View {
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
                 }
-                .background(Color(NSColor.controlBackgroundColor))
+                .background(Color.settingsCardBackground(for: colorScheme))
                 .cornerRadius(8)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+                        .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
                 )
             }
  
@@ -464,11 +470,11 @@ struct EditorSettingsView: View {
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
                 }
-                .background(Color(NSColor.controlBackgroundColor))
+                .background(Color.settingsCardBackground(for: colorScheme))
                 .cornerRadius(8)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+                        .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
                 )
             }
 
@@ -478,7 +484,6 @@ struct EditorSettingsView: View {
                     title: NSLocalizedString("Code Highlighting", comment: "Code theme section title"),
                     description: NSLocalizedString("Syntax highlighting theme for code blocks", comment: "Code theme section description")
                 )
-
 
                 VStack(spacing: 0) {
                     CodeThemeRow(name: NSLocalizedString("Default", comment: "Default code theme"),
@@ -490,11 +495,11 @@ struct EditorSettingsView: View {
                     Divider().padding(.horizontal, 12)
                     CodeThemeRow(name: "Atom One Dark", id: "atom-one-dark", color: Color(red: 0.157, green: 0.173, blue: 0.204))
                 }
-                .background(Color(NSColor.controlBackgroundColor))
+                .background(Color.settingsCardBackground(for: colorScheme))
                 .cornerRadius(8)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+                        .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
                 )
             }
         }
@@ -507,7 +512,7 @@ struct EditorSettingsView: View {
                 Circle()
                     .fill(color)
                     .frame(width: 12, height: 12)
-                    .overlay(Circle().stroke(Color(NSColor.separatorColor), lineWidth: 0.5))
+                    .overlay(Circle().stroke(Color.settingsBorder(for: colorScheme), lineWidth: 0.5))
 
                 Text(name)
                     .font(.system(size: 13))
@@ -555,7 +560,7 @@ extension AppearanceSettingsView {
                     .frame(width: 34, height: 22)
                     .overlay(
                         RoundedRectangle(cornerRadius: 5, style: .continuous)
-                            .stroke(Color(NSColor.separatorColor), lineWidth: 1)
+                            .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
                     )
                 Text(label)
                     .font(.system(size: 11))
@@ -578,5 +583,17 @@ struct ReadingThemePalette {
         case "nord": return Color(red: 0.180, green: 0.204, blue: 0.251)
         default: return Color(red: 0.98, green: 0.98, blue: 0.98)
         }
+    }
+}
+
+extension Color {
+    static func settingsCardBackground(for scheme: ColorScheme) -> Color {
+        scheme == .dark ? Color(white: 0.16) : Color.white
+    }
+    static func settingsSidebarBackground(for scheme: ColorScheme) -> Color {
+        scheme == .dark ? Color(white: 0.11) : Color(white: 0.95)
+    }
+    static func settingsBorder(for scheme: ColorScheme) -> Color {
+        scheme == .dark ? Color(white: 1.0).opacity(0.12) : Color(white: 0.0).opacity(0.12)
     }
 }
