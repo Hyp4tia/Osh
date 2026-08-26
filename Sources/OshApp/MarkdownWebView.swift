@@ -306,23 +306,9 @@ struct MarkdownWebView: NSViewRepresentable {
                   let window = webView.window,
                   window.isKeyWindow || window.windowController?.document === NSDocumentController.shared.currentDocument else { return }
 
-            isEditingPaused = EditingSessionController.shared.isEditing
-
-            if isEditingPaused {
-                // Save while staying in edit mode: just refresh the baseline.
-                if let attrs = try? FileManager.default.attributesOfItem(atPath: currentFileURL?.path ?? ""),
-                   let size = attrs[.size] as? UInt64 {
-                    lastKnownFileSize = size
-                    lastKnownFileModificationDate = attrs[.modificationDate] as? Date
-                }
-                return
-            }
-
-            // Leaving edit mode: reload from disk and resume normal watching.
             if let url = notification.object as? URL ?? currentFileURL {
                 _ = reloadFromDisk(url: url, force: true)
             }
-            isEditingPaused = false
         }
 
         @objc func handleExportHTML() {
@@ -853,6 +839,11 @@ struct MarkdownWebView: NSViewRepresentable {
             stopFileMonitoring()
 
             guard let url = currentFileURL else { return }
+
+            if let attrs = try? FileManager.default.attributesOfItem(atPath: url.path) {
+                lastKnownFileSize = attrs[.size] as? UInt64 ?? 0
+                lastKnownFileModificationDate = attrs[.modificationDate] as? Date
+            }
 
             let fd = open(url.path, O_EVTONLY)
             guard fd >= 0 else {

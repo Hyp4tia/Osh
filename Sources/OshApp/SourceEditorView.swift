@@ -9,17 +9,29 @@ import AppKit
 struct SourceEditorView: NSViewRepresentable {
     @Binding var text: String
     var appearanceMode: AppearanceMode
-    var onSave: () -> Void
+    var onSave: (() -> Void)?
+
+    init(text: Binding<String>, appearanceMode: AppearanceMode, onSave: (() -> Void)? = nil) {
+        self._text = text
+        self.appearanceMode = appearanceMode
+        self.onSave = onSave
+    }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(text: $text, onSave: onSave)
+        Coordinator(self)
     }
 
     func makeNSView(context: Context) -> NSScrollView {
         let textView = EditorTextView()
         let coordinator = context.coordinator
         textView.delegate = coordinator
-        textView.onSave = { coordinator.onSave() }
+        textView.onSave = { [weak coordinator] in
+            if let customSave = coordinator?.parent.onSave {
+                customSave()
+            } else {
+                NSApp.sendAction(#selector(NSDocument.save(_:)), to: nil, from: nil)
+            }
+        }
         textView.isRichText = false
         textView.allowsUndo = true
         textView.usesFindBar = true
@@ -47,7 +59,7 @@ struct SourceEditorView: NSViewRepresentable {
         scrollView.autohidesScrollers = true
         scrollView.borderType = .noBorder
 
-        textView.string = coordinator.text.wrappedValue
+        textView.string = text
         textView.alignment = .natural
         textView.baseWritingDirection = LocalizationManager.isRTL(AppearancePreference.shared.uiLanguage) ? .rightToLeft : .natural
         textView.appearance = appearanceMode.nsAppearance
@@ -57,36 +69,40 @@ struct SourceEditorView: NSViewRepresentable {
     }
 
     func updateNSView(_ scrollView: NSScrollView, context: Context) {
-        context.coordinator.onSave = onSave
+        context.coordinator.parent = self
         scrollView.appearance = appearanceMode.nsAppearance
         guard let textView = scrollView.documentView as? EditorTextView else { return }
         textView.appearance = appearanceMode.nsAppearance
         textView.baseWritingDirection = LocalizationManager.isRTL(AppearancePreference.shared.uiLanguage) ? .rightToLeft : .natural
-        let current = context.coordinator.text.wrappedValue
-        // Only replace content when it changed outside the editor (e.g. new
-        // document opened). Never stomp in-flight typing.
-        if textView.string != current && scrollView.window?.firstResponder !== textView {
-            textView.string = current
+
+        // Only update text from binding if changed externally (never stomp active user edits)
+        if !context.coordinator.isUpdatingFromTextView && textView.string != text {
+            let selectedRanges = textView.selectedRanges
+            textView.string = text
+            textView.selectedRanges = selectedRanges
         }
     }
 
     final class Coordinator: NSObject, NSTextViewDelegate {
-        var text: Binding<String>
-        var onSave: () -> Void
+        var parent: SourceEditorView
+        var isUpdatingFromTextView = false
 
-        init(text: Binding<String>, onSave: @escaping () -> Void) {
-            self.text = text
-            self.onSave = onSave
+        init(_ parent: SourceEditorView) {
+            self.parent = parent
         }
 
         func textDidChange(_ notification: Notification) {
             guard let textView = notification.object as? NSTextView else { return }
-            text.wrappedValue = textView.string
+            isUpdatingFromTextView = true
+            if parent.text != textView.string {
+                parent.text = textView.string
+            }
+            isUpdatingFromTextView = false
         }
     }
 }
 
-/// Text view that routes Cmd+S to the editing session instead of beeping.
+/// Text view that routes Cmd+S to the document save action instead of beeping.
 final class EditorTextView: NSTextView {
     var onSave: (() -> Void)?
 
@@ -98,5 +114,7 @@ final class EditorTextView: NSTextView {
         super.doCommand(by: selector)
     }
 
-    @objc func save(_ sender: Any?) {}
+    @objc func save(_ sender: Any?) {
+        onSave?()
+    }
 }

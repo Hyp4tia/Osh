@@ -75,6 +75,8 @@ targets:
       - Sources/OshApp/WindowAccessor.swift
       - Sources/OshApp/ResourceLoader.swift
       - Sources/OshApp/EditingSessionController.swift
+      - Sources/OshApp/SourceEditorView.swift
+      - Sources/OshApp/MarkdownDocument.swift
       - Sources/OshQuickLook
       - Sources/Shared
       - benchmark/swift-bench/RenderBenchmarkTests.swift
