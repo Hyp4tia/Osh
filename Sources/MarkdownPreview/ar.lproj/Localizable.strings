@@ -56,6 +56,8 @@
 "Flowcharts, sequence diagrams, and more" = "المخططات الانسيابية ومخططات التسلسل والمزيد";
 "KaTeX Math" = "معادلات KaTeX الرياضية";
 "Mathematical expressions and equations" = "التعبيرات والمعادلات الرياضية";
+"Typst Math" = "معادلات Typst الرياضية";
+"Typst math expressions in ```typst code blocks" = "تعبيرات Typst الرياضية في كتل ```typst";
 "Emoji Support" = "دعم الرموز التعبيرية";
 "GitHub flavored emoji codes like :smile:" = "رموز GitHub التعبيرية مثل :smile:";
 "Collapse Blockquotes by Default" = "طي الاقتباسات افتراضيًا";
@@ -68,6 +70,8 @@
 "Adjust the reading experience" = "ضبط تجربة القراءة";
 "Font Size" = "حجم الخط";
 "Font Size:" = "حجم الخط:";
+"Finder Preview Font Size" = "حجم خط معاينة Finder";
+"Font size when previewing in Finder's column view" = "حجم الخط عند المعاينة في عرض أعمدة Finder";
 
 /* === Settings: Code Highlighting Section === */
 "Code Highlighting" = "تلوين الشيفرة";

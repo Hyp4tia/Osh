@@ -768,7 +768,7 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
 
     if (options.uiLanguage) {
         (window as any).__fluxLang = options.uiLanguage === 'system' ? undefined : options.uiLanguage;
-        if (options.uiLanguage === 'ar') {
+        if (options.uiLanguage === 'ar' || options.uiLanguage === 'he') {
             document.documentElement.setAttribute('dir', 'rtl');
         } else if (options.uiLanguage !== 'system') {
             document.documentElement.removeAttribute('dir');

@@ -492,6 +492,8 @@ private final class SettingsWindowManager: NSObject {
 
     private func showFallbackSettingsWindow() {
         if let window = settingsWindow {
+            window.title = NSLocalizedString("Settings", comment: "Settings window title")
+            window.appearance = AppearancePreference.shared.currentMode.nsAppearance
             window.makeKeyAndOrderFront(nil)
             NSApp.activate(ignoringOtherApps: true)
             return
@@ -500,12 +502,13 @@ private final class SettingsWindowManager: NSObject {
         let view = SettingsView()
         let hostingView = NSHostingView(rootView: view)
         let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 600, height: 440),
+            contentRect: NSRect(x: 0, y: 0, width: 620, height: 480),
             styleMask: [.titled, .closable, .miniaturizable, .resizable],
             backing: .buffered,
             defer: false
         )
         window.title = NSLocalizedString("Settings", comment: "Settings window title")
+        window.appearance = AppearancePreference.shared.currentMode.nsAppearance
         window.center()
         window.contentView = hostingView
         window.isReleasedWhenClosed = false

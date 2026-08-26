@@ -1,28 +1,6 @@
 import SwiftUI
 import AppKit
 
-// MARK: - Helpers
-
-private struct NoFocusRingContainer<Content: View>: NSViewRepresentable {
-    let content: Content
-
-    func makeNSView(context: Context) -> NSHostingView<Content> {
-        let host = NSHostingView(rootView: content)
-        host.focusRingType = .none
-        return host
-    }
-
-    func updateNSView(_ nsView: NSHostingView<Content>, context: Context) {
-        nsView.rootView = content
-    }
-}
-
-private extension View {
-    func noFocusRing() -> some View {
-        NoFocusRingContainer(content: self)
-            .fixedSize(horizontal: false, vertical: true)
-    }
-}
 
 // MARK: - Models
 
@@ -54,12 +32,16 @@ enum SettingsTab: String, CaseIterable, Identifiable {
 
 struct SettingsView: View {
     @ObservedObject private var preference = AppearancePreference.shared
-    @State private var selectedTab: SettingsTab? = .appearance
+    @State private var selectedTab: SettingsTab = .appearance
+
+    private var isRTL: Bool {
+        LocalizationManager.isRTL(preference.uiLanguage)
+    }
 
     var body: some View {
-        NavigationView {
+        HStack(spacing: 0) {
             // Sidebar
-            List {
+            VStack(alignment: .leading, spacing: 4) {
                 ForEach(SettingsTab.allCases) { tab in
                     SidebarRow(
                         title: tab.title,
@@ -68,34 +50,34 @@ struct SettingsView: View {
                         action: { selectedTab = tab }
                     )
                 }
+                Spacer()
             }
-            .listStyle(SidebarListStyle())
-            .frame(minWidth: 180)
+            .padding(.vertical, 16)
+            .padding(.horizontal, 10)
+            .frame(width: 175)
+            .background(Color(NSColor.controlBackgroundColor).opacity(0.45))
 
-            // Content
-            Group {
-                if let tab = selectedTab {
-                    ScrollView {
-                        VStack(spacing: 20) {
-                            switch tab {
-                            case .appearance:
-                                AppearanceSettingsView(preference: preference)
-                            case .rendering:
-                                RenderingSettingsView(preference: preference)
-                            case .editor:
-                                EditorSettingsView(preference: preference)
-                            }
-                        }
-                        .padding(24)
+            Divider()
+
+            // Content Detail Pane
+            ScrollView(.vertical, showsIndicators: true) {
+                VStack(alignment: .leading, spacing: 20) {
+                    switch selectedTab {
+                    case .appearance:
+                        AppearanceSettingsView(preference: preference)
+                    case .rendering:
+                        RenderingSettingsView(preference: preference)
+                    case .editor:
+                        EditorSettingsView(preference: preference)
                     }
-                } else {
-                    Color.clear
                 }
+                .padding(24)
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .frame(width: 600, height: 440)
-        .id("\(preference.uiLanguage)-\(preference.currentMode.rawValue)")
-        .environment(\.layoutDirection, LocalizationManager.isRTL(preference.uiLanguage) ? .rightToLeft : .leftToRight)
+        .frame(width: 620, height: 480)
+        .environment(\.layoutDirection, isRTL ? .rightToLeft : .leftToRight)
         .preferredColorScheme(preference.currentMode == .dark ? .dark : preference.currentMode == .light ? .light : nil)
     }
 
@@ -104,16 +86,16 @@ struct SettingsView: View {
             HStack(spacing: 10) {
                 Image(systemName: icon)
                     .font(.system(size: 13, weight: .medium))
-                    .frame(width: 18)
+                    .frame(width: 20)
                 Text(title)
-                    .font(.system(size: 13))
+                    .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
                 Spacer()
             }
+            .padding(.vertical, 6)
+            .padding(.horizontal, 8)
             .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())
-        .padding(.vertical, 4)
-        .padding(.horizontal, 6)
         .background(
             RoundedRectangle(cornerRadius: 6)
                 .fill(isSelected ? Color.accentColor.opacity(0.15) : Color.clear)
@@ -159,7 +141,6 @@ struct AppearanceSettingsView: View {
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(Color(NSColor.separatorColor), lineWidth: 1)
             )
-            .noFocusRing()
 
             SettingsSectionHeader(
                 title: NSLocalizedString("Language", comment: "Language section title"),
@@ -171,23 +152,23 @@ struct AppearanceSettingsView: View {
                                   value: "system", current: preference.uiLanguage) {
                     preference.uiLanguage = "system"
                 }
-                Divider().padding(.leading, 12)
+                Divider().padding(.horizontal, 12)
                 LanguageOptionRow(label: "English", value: "en", current: preference.uiLanguage) {
                     preference.uiLanguage = "en"
                 }
-                Divider().padding(.leading, 12)
+                Divider().padding(.horizontal, 12)
                 LanguageOptionRow(label: "Deutsch", value: "de", current: preference.uiLanguage) {
                     preference.uiLanguage = "de"
                 }
-                Divider().padding(.leading, 12)
+                Divider().padding(.horizontal, 12)
                 LanguageOptionRow(label: "Français", value: "fr", current: preference.uiLanguage) {
                     preference.uiLanguage = "fr"
                 }
-                Divider().padding(.leading, 12)
+                Divider().padding(.horizontal, 12)
                 LanguageOptionRow(label: "中文", value: "zh", current: preference.uiLanguage) {
                     preference.uiLanguage = "zh"
                 }
-                Divider().padding(.leading, 12)
+                Divider().padding(.horizontal, 12)
                 LanguageOptionRow(label: "العربية", value: "ar", current: preference.uiLanguage) {
                     preference.uiLanguage = "ar"
                 }
@@ -221,7 +202,6 @@ struct AppearanceSettingsView: View {
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(Color(NSColor.separatorColor), lineWidth: 1)
             )
-            .noFocusRing()
 
             if preference.uiLanguage != LocalizationManager.launchPreference {
                 HStack(spacing: 10) {
@@ -243,9 +223,6 @@ struct AppearanceSettingsView: View {
     }
 
     private func relaunchApp() {
-        // Force-flush both the shared preference store (0.3s debounced) and the
-        // standard user defaults (where AppleLanguages lives) so the spawned
-        // instance reads the current picker selection, not a stale value.
         AppearancePreference.shared.flushSharedPreferences()
         UserDefaults.standard.synchronize()
 
@@ -267,7 +244,7 @@ struct AppearanceSettingsView: View {
                 if current == value {
                     Image(systemName: "checkmark")
                         .foregroundColor(.accentColor)
-                        .font(.system(size: 11, weight: .semibold))
+                        .font(.system(size: 12, weight: .bold))
                 }
             }
             .padding(.horizontal, 12)
@@ -279,29 +256,30 @@ struct AppearanceSettingsView: View {
 
     private func ThemeOptionButton(mode: AppearanceMode, icon: String, label: String, current: AppearanceMode, action: @escaping () -> Void) -> some View {
         let isSelected = current == mode
-        return ZStack(alignment: .bottom) {
-            if isSelected {
-                Color.accentColor.opacity(0.12)
-            } else {
-                Color(NSColor.controlBackgroundColor)
-            }
-            VStack(spacing: 6) {
-                Image(systemName: icon)
-                    .font(.system(size: 18))
-                Text(label)
-                    .font(.system(size: 12))
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
-            .foregroundColor(isSelected ? .accentColor : .secondary)
-            .contentShape(Rectangle())
-            .onTapGesture { action() }
+        return Button(action: action) {
+            ZStack(alignment: .bottom) {
+                if isSelected {
+                    Color.accentColor.opacity(0.12)
+                } else {
+                    Color(NSColor.controlBackgroundColor)
+                }
+                VStack(spacing: 6) {
+                    Image(systemName: icon)
+                        .font(.system(size: 18))
+                    Text(label)
+                        .font(.system(size: 12))
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 14)
+                .foregroundColor(isSelected ? .accentColor : .secondary)
 
-            Rectangle()
-                .fill(isSelected ? Color.accentColor : Color.clear)
-                .frame(height: 2)
+                Rectangle()
+                    .fill(isSelected ? Color.accentColor : Color.clear)
+                    .frame(height: 2)
+            }
+            .contentShape(Rectangle())
         }
-        .noFocusRing()
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -324,35 +302,35 @@ struct RenderingSettingsView: View {
                     icon: "diagram",
                     isOn: Binding(get: { preference.enableMermaid }, set: { preference.enableMermaid = $0 })
                 )
-                Divider().padding(.leading, 52)
+                Divider().padding(.horizontal, 12)
                 FeatureToggleRow(
                     title: NSLocalizedString("KaTeX Math", comment: "KaTeX toggle title"),
                     subtitle: NSLocalizedString("Mathematical expressions and equations", comment: "KaTeX toggle subtitle"),
                     icon: "function",
                     isOn: Binding(get: { preference.enableKatex }, set: { preference.enableKatex = $0 })
                 )
-                Divider().padding(.leading, 52)
+                Divider().padding(.horizontal, 12)
                 FeatureToggleRow(
                     title: NSLocalizedString("Emoji Support", comment: "Emoji toggle title"),
                     subtitle: NSLocalizedString("GitHub flavored emoji codes like :smile:", comment: "Emoji toggle subtitle"),
                     icon: "face.smiling",
                     isOn: Binding(get: { preference.enableEmoji }, set: { preference.enableEmoji = $0 })
                 )
-                Divider().padding(.leading, 52)
+                Divider().padding(.horizontal, 12)
                 FeatureToggleRow(
                     title: NSLocalizedString("Typst Math", comment: "Typst toggle title"),
                     subtitle: NSLocalizedString("Typst math expressions in ```typst code blocks", comment: "Typst toggle subtitle"),
                     icon: "x.squareroot",
                     isOn: Binding(get: { preference.enableTypst }, set: { preference.enableTypst = $0 })
                 )
-                Divider().padding(.leading, 52)
+                Divider().padding(.horizontal, 12)
                 FeatureToggleRow(
                     title: NSLocalizedString("Collapse Blockquotes by Default", comment: "Blockquote collapse toggle title"),
                     subtitle: NSLocalizedString("Collapse blockquote sections when opening a document", comment: "Blockquote collapse toggle subtitle"),
                     icon: "text.quote",
                     isOn: Binding(get: { preference.collapseBlockquotesByDefault }, set: { preference.collapseBlockquotesByDefault = $0 })
                 )
-                Divider().padding(.leading, 52)
+                Divider().padding(.horizontal, 12)
                 FeatureToggleRow(
                     title: NSLocalizedString("Show Line Numbers", comment: "Line numbers toggle title"),
                     subtitle: NSLocalizedString("Display source line numbers in rendered preview and source view", comment: "Line numbers toggle subtitle"),
@@ -379,13 +357,14 @@ struct RenderingSettingsView: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
-                    .font(.system(size: 13))
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(.primary)
                 Text(subtitle)
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
 
-            Spacer()
+            Spacer(minLength: 16)
 
             Toggle("", isOn: isOn)
                 .toggleStyle(SwitchToggleStyle(tint: .accentColor))
@@ -504,11 +483,11 @@ struct EditorSettingsView: View {
                 VStack(spacing: 0) {
                     CodeThemeRow(name: NSLocalizedString("Default", comment: "Default code theme"),
                                  id: "default", color: Color(NSColor.textColor))
-                    Divider().padding(.leading, 36)
+                    Divider().padding(.horizontal, 12)
                     CodeThemeRow(name: "GitHub", id: "github", color: Color(red: 0.141, green: 0.161, blue: 0.243))
-                    Divider().padding(.leading, 36)
+                    Divider().padding(.horizontal, 12)
                     CodeThemeRow(name: "Monokai", id: "monokai", color: Color(red: 0.153, green: 0.157, blue: 0.133))
-                    Divider().padding(.leading, 36)
+                    Divider().padding(.horizontal, 12)
                     CodeThemeRow(name: "Atom One Dark", id: "atom-one-dark", color: Color(red: 0.157, green: 0.173, blue: 0.204))
                 }
                 .background(Color(NSColor.controlBackgroundColor))
@@ -539,7 +518,7 @@ struct EditorSettingsView: View {
                 if preference.codeHighlightTheme == id {
                     Image(systemName: "checkmark")
                         .foregroundColor(.accentColor)
-                        .font(.system(size: 11, weight: .semibold))
+                        .font(.system(size: 12, weight: .bold))
                 }
             }
             .padding(.horizontal, 12)

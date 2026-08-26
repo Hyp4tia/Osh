@@ -26,7 +26,14 @@ public enum LocalizationManager {
     /// True when the active preference is an RTL language; drives SwiftUI
     /// layout mirroring in the host app.
     public static func isRTL(_ preference: String) -> Bool {
-        preference == "ar" || preference == "he"
+        if preference == "ar" || preference == "he" {
+            return true
+        }
+        if preference == "system" {
+            let current = Locale.preferredLanguages.first?.lowercased() ?? "en"
+            return current.hasPrefix("ar") || current.hasPrefix("he")
+        }
+        return false
     }
 
     /// The preference that was active when `bootstrap` first ran. Used by the

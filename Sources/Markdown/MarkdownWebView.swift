@@ -208,11 +208,25 @@ struct MarkdownWebView: NSViewRepresentable {
                 name: .editsSaved,
                 object: nil
             )
+            DistributedNotificationCenter.default().addObserver(
+                self,
+                selector: #selector(handleSystemAppearanceChanged),
+                name: NSNotification.Name("AppleInterfaceThemeChangedNotification"),
+                object: nil
+            )
         }
         
         deinit {
             NotificationCenter.default.removeObserver(self)
+            DistributedNotificationCenter.default().removeObserver(self)
             stopFileMonitoring()
+        }
+        
+        @objc func handleSystemAppearanceChanged() {
+            guard let webView = currentWebView else { return }
+            if AppearancePreference.shared.currentMode == .system {
+                webView.evaluateJavaScript("if (typeof window.updateTheme === 'function') { window.updateTheme('system'); }", completionHandler: nil)
+            }
         }
         
         @objc func handleToggleSearch() {
