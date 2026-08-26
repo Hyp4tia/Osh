@@ -64,6 +64,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 struct MarkdownApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @ObservedObject var preference = AppearancePreference.shared
+    @ObservedObject private var editingSession = EditingSessionController.shared
 
     @State private var viewMode: ViewMode = .preview
 
@@ -78,6 +79,23 @@ struct MarkdownApp: App {
         }
         .commands {
             CommandGroup(after: .saveItem) {
+                Button(action: {
+                    NotificationCenter.default.post(name: .toggleEditing, object: nil)
+                }) {
+                    Text(editingSession.isEditing
+                         ? NSLocalizedString("Stop Editing", comment: "Stop editing menu item")
+                         : NSLocalizedString("Edit Markdown", comment: "Edit markdown menu item"))
+                }
+                .keyboardShortcut("e", modifiers: [.command])
+
+                Button(action: {
+                    NotificationCenter.default.post(name: .saveEdits, object: nil)
+                }) {
+                    Text(NSLocalizedString("Save", comment: "Save menu item"))
+                }
+                .keyboardShortcut("s", modifiers: [.command])
+                .disabled(!editingSession.isEditing)
+
                 Button(action: {
                     NotificationCenter.default.post(name: .reloadFile, object: nil)
                 }) {
@@ -204,7 +222,9 @@ private struct DocumentPreviewScene: View {
     let file: FileDocumentConfiguration<MarkdownDocument>
     @ObservedObject var preference: AppearancePreference
     @Binding var viewMode: ViewMode
+    @ObservedObject private var editingSession = EditingSessionController.shared
     @State private var toolbarToast: ToolbarToastState?
+    @State private var hostWindow: NSWindow?
 
     private let initialContentSize: CGSize
     private let reloadSuccessToastMessage = NSLocalizedString("已重新载入文档", comment: "Reload success toast")
@@ -221,7 +241,14 @@ private struct DocumentPreviewScene: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            MarkdownWebView(
+            if editingSession.isEditing {
+                SourceEditorView(
+                    text: $editingSession.draftText,
+                    appearanceMode: preference.currentMode,
+                    onSave: { saveEdits() }
+                )
+            } else {
+                MarkdownWebView(
                 content: file.document.text,
                 fileURL: file.fileURL,
                 appearanceMode: preference.currentMode,
@@ -235,6 +262,7 @@ private struct DocumentPreviewScene: View {
                 collapseBlockquotesByDefault: preference.collapseBlockquotesByDefault,
                 showLineNumbers: preference.showLineNumbers
             )
+            }
 
             if let version = DisplayVersion.text(in: .main) {
                 Text("v\(version)")
@@ -245,6 +273,15 @@ private struct DocumentPreviewScene: View {
             }
 
             HStack(spacing: 8) {
+                CircularToolbarIconButton(
+                    systemName: "square.and.pencil",
+                    foregroundColor: editingSession.isEditing ? .blue : Color(NSColor.labelColor),
+                    helpText: NSLocalizedString("Edit Markdown (⌘E)", comment: "Edit toggle tooltip"),
+                    appearance: preference.currentMode.nsAppearance
+                ) {
+                    toggleEditing(documentText: file.document.text, fileURL: file.fileURL)
+                }
+
                 CircularToolbarIconButton(
                     systemName: "arrow.clockwise",
                     foregroundColor: Color(NSColor.labelColor),
@@ -327,6 +364,21 @@ private struct DocumentPreviewScene: View {
                 UpdateRestorationManager.shared.saveLastOpenedFile(url: fileURL)
             }
         }
+        .onChange(of: editingSession.isEditing) { _ in
+            // Both directions post: entering pauses disk watching (and snapshots
+            // the baseline), leaving forces a re-render from disk.
+            NotificationCenter.default.post(name: .editsSaved, object: file.fileURL)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .toggleEditing)) { _ in
+            // Only the scene whose window is key may respond; other open
+            // document windows receive the same notification.
+            guard NSApp.keyWindow === hostWindow else { return }
+            toggleEditing(documentText: file.document.text, fileURL: file.fileURL)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .saveEdits)) { _ in
+            guard editingSession.isEditing else { return }
+            saveEdits()
+        }
         .frame(
             minWidth: WindowAccessor.minimumRestorableWindowSize.width,
             idealWidth: initialContentSize.width,
@@ -336,7 +388,12 @@ private struct DocumentPreviewScene: View {
             maxHeight: .infinity
         )
         .environmentObject(preference)
-        .background(WindowAccessor())
+        .background(
+            WindowAccessor()
+        )
+        .background(HostWindowCapture { window in
+            hostWindow = window
+        })
         .background(ToolbarFeedbackObserver { result in
             switch result {
             case .reloadSuccess:
@@ -347,6 +404,59 @@ private struct DocumentPreviewScene: View {
                 showToolbarToast(resetZoomToastMessage)
             }
         })
+    }
+
+    // MARK: - Editing
+
+    private func toggleEditing(documentText: String, fileURL: URL?) {
+        if editingSession.isEditing {
+            if editingSession.hasUnsavedChanges {
+                confirmDiscardThenClose()
+            } else {
+                editingSession.endEditing(discardingChanges: true)
+            }
+        } else {
+            editingSession.beginEditing(currentContent: documentText, fileURL: fileURL)
+        }
+    }
+
+    private func saveEdits() {
+        do {
+            let url = try editingSession.save()
+            showToolbarToast(NSLocalizedString("Saved", comment: "Save success toast"))
+            // The disk watcher would normally pick the change up; posting
+            // editsSaved makes the WebView re-render immediately and refresh
+            // its size/mtime baseline so it doesn't treat our own write as an
+            // external modification.
+            NotificationCenter.default.post(name: .editsSaved, object: url)
+        } catch {
+            showToolbarToast(String(format: NSLocalizedString("Save failed: %@", comment: "Save failure toast"), error.localizedDescription))
+        }
+    }
+
+    private func confirmDiscardThenClose() {
+        guard let window = NSApp.keyWindow else {
+            editingSession.endEditing(discardingChanges: true)
+            return
+        }
+        let alert = NSAlert()
+        alert.messageText = NSLocalizedString("Unsaved changes", comment: "Unsaved changes alert title")
+        alert.informativeText = NSLocalizedString("You have unsaved changes. Save them before leaving edit mode?", comment: "Unsaved changes alert body")
+        alert.addButton(withTitle: NSLocalizedString("Save", comment: "Save button"))
+        alert.addButton(withTitle: NSLocalizedString("Discard Changes", comment: "Discard button"))
+        alert.addButton(withTitle: NSLocalizedString("Cancel", comment: "Cancel button"))
+        alert.alertStyle = .warning
+        alert.beginSheetModal(for: window) { response in
+            switch response {
+            case .alertFirstButtonReturn:
+                self.saveEdits()
+                self.editingSession.endEditing(discardingChanges: true)
+            case .alertSecondButtonReturn:
+                self.editingSession.endEditing(discardingChanges: true)
+            default:
+                break
+            }
+        }
     }
 
     private func showToolbarToast(_ message: String) {
@@ -371,6 +481,24 @@ private struct DocumentPreviewScene: View {
 private struct ToolbarToastState: Equatable {
     let id: UUID
     let message: String
+}
+
+/// Captures this scene's host window so notification handlers can tell which
+/// open document a menu command targets.
+private struct HostWindowCapture: NSViewRepresentable {
+    let onWindow: (NSWindow) -> Void
+
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async {
+            if let window = view.window {
+                onWindow(window)
+            }
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {}
 }
 
 private struct ToolbarFeedbackToastHost: NSViewRepresentable {

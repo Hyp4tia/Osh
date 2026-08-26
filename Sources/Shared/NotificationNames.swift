@@ -13,4 +13,11 @@ extension Notification.Name {
     static let reloadFileFailed    = Notification.Name("reloadFileFailed")
     static let resetZoomCompleted  = Notification.Name("resetZoomCompleted")
     static let openInExternalEditor = Notification.Name("openInExternalEditor")
+
+    // Editing session
+    static let toggleEditing = Notification.Name("toggleEditing")
+    static let saveEdits     = Notification.Name("saveEdits")
+    /// Posted after a successful save. object = file URL. The WebView coordinator
+    /// listens for this to re-render from disk and refresh its watch baseline.
+    static let editsSaved    = Notification.Name("editsSaved")
 }

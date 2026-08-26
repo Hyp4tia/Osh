@@ -97,3 +97,16 @@
 "已重新载入文档" = "Dokument neu geladen";
 "已重置缩放" = "Zoom zurückgesetzt";
 "重新载入失败" = "Dokument konnte nicht neu geladen werden";
+
+/* === Editing === */
+"Edit Markdown (⌘E)" = "Markdown bearbeiten (⌘E)";
+"Edit Markdown" = "Markdown bearbeiten";
+"Stop Editing" = "Bearbeiten beenden";
+"Save" = "Sichern";
+"Saved" = "Gesichert";
+"Save failed: %@" = "Sichern fehlgeschlagen: %@";
+"No file is open to save." = "Keine Datei zum Sichern ge\u00f6ffnet.";
+"Unsaved changes" = "Ungespeicherte \u00c4nderungen";
+"You have unsaved changes. Save them before leaving edit mode?" = "Es gibt ungespeicherte \u00c4nderungen. Vor dem Verlassen des Bearbeitungsmodus sichern?";
+"Discard Changes" = "\u00c4nderungen verwerfen";
+"Cancel" = "Abbrechen";

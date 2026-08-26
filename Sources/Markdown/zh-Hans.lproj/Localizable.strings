@@ -97,3 +97,16 @@
 "已重新载入文档" = "已重新载入文档";
 "已重置缩放" = "已重置缩放";
 "重新载入失败" = "重新载入失败";
+
+/* === 编辑功能 === */
+"Edit Markdown (⌘E)" = "编辑 Markdown (⌘E)";
+"Edit Markdown" = "编辑 Markdown";
+"Stop Editing" = "停止编辑";
+"Save" = "存储";
+"Saved" = "已存储";
+"Save failed: %@" = "存储失败：%@";
+"No file is open to save." = "没有打开可存储的文件。";
+"Unsaved changes" = "未存储的更改";
+"You have unsaved changes. Save them before leaving edit mode?" = "有未存储的更改。离开编辑模式前要存储吗？";
+"Discard Changes" = "放弃更改";
+"Cancel" = "取消";

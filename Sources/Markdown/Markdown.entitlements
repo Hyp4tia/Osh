@@ -2,15 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- Temporarily disable App Sandbox for image loading -->
-    <!-- TODO: Re-enable sandbox with proper file access configuration -->
-    <!--
-    <key>com.apple.security.app-sandbox</key>
-    <true/>
-    -->
+    <!-- App Sandbox is intentionally disabled in Debug (matches upstream
+         behavior; see git history). Release uses MarkdownRelease.entitlements. -->
 
-    <!-- Allow read-only access to user-selected files (e.g. Markdown documents) -->
-    <key>com.apple.security.files.user-selected.read-only</key>
+    <!-- Allow read-write access to user-selected files (direct editing). -->
+    <key>com.apple.security.files.user-selected.read-write</key>
     <true/>
 
     <!-- Allow attaching debugger in Debug builds -->
@@ -24,7 +20,7 @@
     <!-- Allow JIT (Recommended for WebView performance/stability) -->
     <key>com.apple.security.cs.allow-jit</key>
     <true/>
-    
+
     <!-- Allow printing (WebView often tries to access print services) -->
     <key>com.apple.security.print</key>
     <true/>
@@ -52,4 +48,3 @@
          See: https://github.com/Zeyadistired/Osh/issues/13 -->
 </dict>
 </plist>
-

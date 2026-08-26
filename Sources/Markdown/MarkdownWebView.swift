@@ -134,6 +134,9 @@ struct MarkdownWebView: NSViewRepresentable {
         private let pollingInterval: TimeInterval = 2.0
         private var hasAppliedInitialZoomReset: Bool = false
         private let renderVersion = RenderVersionCounter()
+        /// True while the user is inside the edit overlay: disk-change reloads
+        /// are suppressed so external watchers can't clobber the in-progress draft.
+        var isEditingPaused = false
 
         override init() {
             super.init()
@@ -189,6 +192,12 @@ struct MarkdownWebView: NSViewRepresentable {
                 self,
                 selector: #selector(handleOpenInExternalEditor),
                 name: .openInExternalEditor,
+                object: nil
+            )
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleEditsSaved),
+                name: .editsSaved,
                 object: nil
             )
         }
@@ -265,6 +274,33 @@ struct MarkdownWebView: NSViewRepresentable {
             } catch {
                 os_log("Failed to open in external editor: %{public}@", log: logger, type: .error, error.localizedDescription)
             }
+        }
+
+        /// Called after a successful save (or on leaving edit mode): re-render
+        /// from disk immediately and refresh the watch baseline so our own write
+        /// isn't misread as an external change.
+        @objc func handleEditsSaved(_ notification: Notification) {
+            guard let webView = currentWebView,
+                  let window = webView.window,
+                  window.isKeyWindow || window.windowController?.document === NSDocumentController.shared.currentDocument else { return }
+
+            isEditingPaused = EditingSessionController.shared.isEditing
+
+            if isEditingPaused {
+                // Save while staying in edit mode: just refresh the baseline.
+                if let attrs = try? FileManager.default.attributesOfItem(atPath: currentFileURL?.path ?? ""),
+                   let size = attrs[.size] as? UInt64 {
+                    lastKnownFileSize = size
+                    lastKnownFileModificationDate = attrs[.modificationDate] as? Date
+                }
+                return
+            }
+
+            // Leaving edit mode: reload from disk and resume normal watching.
+            if let url = notification.object as? URL ?? currentFileURL {
+                _ = reloadFromDisk(url: url, force: true)
+            }
+            isEditingPaused = false
         }
 
         @objc func handleExportHTML() {
@@ -729,6 +765,7 @@ struct MarkdownWebView: NSViewRepresentable {
         }
 
         private func pollFileForChanges() {
+            guard !isEditingPaused else { return }
             guard let url = currentFileURL else { return }
             guard let attrs = try? FileManager.default.attributesOfItem(atPath: url.path) else { return }
             let newSize = attrs[.size] as? UInt64 ?? 0
@@ -743,6 +780,7 @@ struct MarkdownWebView: NSViewRepresentable {
 
         @discardableResult
         private func reloadFromDisk(url: URL, force: Bool = false) -> Bool {
+            guard !isEditingPaused else { return true }
             do {
                 let attrs = try FileManager.default.attributesOfItem(atPath: url.path)
                 let newSize = attrs[.size] as? UInt64 ?? 0

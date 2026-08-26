@@ -2,8 +2,9 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <!-- Allow read-only access to user-selected Markdown documents. -->
-    <key>com.apple.security.files.user-selected.read-only</key>
+    <!-- Allow read-write access to user-selected files (required for direct
+         Markdown editing: saving edits back to the opened document). -->
+    <key>com.apple.security.files.user-selected.read-write</key>
     <true/>
 
     <!-- Allow network access for WebView and remote images. -->

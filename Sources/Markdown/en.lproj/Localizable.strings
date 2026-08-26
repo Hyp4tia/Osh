@@ -97,3 +97,16 @@
 "已重新载入文档" = "Document reloaded";
 "已重置缩放" = "Zoom reset";
 "重新载入失败" = "Failed to reload document";
+
+/* === Editing === */
+"Edit Markdown (⌘E)" = "Edit Markdown (⌘E)";
+"Edit Markdown" = "Edit Markdown";
+"Stop Editing" = "Stop Editing";
+"Save" = "Save";
+"Saved" = "Saved";
+"Save failed: %@" = "Save failed: %@";
+"No file is open to save." = "No file is open to save.";
+"Unsaved changes" = "Unsaved changes";
+"You have unsaved changes. Save them before leaving edit mode?" = "You have unsaved changes. Save them before leaving edit mode?";
+"Discard Changes" = "Discard Changes";
+"Cancel" = "Cancel";
