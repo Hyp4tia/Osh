@@ -24,7 +24,7 @@
 
 ## What is Osh?
 
-**Osh** (ⲱϣ) takes its name from the ancient Coptic word for **“to read”**. 
+**Osh** (ⲱϣ) takes its name from the Coptic word for **“to read”**. 
 
 Unlike heavy text editors or bloated browser plugins, Osh is built specifically for macOS to do one thing exceptionally well: provide an effortless, distraction-free reading experience for Markdown documents.
 
