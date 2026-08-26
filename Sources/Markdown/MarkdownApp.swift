@@ -10,7 +10,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     )
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        print("✅ Sparkle updater controller initialized")
 
         if CommandLine.arguments.contains("--register-only") {
             NSApplication.shared.terminate(nil)
@@ -29,22 +28,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func handleURLEvent(_ event: NSAppleEventDescriptor, withReplyEvent replyEvent: NSAppleEventDescriptor) {
         guard let urlString = event.paramDescriptor(forKeyword: AEKeyword(keyDirectObject))?.stringValue,
               let url = URL(string: urlString) else {
-            print("❌ Invalid URL event")
             return
         }
 
-        print("🔵 Received URL: \(urlString)")
 
         if url.scheme == "markdownpreview",
            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
            let path = components.queryItems?.first(where: { $0.name == "path" })?.value {
             let fileURL = URL(fileURLWithPath: path)
-            print("🔵 Opening file: \(fileURL.path)")
             NSDocumentController.shared.openDocument(withContentsOf: fileURL, display: true) { _, _, error in
                 if let error = error {
-                    print("❌ Failed to open document: \(error.localizedDescription)")
                 } else {
-                    print("✅ Successfully opened document")
                 }
             }
         }
@@ -715,7 +709,6 @@ struct CheckForUpdatesView: View {
 
     var body: some View {
         Button(NSLocalizedString("Check for Updates...", comment: "Check for updates menu item")) {
-            print("🔍 [DEBUG] Triggering update check...")
             NSApp.sendAction(#selector(SPUStandardUpdaterController.checkForUpdates(_:)), to: updaterController, from: nil)
         }
         .keyboardShortcut("u", modifiers: [.command])

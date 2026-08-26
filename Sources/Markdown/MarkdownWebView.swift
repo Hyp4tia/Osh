@@ -97,7 +97,6 @@ struct MarkdownWebView: NSViewRepresentable {
     }
 
     func updateNSView(_ webView: WKWebView, context: Context) {
-        print("🔵 updateNSView called with viewMode=\(viewMode)")
         if let appearance = appearanceMode.nsAppearance {
             webView.appearance = appearance
         } else {
@@ -506,7 +505,6 @@ struct MarkdownWebView: NSViewRepresentable {
         }
         
         func render(webView: WKWebView, content: String, fileURL: URL?, viewMode: ViewMode, appearanceMode: AppearanceMode, baseFontSize: Double, enableMermaid: Bool, enableKatex: Bool, enableEmoji: Bool, enableTypst: Bool, codeHighlightTheme: String, collapseBlockquotesByDefault: Bool, showLineNumbers: Bool = false, readingTheme: String = "default") {
-            print("🟢 Coordinator.render called with viewMode=\(viewMode)")
             lastAppearanceMode = appearanceMode
             lastBaseFontSize = baseFontSize
             lastEnableMermaid = enableMermaid
