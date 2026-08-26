@@ -278,7 +278,7 @@ private struct DocumentPreviewScene: View {
                     .font(.system(size: 10, weight: .regular, design: .monospaced))
                     .foregroundColor(Color.secondary.opacity(0.5))
                     .padding(.top, 48)
-                    .padding(.trailing, 72)
+                    .padding(.trailing, 88)
             }
 
             HStack(spacing: 8) {
@@ -362,7 +362,9 @@ private struct DocumentPreviewScene: View {
                     }
                 }
             }
-            .padding([.top, .trailing], 10)
+            .padding(.top, 10)
+            // Extra trailing inset keeps the icon row clear of the scrollbar.
+            .padding(.trailing, 26)
 
             ToolbarFeedbackToastHost(toast: toolbarToast)
                 .allowsHitTesting(false)
