@@ -97,3 +97,33 @@
 "已重新载入文档" = "Dokument neu geladen";
 "已重置缩放" = "Zoom zurückgesetzt";
 "重新载入失败" = "Dokument konnte nicht neu geladen werden";
+
+/* === Editing === */
+"Edit Markdown (⌘E)" = "Markdown bearbeiten (⌘E)";
+"Edit Markdown" = "Markdown bearbeiten";
+"Stop Editing" = "Bearbeiten beenden";
+"Save" = "Sichern";
+"Saved" = "Gesichert";
+"Save failed: %@" = "Sichern fehlgeschlagen: %@";
+"No file is open to save." = "Keine Datei zum Sichern ge\u00f6ffnet.";
+"Unsaved changes" = "Ungespeicherte \u00c4nderungen";
+"You have unsaved changes. Save them before leaving edit mode?" = "Es gibt ungespeicherte \u00c4nderungen. Vor dem Verlassen des Bearbeitungsmodus sichern?";
+"Discard Changes" = "\u00c4nderungen verwerfen";
+"Cancel" = "Abbrechen";
+"Export as Word…" = "Als Word exportieren…";
+
+/* === Welcome === */
+"A quiet reader for Markdown." = "Ein ruhiger Markdown-Reader.";
+"or drop files here" = "oder Dateien hier ablegen";
+"Recent" = "Zuletzt geöffnet";
+"Settings" = "Einstellungen";
+"Help" = "Hilfe";
+
+/* === Reading Themes === */
+"Reading Theme" = "Lese-Design";
+"Color palette for the rendered document" = "Farbpalette f\u00fcr das gerenderte Dokument";
+"Default" = "Standard";
+"Sepia" = "Sepia";
+"Paper" = "Papier";
+"Midnight" = "Mitternacht";
+"Nord" = "Nord";

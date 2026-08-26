@@ -74,6 +74,7 @@ targets:
       - Tests/MarkdownTests
       - Sources/Markdown/WindowAccessor.swift
       - Sources/Markdown/ResourceLoader.swift
+      - Sources/Markdown/EditingSessionController.swift
       - Sources/MarkdownPreview
       - Sources/Shared
       - benchmark/swift-bench/RenderBenchmarkTests.swift

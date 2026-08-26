@@ -97,3 +97,33 @@
 "已重新载入文档" = "已重新载入文档";
 "已重置缩放" = "已重置缩放";
 "重新载入失败" = "重新载入失败";
+
+/* === 编辑功能 === */
+"Edit Markdown (⌘E)" = "编辑 Markdown (⌘E)";
+"Edit Markdown" = "编辑 Markdown";
+"Stop Editing" = "停止编辑";
+"Save" = "存储";
+"Saved" = "已存储";
+"Save failed: %@" = "存储失败：%@";
+"No file is open to save." = "没有打开可存储的文件。";
+"Unsaved changes" = "未存储的更改";
+"You have unsaved changes. Save them before leaving edit mode?" = "有未存储的更改。离开编辑模式前要存储吗？";
+"Discard Changes" = "放弃更改";
+"Cancel" = "取消";
+"Export as Word…" = "\u5bfc\u51fa\u4e3a Word…";
+
+/* === Welcome === */
+"A quiet reader for Markdown." = "安静的 Markdown 阅读器。";
+"or drop files here" = "或将文件拖到此处";
+"Recent" = "最近打开";
+"Settings" = "设置";
+"Help" = "帮助";
+
+/* === Reading Themes === */
+"Reading Theme" = "阅读主题";
+"Color palette for the rendered document" = "文档阅读配色";
+"Default" = "默认";
+"Sepia" = "羊皮纸";
+"Paper" = "纸张";
+"Midnight" = "午夜";
+"Nord" = "Nord";

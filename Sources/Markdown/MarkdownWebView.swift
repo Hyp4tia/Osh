@@ -3,6 +3,7 @@ import AppKit
 import WebKit
 import os.log
 import CoreGraphics
+import UniformTypeIdentifiers
 
 enum ViewMode {
     case preview
@@ -22,7 +23,8 @@ struct MarkdownWebView: NSViewRepresentable {
     var codeHighlightTheme: String = "default"
     var collapseBlockquotesByDefault: Bool = false
     var showLineNumbers: Bool = true
-    
+    var readingTheme: String = "default"
+
     private let localSchemeHandler = LocalSchemeHandler()
     
     func makeCoordinator() -> Coordinator {
@@ -95,14 +97,13 @@ struct MarkdownWebView: NSViewRepresentable {
     }
 
     func updateNSView(_ webView: WKWebView, context: Context) {
-        print("🔵 updateNSView called with viewMode=\(viewMode)")
         if let appearance = appearanceMode.nsAppearance {
             webView.appearance = appearance
         } else {
             webView.appearance = nil
         }
 
-        context.coordinator.render(webView: webView, content: content, fileURL: fileURL, viewMode: viewMode, appearanceMode: appearanceMode, baseFontSize: baseFontSize, enableMermaid: enableMermaid, enableKatex: enableKatex, enableEmoji: enableEmoji, enableTypst: enableTypst, codeHighlightTheme: codeHighlightTheme, collapseBlockquotesByDefault: collapseBlockquotesByDefault, showLineNumbers: showLineNumbers)
+        context.coordinator.render(webView: webView, content: content, fileURL: fileURL, viewMode: viewMode, appearanceMode: appearanceMode, baseFontSize: baseFontSize, enableMermaid: enableMermaid, enableKatex: enableKatex, enableEmoji: enableEmoji, enableTypst: enableTypst, codeHighlightTheme: codeHighlightTheme, collapseBlockquotesByDefault: collapseBlockquotesByDefault, showLineNumbers: showLineNumbers, readingTheme: readingTheme)
     }
 
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler {
@@ -129,11 +130,15 @@ struct MarkdownWebView: NSViewRepresentable {
         private var lastCodeHighlightTheme: String = "default"
         private var lastCollapseBlockquotesByDefault: Bool = false
         private var lastShowLineNumbers: Bool = true
+        private var lastReadingTheme: String = "default"
         private var lastRenderedContent: String = ""
         private var pollingTimer: Timer?
         private let pollingInterval: TimeInterval = 2.0
         private var hasAppliedInitialZoomReset: Bool = false
         private let renderVersion = RenderVersionCounter()
+        /// True while the user is inside the edit overlay: disk-change reloads
+        /// are suppressed so external watchers can't clobber the in-progress draft.
+        var isEditingPaused = false
 
         override init() {
             super.init()
@@ -153,6 +158,12 @@ struct MarkdownWebView: NSViewRepresentable {
                 self,
                 selector: #selector(handleExportPDF),
                 name: .exportPDF,
+                object: nil
+            )
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleExportDOCX),
+                name: .exportDOCX,
                 object: nil
             )
             NotificationCenter.default.addObserver(
@@ -189,6 +200,12 @@ struct MarkdownWebView: NSViewRepresentable {
                 self,
                 selector: #selector(handleOpenInExternalEditor),
                 name: .openInExternalEditor,
+                object: nil
+            )
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleEditsSaved),
+                name: .editsSaved,
                 object: nil
             )
         }
@@ -267,6 +284,33 @@ struct MarkdownWebView: NSViewRepresentable {
             }
         }
 
+        /// Called after a successful save (or on leaving edit mode): re-render
+        /// from disk immediately and refresh the watch baseline so our own write
+        /// isn't misread as an external change.
+        @objc func handleEditsSaved(_ notification: Notification) {
+            guard let webView = currentWebView,
+                  let window = webView.window,
+                  window.isKeyWindow || window.windowController?.document === NSDocumentController.shared.currentDocument else { return }
+
+            isEditingPaused = EditingSessionController.shared.isEditing
+
+            if isEditingPaused {
+                // Save while staying in edit mode: just refresh the baseline.
+                if let attrs = try? FileManager.default.attributesOfItem(atPath: currentFileURL?.path ?? ""),
+                   let size = attrs[.size] as? UInt64 {
+                    lastKnownFileSize = size
+                    lastKnownFileModificationDate = attrs[.modificationDate] as? Date
+                }
+                return
+            }
+
+            // Leaving edit mode: reload from disk and resume normal watching.
+            if let url = notification.object as? URL ?? currentFileURL {
+                _ = reloadFromDisk(url: url, force: true)
+            }
+            isEditingPaused = false
+        }
+
         @objc func handleExportHTML() {
             guard let webView = currentWebView,
                   let win = webView.window,
@@ -293,6 +337,145 @@ struct MarkdownWebView: NSViewRepresentable {
             }
         }
         
+        /// DOCX export: pulls the typed block model from the rendered DOM via
+        /// window.exportDocxModel(), converts it to WordprocessingML, and saves.
+        @objc func handleExportDOCX() {
+            guard let webView = currentWebView,
+                  let win = webView.window,
+                  win.isKeyWindow || win.windowController?.document === NSDocumentController.shared.currentDocument else { return }
+
+            webView.evaluateJavaScript("window.exportDocxModel()") { [weak self] result, error in
+                guard let self else { return }
+                if let error {
+                    os_log("exportDocxModel JS error: %{public}@", log: self.logger, type: .error, error.localizedDescription)
+                    return
+                }
+                DispatchQueue.main.async {
+                    guard let json = result as? String,
+                          let payload = try? JSONSerialization.jsonObject(with: Data(json.utf8)),
+                          let dict = payload as? [String: Any] else {
+                        // WKWebView serializes dictionaries natively; handle both shapes.
+                        if let dict = result as? [String: Any] {
+                            self.buildAndSaveDOCX(from: dict)
+                        } else {
+                            os_log("exportDocxModel: unexpected result type", log: self.logger, type: .error)
+                        }
+                        return
+                    }
+                    self.buildAndSaveDOCX(from: dict)
+                }
+            }
+        }
+
+        private func buildAndSaveDOCX(from dict: [String: Any]) {
+            var exporter = DocxExporter()
+
+            let images = dict["images"] as? [String: String] ?? [:]
+            var imageDataForRID: [String: (data: Data, ext: String)] = [:]
+            var ridByKey: [String: String] = [:]
+            for (index, key) in images.keys.sorted().enumerated() {
+                let rid = "rId\(100 + index)"  // image rIds start at 100 to avoid hyperlink collisions
+                ridByKey[key] = rid
+                if let dataURI = images[key], dataURI.hasPrefix("data:") {
+                    let parts = dataURI.split(separator: ";", maxSplits: 1)
+                    if parts.count == 2, let comma = parts[1].firstIndex(of: ","),
+                       let data = Data(base64Encoded: String(parts[1][parts[1].index(after: comma)...])) {
+                        let mime = String(parts[0].dropFirst(5))  // strip "data:"
+                        let ext = Self.extensionForMIME(mime)
+                        imageDataForRID[rid] = (data: data, ext: ext)
+                    }
+                }
+            }
+
+            var blocks: [DocxExporter.Block] = []
+            for raw in dict["blocks"] as? [[String: Any]] ?? [] {
+                var block = DocxExporter.Block(kind: .paragraph)
+                switch raw["kind"] as? String {
+                case "heading":
+                    block.kind = .heading(level: raw["level"] as? Int ?? 1)
+                case "listItem":
+                    block.kind = .listItem(listTag: raw["listTag"] as? String ?? "ul")
+                case "codeBlock":
+                    block.kind = .codeBlock
+                case "blockquoteParagraph":
+                    block.kind = .blockquoteParagraph
+                case "tableRow":
+                    block.kind = .tableRow(isHeader: raw["isHeader"] as? Bool ?? false)
+                    block.cells = Self.runsArray(fromRaw: raw["cells"])
+                default:
+                    if raw["imageSrc"] as? String != nil {
+                        block.imageRID = ridByKey[raw["imageSrc"] as? String ?? ""]
+                    }
+                }
+                block.directionRTL = raw["dirRTL"] as? Bool ?? false
+                block.runs = Self.runs(fromRaw: raw["runs"])
+                blocks.append(block)
+            }
+
+            exporter.pixelDimensionsProvider = { path in
+                guard let entry = imageDataForRID.first(where: { path.contains($0.key) })?.value else {
+                    return nil
+                }
+                return ImageDimensionParser.dimensions(of: entry.data)
+            }
+
+            let data = exporter.docx(blocks: blocks, imageDataForRID: imageDataForRID)
+
+            let panel = NSSavePanel()
+            panel.allowedContentTypes = [
+                UTType(filenameExtension: "docx") ?? .data
+            ]
+            panel.nameFieldStringValue = defaultExportFilename(extension: "docx")
+            if let fileURL = currentFileURL {
+                panel.directoryURL = fileURL.deletingLastPathComponent()
+            }
+            panel.begin { response in
+                guard response == .OK, let url = panel.url else { return }
+                do {
+                    try data.write(to: url, options: [.atomic])
+                    os_log("Exported DOCX to: %@", log: self.logger, type: .default, url.path)
+                } catch {
+                    os_log("Failed to write DOCX: %@", log: self.logger, type: .error, error.localizedDescription)
+                }
+            }
+        }
+
+        static func runs(fromRaw value: Any?) -> [DocxExporter.InlineRun] {
+            guard let array = value as? [[String: Any]] else { return [] }
+            return array.map { item in
+                DocxExporter.InlineRun(
+                    text: item["text"] as? String ?? "",
+                    bold: item["bold"] as? Bool ?? false,
+                    italic: item["italic"] as? Bool ?? false,
+                    code: item["code"] as? Bool ?? false,
+                    linkURL: item["linkURL"] as? String)
+            }
+        }
+
+        static func runsArray(fromRaw value: Any?) -> [[DocxExporter.InlineRun]] {
+            guard let cells = value as? [[[String: Any]]] else { return [] }
+            return cells.map { cell in
+                cell.map { item in
+                    DocxExporter.InlineRun(
+                        text: item["text"] as? String ?? "",
+                        bold: item["bold"] as? Bool ?? false,
+                        italic: item["italic"] as? Bool ?? false,
+                        code: item["code"] as? Bool ?? false,
+                        linkURL: item["linkURL"] as? String)
+                }
+            }
+        }
+
+        static func extensionForMIME(_ mime: String) -> String {
+            switch mime {
+            case "image/gif": return "gif"
+            case "image/jpeg": return "jpg"
+            case "image/svg+xml": return "svg"
+            case "image/webp": return "webp"
+            default: return "png"
+            }
+        }
+
         @objc func handleExportPDF() {
             guard let webView = currentWebView,
                   let win = webView.window,
@@ -321,8 +504,7 @@ struct MarkdownWebView: NSViewRepresentable {
             return fileURL.deletingPathExtension().lastPathComponent + ".\(ext)"
         }
         
-        func render(webView: WKWebView, content: String, fileURL: URL?, viewMode: ViewMode, appearanceMode: AppearanceMode, baseFontSize: Double, enableMermaid: Bool, enableKatex: Bool, enableEmoji: Bool, enableTypst: Bool, codeHighlightTheme: String, collapseBlockquotesByDefault: Bool, showLineNumbers: Bool = false) {
-            print("🟢 Coordinator.render called with viewMode=\(viewMode)")
+        func render(webView: WKWebView, content: String, fileURL: URL?, viewMode: ViewMode, appearanceMode: AppearanceMode, baseFontSize: Double, enableMermaid: Bool, enableKatex: Bool, enableEmoji: Bool, enableTypst: Bool, codeHighlightTheme: String, collapseBlockquotesByDefault: Bool, showLineNumbers: Bool = false, readingTheme: String = "default") {
             lastAppearanceMode = appearanceMode
             lastBaseFontSize = baseFontSize
             lastEnableMermaid = enableMermaid
@@ -358,7 +540,7 @@ struct MarkdownWebView: NSViewRepresentable {
             }
 
             pendingRender = { [weak self] in
-                self?.executeRender(webView: webView, content: content, fileURL: fileURL, viewMode: viewMode, appearanceMode: appearanceMode, baseFontSize: baseFontSize, enableMermaid: enableMermaid, enableKatex: enableKatex, enableEmoji: enableEmoji, enableTypst: enableTypst, codeHighlightTheme: codeHighlightTheme, collapseBlockquotesByDefault: collapseBlockquotesByDefault, showLineNumbers: showLineNumbers)
+                self?.executeRender(webView: webView, content: content, fileURL: fileURL, viewMode: viewMode, appearanceMode: appearanceMode, baseFontSize: baseFontSize, enableMermaid: enableMermaid, enableKatex: enableKatex, enableEmoji: enableEmoji, enableTypst: enableTypst, codeHighlightTheme: codeHighlightTheme, collapseBlockquotesByDefault: collapseBlockquotesByDefault, showLineNumbers: showLineNumbers, readingTheme: readingTheme)
             }
 
             if isWebViewLoaded {
@@ -369,8 +551,8 @@ struct MarkdownWebView: NSViewRepresentable {
             }
         }
 
-        private func executeRender(webView: WKWebView, content: String, fileURL: URL?, viewMode: ViewMode, appearanceMode: AppearanceMode, baseFontSize: Double, enableMermaid: Bool, enableKatex: Bool, enableEmoji: Bool, enableTypst: Bool, codeHighlightTheme: String, collapseBlockquotesByDefault: Bool, showLineNumbers: Bool = false) {
-            let onlyThemeChanged = (content == lastRenderedContent) && (viewMode == .preview) && (viewMode == lastViewMode) && (collapseBlockquotesByDefault == lastCollapseBlockquotesByDefault) && (showLineNumbers == lastShowLineNumbers)
+        private func executeRender(webView: WKWebView, content: String, fileURL: URL?, viewMode: ViewMode, appearanceMode: AppearanceMode, baseFontSize: Double, enableMermaid: Bool, enableKatex: Bool, enableEmoji: Bool, enableTypst: Bool, codeHighlightTheme: String, collapseBlockquotesByDefault: Bool, showLineNumbers: Bool = false, readingTheme: String = "default") {
+            let onlyThemeChanged = (content == lastRenderedContent) && (viewMode == .preview) && (viewMode == lastViewMode) && (collapseBlockquotesByDefault == lastCollapseBlockquotesByDefault) && (showLineNumbers == lastShowLineNumbers) && (readingTheme == lastReadingTheme)
             if onlyThemeChanged {
                 os_log("🔵 FAST PATH: only theme changed, viewMode=%{public}@ lastViewMode=%{public}@", log: logger, type: .debug, String(describing: viewMode), String(describing: lastViewMode))
                 let theme: String
@@ -380,7 +562,7 @@ struct MarkdownWebView: NSViewRepresentable {
                 case .system: theme = "system"
                 }
                 lastAppearanceMode = appearanceMode
-                webView.evaluateJavaScript("window.updateTheme('\(theme)');") { [weak self] _, error in
+                webView.evaluateJavaScript("window.updateTheme('\(theme)'); window.updateReadingTheme && window.updateReadingTheme('\(readingTheme)');") { [weak self] _, error in
                     if let error = error {
                         os_log("JS updateTheme error: %{public}@", log: self?.logger ?? .default, type: .error, error.localizedDescription)
                     }
@@ -395,6 +577,7 @@ struct MarkdownWebView: NSViewRepresentable {
             lastViewMode = viewMode
             lastCollapseBlockquotesByDefault = collapseBlockquotesByDefault
             lastShowLineNumbers = showLineNumbers
+            lastReadingTheme = readingTheme
 
             guard let contentData = try? JSONSerialization.data(withJSONObject: [content], options: []),
                   let contentJsonArray = String(data: contentData, encoding: .utf8) else {
@@ -428,6 +611,7 @@ struct MarkdownWebView: NSViewRepresentable {
             options["enableTypst"] = enableTypst
             options["collapseBlockquotes"] = collapseBlockquotesByDefault
             options["showLineNumbers"] = showLineNumbers
+            options["readingTheme"] = readingTheme
             options["uiLanguage"] = AppearancePreference.shared.uiLanguage
             options["renderVersion"] = renderVersion.next()
 
@@ -729,6 +913,7 @@ struct MarkdownWebView: NSViewRepresentable {
         }
 
         private func pollFileForChanges() {
+            guard !isEditingPaused else { return }
             guard let url = currentFileURL else { return }
             guard let attrs = try? FileManager.default.attributesOfItem(atPath: url.path) else { return }
             let newSize = attrs[.size] as? UInt64 ?? 0
@@ -743,6 +928,7 @@ struct MarkdownWebView: NSViewRepresentable {
 
         @discardableResult
         private func reloadFromDisk(url: URL, force: Bool = false) -> Bool {
+            guard !isEditingPaused else { return true }
             do {
                 let attrs = try FileManager.default.attributesOfItem(atPath: url.path)
                 let newSize = attrs[.size] as? UInt64 ?? 0
@@ -770,7 +956,8 @@ struct MarkdownWebView: NSViewRepresentable {
                     enableTypst: lastEnableTypst,
                     codeHighlightTheme: lastCodeHighlightTheme,
                     collapseBlockquotesByDefault: lastCollapseBlockquotesByDefault,
-                    showLineNumbers: lastShowLineNumbers
+                    showLineNumbers: lastShowLineNumbers,
+                    readingTheme: lastReadingTheme
                 )
                 os_log("🟢 Reloaded from disk: %{public}@", log: logger, type: .default, url.lastPathComponent)
                 return true

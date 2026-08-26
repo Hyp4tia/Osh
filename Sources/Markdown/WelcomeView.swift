@@ -2,11 +2,16 @@ import SwiftUI
 import UniformTypeIdentifiers
 import AppKit
 
+/// Osh launch window: wordmark, one quiet open/drop hero, recent files, footer.
+///
+/// Deliberately unlike the old FluxMarkdown-style tips card: no tutorial list.
+/// The document is the product; the window just gets out of the way.
 struct WelcomeView: View {
     @State private var isTargeted = false
     @State private var window: NSWindow?
     @State private var openErrorMessage: String?
     @State private var isOpening = false
+    @State private var recents: [RecentFile] = []
 
     @Environment(\.openURL) private var openURL
 
@@ -22,167 +27,193 @@ struct WelcomeView: View {
     }()
 
     var body: some View {
-        ZStack {
-            background
-
-            VStack(spacing: 22) {
-                header
-                dropZone
-                tips
-
-                if let message = openErrorMessage {
-                    Text(message)
-                        .font(.footnote)
-                        .foregroundColor(.red)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: 520)
-                }
+        VStack(spacing: 0) {
+            header
+            hero
+            if !recents.isEmpty {
+                recentsList
             }
-            .padding(36)
+            Spacer(minLength: 0)
+            footer
         }
+        .frame(width: 560)
+        .frame(maxHeight: .infinity)
+        .padding(.vertical, 28)
+        .background(Color(NSColor.windowBackgroundColor).ignoresSafeArea())
         .background(WelcomeWindowAccessor { window in
             self.window = window
         })
+        .onAppear(perform: loadRecents)
         .onReceive(Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()) { _ in
             closeIfAnyDocumentIsOpen()
         }
     }
 
-    private var background: some View {
-        LinearGradient(
-            colors: [
-                Color(NSColor.windowBackgroundColor),
-                Color(NSColor.controlBackgroundColor)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        .ignoresSafeArea()
-    }
+    // MARK: - Sections
 
     private var header: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 12) {
             if let icon = NSApp.applicationIconImage {
                 Image(nsImage: icon)
                     .resizable()
                     .interpolation(.high)
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 64, height: 64)
-                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .frame(width: 72, height: 72)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     .overlay(
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .stroke(Color(NSColor.separatorColor).opacity(0.8), lineWidth: 1)
                     )
-                    .shadow(color: Color.black.opacity(0.12), radius: 10, x: 0, y: 6)
+                    .shadow(color: Color.black.opacity(0.10), radius: 8, x: 0, y: 4)
                     .accessibilityLabel(Text(NSLocalizedString("Osh App Icon", comment: "App icon accessibility label")))
             }
 
-            Text("Osh")
-                .font(.system(size: 26, weight: .semibold))
-                .foregroundColor(.primary)
+            // Wordmark with the Coptic name as a quiet companion mark.
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text("Osh")
+                    .font(.system(size: 30, weight: .semibold))
+                Text("ⲱϣ")
+                    .font(.system(size: 17, weight: .light))
+                    .foregroundColor(.secondary)
+            }
+            .foregroundColor(.primary)
 
-            Text(NSLocalizedString("Open a Markdown file or drop it here to start.", comment: "Welcome subtitle"))
+            Text(NSLocalizedString("A quiet reader for Markdown.", comment: "Welcome tagline"))
                 .font(.system(size: 13))
                 .foregroundColor(.secondary)
         }
+        .padding(.bottom, 26)
     }
 
-    private var dropZone: some View {
+    private var hero: some View {
         Button(action: openFilePicker) {
-            VStack(spacing: 14) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .strokeBorder(borderColor, style: StrokeStyle(lineWidth: 2, dash: [8, 6]))
+            ZStack {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .strokeBorder(
+                        isTargeted ? Color.accentColor.opacity(0.95) : Color(NSColor.separatorColor).opacity(0.9),
+                        style: StrokeStyle(lineWidth: 1.5, dash: isTargeted ? [] : [7, 5])
+                    )
+                    .background(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(isTargeted ? Color.accentColor.opacity(0.06) : Color(NSColor.controlBackgroundColor).opacity(0.5))
+                    )
 
-                    VStack(spacing: 10) {
-                        Image(systemName: "plus")
-                            .font(.system(size: 44, weight: .semibold))
-                            .foregroundColor(isTargeted ? Color.accentColor : Color.secondary)
+                VStack(spacing: 8) {
+                    Image(systemName: "doc.badge.plus")
+                        .font(.system(size: 30, weight: .regular))
+                        .foregroundColor(isTargeted ? Color.accentColor : Color.secondary)
 
-                        Text(NSLocalizedString("Open Markdown File…", comment: "Open file button"))
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(.primary)
+                    Text(NSLocalizedString("Open Markdown File…", comment: "Open file button"))
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.primary)
 
-                        Text(NSLocalizedString("Drag & drop .md/.mdx/.txt here", comment: "Drop hint"))
-                            .font(.system(size: 12))
-                            .foregroundColor(.secondary)
+                    Text(NSLocalizedString("or drop files here", comment: "Drop hint"))
+                        .font(.system(size: 12))
+                        .foregroundColor(.secondary)
 
-                        if isOpening {
-                            ProgressView()
-                        }
+                    if isOpening {
+                        ProgressView()
+                            .padding(.top, 4)
                     }
-                    .padding(.horizontal, 26)
                 }
-                .frame(width: 520, height: 240)
+                .padding(.horizontal, 24)
             }
         }
         .buttonStyle(PlainButtonStyle())
-        .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .disabled(isOpening)
+        .frame(height: 150)
+        .padding(.horizontal, 44)
         .onDrop(of: [UTType.fileURL.identifier], isTargeted: $isTargeted) { providers in
             handleDrop(providers: providers)
         }
+        .accessibilityHint(Text(NSLocalizedString("Drag & drop .md/.mdx/.txt here", comment: "Drop hint")))
     }
 
-    private var tips: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            let quickLookTitle = NSLocalizedString("QuickLook", comment: "Tip title")
-            let quickLookSubtitle = NSLocalizedString("In Finder, select a file and press Space.", comment: "QuickLook tip subtitle")
-            if #available(macOS 12.0, *) {
-                TipRow(icon: "space", title: quickLookTitle, subtitle: quickLookSubtitle)
-            } else {
-                TipRow(icon: "keyboard", title: quickLookTitle, subtitle: quickLookSubtitle)
-            }
-            TipRow(icon: "doc.text",
-                   title: NSLocalizedString("Open with App", comment: "Tip title"),
-                   subtitle: NSLocalizedString("Double-click a .md file to open it here.", comment: "Open with App tip subtitle"))
-            TipRow(icon: "arrow.down.doc",
-                   title: NSLocalizedString("Drag & Drop", comment: "Tip title"),
-                   subtitle: NSLocalizedString("Drop files onto the + area to open.", comment: "Drag and drop tip subtitle"))
+    @ViewBuilder
+    private var recentsList: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(NSLocalizedString("Recent", comment: "Recents section title"))
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundColor(.secondary)
+                .textCase(.uppercase)
+                .padding(.leading, 6)
 
-            Divider()
-                .padding(.top, 2)
-
-            HStack(spacing: 10) {
-                Button(NSLocalizedString("Open Settings", comment: "Open settings button")) {
-                    settingsWindowManager.show()
-                }
-                .buttonStyle(BorderlessButtonStyle())
-                .foregroundColor(.accentColor)
-
-                Text("•")
-                    .foregroundColor(Color.secondary.opacity(0.6))
-
-                Button(NSLocalizedString("Troubleshooting", comment: "Troubleshooting button")) {
-                    if let url = URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP.md") {
-                        openURL(url)
+            ForEach(recents) { recent in
+                Button(action: { open(urls: [recent.url]) }) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "doc.text")
+                            .font(.system(size: 12))
+                            .foregroundColor(.secondary)
+                            .frame(width: 16)
+                        Text(recent.name)
+                            .font(.system(size: 13))
+                            .foregroundColor(.primary)
+                            .lineLimit(1)
+                        Spacer()
+                        Text(recent.folder)
+                            .font(.system(size: 11))
+                            .foregroundColor(.secondary)
+                            .lineLimit(1)
+                            .truncationMode(.head)
                     }
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .contentShape(Rectangle())
                 }
-                .buttonStyle(BorderlessButtonStyle())
-                .foregroundColor(.accentColor)
-
-                Spacer()
+                .buttonStyle(PlainButtonStyle())
+                .background(
+                    RoundedRectangle(cornerRadius: 6, style: .continuous)
+                        .fill(Color.primary.opacity(0.001))
+                )
             }
-            .font(.system(size: 12, weight: .semibold))
         }
-        .frame(maxWidth: 520, alignment: .leading)
-        .padding(18)
-        .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(Color(NSColor.controlBackgroundColor).opacity(0.7))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .stroke(Color(NSColor.separatorColor).opacity(0.8), lineWidth: 1)
-        )
+        .padding(.top, 22)
+        .padding(.horizontal, 36)
     }
 
-    private var borderColor: Color {
-        if isTargeted {
-            return Color.accentColor.opacity(0.9)
+    private var footer: some View {
+        HStack(spacing: 10) {
+            Button(NSLocalizedString("Settings", comment: "Open settings button")) {
+                settingsWindowManager.show()
+            }
+            .buttonStyle(BorderlessButtonStyle())
+            .foregroundColor(.accentColor)
+
+            separatorDot
+
+            Button(NSLocalizedString("Help", comment: "Help button")) {
+                if let url = URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP.md") {
+                    openURL(url)
+                }
+            }
+            .buttonStyle(BorderlessButtonStyle())
+            .foregroundColor(.accentColor)
+
+            Spacer()
+
+            Text("v\(DisplayVersion.text(in: .main) ?? "")")
+                .font(.system(size: 10, weight: .regular, design: .monospaced))
+                .foregroundColor(Color.secondary.opacity(0.55))
         }
-        return Color(NSColor.separatorColor).opacity(0.9)
+        .padding(.top, 18)
+        .padding(.horizontal, 44)
+        .font(.system(size: 12, weight: .medium))
     }
+
+    private var separatorDot: some View {
+        Circle()
+            .fill(Color.secondary.opacity(0.5))
+            .frame(width: 3, height: 3)
+    }
+
+    // MARK: - Recents
+
+    private func loadRecents() {
+        recents = RecentFilesStore.shared.recents(limit: 4)
+    }
+
+    // MARK: - Opening
 
     private func openFilePicker() {
         openErrorMessage = nil
@@ -272,30 +303,49 @@ struct WelcomeView: View {
     }
 }
 
-private struct TipRow: View {
-    let icon: String
-    let title: String
-    let subtitle: String
+// MARK: - Recents store
 
-    var body: some View {
-        HStack(alignment: .center, spacing: 12) {
-            Image(systemName: icon)
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(Color.accentColor)
-                .frame(width: 20, height: 20, alignment: .center)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title)
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(.primary)
-                Text(subtitle)
-                    .font(.system(size: 12))
-                    .foregroundColor(.secondary)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
+struct RecentFile: Identifiable {
+    let url: URL
+    var id: String { url.path }
+    var name: String { url.lastPathComponent }
+    /// Parent folder path, shortened for the right-hand column.
+    var folder: String {
+        let dir = url.deletingLastPathComponent().path
+        return (dir as NSString).abbreviatingWithTildeInPath
     }
 }
+
+final class RecentFilesStore {
+    static let shared = RecentFilesStore()
+    private static let key = "oshRecentMarkdownFiles"
+    private let maxEntries = 20
+
+    func recents(limit: Int) -> [RecentFile] {
+        let paths = UserDefaults.standard.stringArray(forKey: Self.key) ?? []
+        return paths.compactMap { path -> RecentFile? in
+            var isDir: ObjCBool = false
+            guard FileManager.default.fileExists(atPath: path, isDirectory: &isDir), !isDir.boolValue else {
+                return nil
+            }
+            return RecentFile(url: URL(fileURLWithPath: path))
+        }
+        .prefix(limit)
+        .map { $0 }
+    }
+
+    func record(url: URL) {
+        var paths = UserDefaults.standard.stringArray(forKey: Self.key) ?? []
+        paths.removeAll { $0 == url.path }
+        paths.insert(url.path, at: 0)
+        if paths.count > maxEntries {
+            paths = Array(paths.prefix(maxEntries))
+        }
+        UserDefaults.standard.set(paths, forKey: Self.key)
+    }
+}
+
+// MARK: - Window plumbing (kept from previous welcome implementation)
 
 private struct WelcomeWindowAccessor: NSViewRepresentable {
     let onWindow: (NSWindow) -> Void
@@ -308,7 +358,7 @@ private struct WelcomeWindowAccessor: NSViewRepresentable {
                 window.titleVisibility = .hidden
                 window.titlebarAppearsTransparent = true
                 window.isMovableByWindowBackground = true
-                window.setContentSize(NSSize(width: 720, height: 620))
+                window.setContentSize(NSSize(width: 560, height: 600))
             }
         }
         return view

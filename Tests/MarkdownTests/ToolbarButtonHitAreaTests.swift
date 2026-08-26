@@ -35,7 +35,7 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
 
         XCTAssertEqual(
             mainAppSource.components(separatedBy: "CircularToolbarIconButton(").count - 1,
-            7,
+            8,
             "Every main app floating toolbar control should use the SwiftUI wrapper for the shared native button."
         )
         XCTAssertFalse(
@@ -89,7 +89,7 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
         let mainAppSourcePath = root.appendingPathComponent("Sources/Markdown/MarkdownApp.swift").path
         let mainAppSource = try String(contentsOfFile: mainAppSourcePath, encoding: .utf8)
 
-        // WHEN the seven floating toolbar buttons are constructed.
+        // WHEN the eight floating toolbar buttons are constructed.
         let appearanceBindings = mainAppSource
             .components(separatedBy: "appearance: preference.currentMode.nsAppearance")
             .count - 1
@@ -97,7 +97,7 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
         // THEN every button must receive the same explicit appearance as the preview.
         XCTAssertEqual(
             appearanceBindings,
-            7,
+            8,
             "Every main app toolbar button must resolve its native colors against the selected preview appearance, not an unrelated host appearance."
         )
     }

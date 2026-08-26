@@ -19,8 +19,14 @@ public enum LocalizationManager {
         switch preference {
         case "system": return nil          // fall back to OS resolution
         case "zh":     return "zh-Hans"    // picker value vs. bundle dir
-        default:       return preference   // "en", "de", "fr", ...
+        default:       return preference   // "en", "de", "fr", "ar", ...
         }
+    }
+
+    /// True when the active preference is an RTL language; drives SwiftUI
+    /// layout mirroring in the host app.
+    public static func isRTL(_ preference: String) -> Bool {
+        preference == "ar" || preference == "he"
     }
 
     /// The preference that was active when `bootstrap` first ran. Used by the

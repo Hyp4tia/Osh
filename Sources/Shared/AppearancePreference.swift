@@ -140,6 +140,7 @@ public class AppearancePreference: ObservableObject {
     private let enableTypstKey = "enableTypst"
     private let collapseBlockquotesByDefaultKey = "collapseBlockquotesByDefault"
     private let uiLanguageKey = "uiLanguage"
+    private let readingThemeKey = "readingTheme"
     private let showLineNumbersKey = "showLineNumbers"
     private let finderPaneFontSizeKey = "finderPaneFontSize"
 
@@ -232,6 +233,16 @@ public class AppearancePreference: ObservableObject {
             scheduleSyncToSharedStore()
             LocalizationManager.apply(languageCode: newValue)
             LocalizationManager.applyAppleLanguages(for: newValue)
+        }
+    }
+
+    /// Reading theme preset applied inside the renderer (default/sepia/paper/midnight/nord).
+    public var readingTheme: String {
+        get { sharedStore.string(forKey: readingThemeKey) ?? "default" }
+        set {
+            objectWillChange.send()
+            sharedStore.set(newValue, forKey: readingThemeKey)
+            scheduleSyncToSharedStore()
         }
     }
 
