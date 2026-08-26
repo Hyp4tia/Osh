@@ -69,9 +69,15 @@ struct MarkdownApp: App {
 
     @State private var viewMode: ViewMode = .preview
 
+    /// RTL languages mirror the whole SwiftUI layout, not just text alignment.
+    private var uiLayoutDirection: LayoutDirection {
+        LocalizationManager.isRTL(preference.uiLanguage) ? .rightToLeft : .leftToRight
+    }
+
     var body: some Scene {
         WindowGroup {
             WelcomeView()
+                .environment(\.layoutDirection, uiLayoutDirection)
         }
         .windowStyle(.titleBar)
 
@@ -400,6 +406,7 @@ private struct DocumentPreviewScene: View {
             maxHeight: .infinity
         )
         .environmentObject(preference)
+        .environment(\.layoutDirection, LocalizationManager.isRTL(preference.uiLanguage) ? LayoutDirection.rightToLeft : .leftToRight)
         .background(
             WindowAccessor()
         )

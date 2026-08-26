@@ -184,6 +184,10 @@ struct AppearanceSettingsView: View {
                 LanguageOptionRow(label: "中文", value: "zh", current: preference.uiLanguage) {
                     preference.uiLanguage = "zh"
                 }
+                Divider().padding(.leading, 12)
+                LanguageOptionRow(label: "العربية", value: "ar", current: preference.uiLanguage) {
+                    preference.uiLanguage = "ar"
+                }
             }
             .background(Color(NSColor.controlBackgroundColor))
             .cornerRadius(8)
