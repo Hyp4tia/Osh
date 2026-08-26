@@ -534,6 +534,7 @@ declare global {
         clearDiffMarks: () => void;
         updateTheme: (theme: string) => void;
         exportHTML: () => string;
+        exportDocxModel: () => unknown;
         setZoomLevel: (level: number) => void;
         setFontSize: (px: number) => void;
         adjustFontSize: (delta: number) => void;
@@ -1248,5 +1249,188 @@ window.toggleHelp = function() { if (helpOverlay) helpOverlay.toggle(); };
 window.addEventListener('afterprint', () => {
     document.documentElement.style.removeProperty('--print-font-size');
 });
+
+// ---------------------------------------------------------------------------
+// DOCX export: walk the rendered DOM and produce a typed block model for the
+// Swift DocxExporter. Images are inlined as base64 data URIs so Swift can
+// embed them without file access.
+// ---------------------------------------------------------------------------
+
+interface DocxRun {
+    text: string;
+    bold?: boolean;
+    italic?: boolean;
+    code?: boolean;
+    linkURL?: string;
+}
+
+interface DocxBlock {
+    kind: string;
+    level?: number;
+    listTag?: string;
+    isHeader?: boolean;
+    runs?: DocxRun[];
+    cells?: DocxRun[][];
+    imageSrc?: string;
+    dirRTL?: boolean;
+}
+
+function docxRunsFromNode(node: Node): DocxRun[] {
+    const runs: DocxRun[] = [];
+    const walk = (n: Node, bold: boolean, italic: boolean, code: boolean, link: string | undefined): void => {
+        if (n.nodeType === Node.TEXT_NODE) {
+            const text = (n.textContent || '').replace(/\s+/g, ' ');
+            if (text.length > 0 && text !== ' ') {
+                runs.push({ text, bold, italic, code, linkURL: link });
+            }
+            return;
+        }
+        if (n.nodeType !== Node.ELEMENT_NODE) return;
+        const el = n as HTMLElement;
+        if (el.tagName === 'BR') {
+            runs.push({ text: '\n' });
+            return;
+        }
+        if (el.tagName === 'IMG') { return; } // handled at block level
+        const childBold = bold || el.tagName === 'STRONG' || el.tagName === 'B';
+        const childItalic = italic || el.tagName === 'EM' || el.tagName === 'I';
+        const childCode = code || el.tagName === 'CODE';
+        const childLink = el.tagName === 'A' ? (el.getAttribute('href') || undefined) : link;
+        el.childNodes.forEach(child => walk(child, childBold, childItalic, childCode, childLink));
+    };
+    walk(node, false, false, false, undefined);
+    // Trim leading space that markdown rendering leaves between inline tags.
+    if (runs.length > 0) runs[0].text = runs[0].text.replace(/^\s+/, '');
+    return runs;
+}
+
+function docxIsRTL(el: Element): boolean {
+    return el.closest('[dir="rtl"]') !== null;
+}
+
+window.exportDocxModel = function(): unknown {
+    const previewDiv = document.getElementById('markdown-preview');
+    if (!previewDiv) return { blocks: [], images: {} };
+
+    // Collect images first: src -> base64 data URI.
+    const images: Record<string, string> = {};
+    previewDiv.querySelectorAll('img').forEach((img, i) => {
+        let key = img.getAttribute('src') || `__img${i}`;
+        if (img.src.startsWith('data:')) {
+            images[key] = img.src;
+        } else if (img.src) {
+            // Convert resolved file/local-md URLs to data URIs via canvas-free
+            // fetch (same-origin through the custom scheme handler).
+            try {
+                const xhr = new XMLHttpRequest();
+                xhr.open('GET', img.src, false); // synchronous; export path only
+                xhr.overrideMimeType('text/plain; charset=x-user-defined');
+                xhr.send();
+                if (xhr.status === 200 || xhr.status === 0) {
+                    const raw = xhr.responseText;
+                    const bytes = new Uint8Array(raw.length);
+                    for (let j = 0; j < raw.length; j++) bytes[j] = raw.charCodeAt(j) & 0xFF;
+                    let mime = 'image/png';
+                    const lower = (img.src.split('?')[0] || '').toLowerCase();
+                    if (lower.endsWith('.gif')) mime = 'image/gif';
+                    else if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) mime = 'image/jpeg';
+                    else if (lower.endsWith('.svg')) mime = 'image/svg+xml';
+                    else if (lower.endsWith('.webp')) mime = 'image/webp';
+                    images[key] = `data:${mime};base64,` + btoa(String.fromCharCode(...bytes));
+                }
+            } catch (e) {
+                logToSwift(`exportDocxModel: failed to inline image ${key}: ${e}`);
+            }
+        }
+    });
+
+    const blocks: DocxBlock[] = [];
+    let tableBuffer: DocxBlock[] | null = null;
+
+    const flushTable = (): void => {
+        if (tableBuffer && tableBuffer.length > 0) blocks.push(...tableBuffer);
+        tableBuffer = null;
+    };
+
+    const pushBlock = (b: DocxBlock): void => { blocks.push(b); };
+
+    const processList = (list: Element, depth: number): void => {
+        Array.from(list.children).forEach((li) => {
+            if (li.tagName !== 'LI') return;
+            const nested = li.querySelectorAll(':scope > ul, :scope > ol');
+            // Own text minus nested lists:
+            const clone = li.cloneNode(true) as Element;
+            clone.querySelectorAll('ul, ol').forEach(n => n.remove());
+            pushBlock({
+                kind: 'listItem', listTag: list.tagName.toLowerCase(),
+                runs: docxRunsFromNode(clone), dirRTL: docxIsRTL(li),
+            });
+            nested.forEach(child => processList(child as HTMLElement, depth + 1));
+        });
+    };
+
+    const walkBlocks = (root: Element): void => {
+        Array.from(root.children).forEach((el) => {
+            const tag = el.tagName;
+            if (/^H[1-6]$/.test(tag)) {
+                flushTable();
+                pushBlock({ kind: 'heading', level: parseInt(tag[1], 10), runs: docxRunsFromNode(el), dirRTL: docxIsRTL(el) });
+            } else if (tag === 'P') {
+                flushTable();
+                const img = el.querySelector('img');
+                const model: DocxBlock = { kind: 'paragraph', runs: docxRunsFromNode(el), dirRTL: docxIsRTL(el) };
+                if (img) {
+                    model.imageSrc = img.getAttribute('src') || undefined;
+                    // Keep alt text as a caption-ish run when present.
+                    if (!model.runs || model.runs.length === 0) {
+                        const alt = img.getAttribute('alt');
+                        if (alt) model.runs = [{ text: alt, italic: true }];
+                    }
+                }
+                pushBlock(model);
+            } else if (tag === 'UL' || tag === 'OL') {
+                flushTable();
+                processList(el, 0);
+            } else if (tag === 'PRE') {
+                flushTable();
+                pushBlock({ kind: 'codeBlock', runs: [{ text: (el.textContent || '').replace(/\n$/, '') }] });
+            } else if (tag === 'BLOCKQUOTE') {
+                flushTable();
+                // Flatten inner paragraphs into quote blocks.
+                const inner = el.querySelectorAll('p');
+                if (inner.length > 0) {
+                    inner.forEach(p => pushBlock({ kind: 'blockquoteParagraph', runs: docxRunsFromNode(p), dirRTL: docxIsRTL(p) }));
+                } else {
+                    pushBlock({ kind: 'blockquoteParagraph', runs: docxRunsFromNode(el), dirRTL: docxIsRTL(el) });
+                }
+            } else if (tag === 'TABLE') {
+                tableBuffer = [];
+                el.querySelectorAll('tr').forEach((tr) => {
+                    const headerCells = tr.querySelectorAll('th');
+                    const isHeader = headerCells.length > 0;
+                    const cells: DocxRun[][] = [];
+                    tr.querySelectorAll('th, td').forEach(cell => cells.push(docxRunsFromNode(cell)));
+                    tableBuffer!.push({ kind: 'tableRow', isHeader, cells, dirRTL: docxIsRTL(tr) });
+                });
+                flushTable();
+            } else if (tag === 'HR') {
+                flushTable();
+                pushBlock({ kind: 'paragraph', runs: [] });
+            } else if (tag === 'DIV') {
+                // Containers from extensions (mermaid fallbacks etc.): recurse,
+                // but skip interactive chrome.
+                if (el.classList.contains('toc-container') ||
+                    el.classList.contains('search-container') ||
+                    el.classList.contains('help-overlay')) return;
+                walkBlocks(el);
+            }
+        });
+    };
+
+    walkBlocks(previewDiv);
+    flushTable();
+
+    return { blocks, images };
+};
 
 logToSwift("rendererReady");

@@ -4,6 +4,7 @@ extension Notification.Name {
     static let toggleSearch = Notification.Name("toggleSearch")
     static let exportHTML   = Notification.Name("exportHTML")
     static let exportPDF    = Notification.Name("exportPDF")
+    static let exportDOCX   = Notification.Name("exportDOCX")
     static let toggleHelp   = Notification.Name("toggleHelp")
     static let zoomIn       = Notification.Name("zoomIn")
     static let zoomOut      = Notification.Name("zoomOut")

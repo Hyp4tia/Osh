@@ -122,6 +122,13 @@ struct MarkdownApp: App {
                     Text(NSLocalizedString("Export as PDF…", comment: "Export PDF menu item"))
                 }
                 .keyboardShortcut("p", modifiers: [.command, .shift])
+
+                Button(action: {
+                    NotificationCenter.default.post(name: .exportDOCX, object: nil)
+                }) {
+                    Text(NSLocalizedString("Export as Word…", comment: "Export DOCX menu item"))
+                }
+                .keyboardShortcut("d", modifiers: [.command, .shift])
             }
             
             CommandGroup(after: .appInfo) {

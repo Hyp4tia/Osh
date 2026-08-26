@@ -3,6 +3,7 @@ import AppKit
 import WebKit
 import os.log
 import CoreGraphics
+import UniformTypeIdentifiers
 
 enum ViewMode {
     case preview
@@ -156,6 +157,12 @@ struct MarkdownWebView: NSViewRepresentable {
                 self,
                 selector: #selector(handleExportPDF),
                 name: .exportPDF,
+                object: nil
+            )
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleExportDOCX),
+                name: .exportDOCX,
                 object: nil
             )
             NotificationCenter.default.addObserver(
@@ -329,6 +336,145 @@ struct MarkdownWebView: NSViewRepresentable {
             }
         }
         
+        /// DOCX export: pulls the typed block model from the rendered DOM via
+        /// window.exportDocxModel(), converts it to WordprocessingML, and saves.
+        @objc func handleExportDOCX() {
+            guard let webView = currentWebView,
+                  let win = webView.window,
+                  win.isKeyWindow || win.windowController?.document === NSDocumentController.shared.currentDocument else { return }
+
+            webView.evaluateJavaScript("window.exportDocxModel()") { [weak self] result, error in
+                guard let self else { return }
+                if let error {
+                    os_log("exportDocxModel JS error: %{public}@", log: self.logger, type: .error, error.localizedDescription)
+                    return
+                }
+                DispatchQueue.main.async {
+                    guard let json = result as? String,
+                          let payload = try? JSONSerialization.jsonObject(with: Data(json.utf8)),
+                          let dict = payload as? [String: Any] else {
+                        // WKWebView serializes dictionaries natively; handle both shapes.
+                        if let dict = result as? [String: Any] {
+                            self.buildAndSaveDOCX(from: dict)
+                        } else {
+                            os_log("exportDocxModel: unexpected result type", log: self.logger, type: .error)
+                        }
+                        return
+                    }
+                    self.buildAndSaveDOCX(from: dict)
+                }
+            }
+        }
+
+        private func buildAndSaveDOCX(from dict: [String: Any]) {
+            var exporter = DocxExporter()
+
+            let images = dict["images"] as? [String: String] ?? [:]
+            var imageDataForRID: [String: (data: Data, ext: String)] = [:]
+            var ridByKey: [String: String] = [:]
+            for (index, key) in images.keys.sorted().enumerated() {
+                let rid = "rId\(100 + index)"  // image rIds start at 100 to avoid hyperlink collisions
+                ridByKey[key] = rid
+                if let dataURI = images[key], dataURI.hasPrefix("data:") {
+                    let parts = dataURI.split(separator: ";", maxSplits: 1)
+                    if parts.count == 2, let comma = parts[1].firstIndex(of: ","),
+                       let data = Data(base64Encoded: String(parts[1][parts[1].index(after: comma)...])) {
+                        let mime = String(parts[0].dropFirst(5))  // strip "data:"
+                        let ext = Self.extensionForMIME(mime)
+                        imageDataForRID[rid] = (data: data, ext: ext)
+                    }
+                }
+            }
+
+            var blocks: [DocxExporter.Block] = []
+            for raw in dict["blocks"] as? [[String: Any]] ?? [] {
+                var block = DocxExporter.Block(kind: .paragraph)
+                switch raw["kind"] as? String {
+                case "heading":
+                    block.kind = .heading(level: raw["level"] as? Int ?? 1)
+                case "listItem":
+                    block.kind = .listItem(listTag: raw["listTag"] as? String ?? "ul")
+                case "codeBlock":
+                    block.kind = .codeBlock
+                case "blockquoteParagraph":
+                    block.kind = .blockquoteParagraph
+                case "tableRow":
+                    block.kind = .tableRow(isHeader: raw["isHeader"] as? Bool ?? false)
+                    block.cells = Self.runsArray(fromRaw: raw["cells"])
+                default:
+                    if raw["imageSrc"] as? String != nil {
+                        block.imageRID = ridByKey[raw["imageSrc"] as? String ?? ""]
+                    }
+                }
+                block.directionRTL = raw["dirRTL"] as? Bool ?? false
+                block.runs = Self.runs(fromRaw: raw["runs"])
+                blocks.append(block)
+            }
+
+            exporter.pixelDimensionsProvider = { path in
+                guard let entry = imageDataForRID.first(where: { path.contains($0.key) })?.value else {
+                    return nil
+                }
+                return ImageDimensionParser.dimensions(of: entry.data)
+            }
+
+            let data = exporter.docx(blocks: blocks, imageDataForRID: imageDataForRID)
+
+            let panel = NSSavePanel()
+            panel.allowedContentTypes = [
+                UTType(filenameExtension: "docx") ?? .data
+            ]
+            panel.nameFieldStringValue = defaultExportFilename(extension: "docx")
+            if let fileURL = currentFileURL {
+                panel.directoryURL = fileURL.deletingLastPathComponent()
+            }
+            panel.begin { response in
+                guard response == .OK, let url = panel.url else { return }
+                do {
+                    try data.write(to: url, options: [.atomic])
+                    os_log("Exported DOCX to: %@", log: self.logger, type: .default, url.path)
+                } catch {
+                    os_log("Failed to write DOCX: %@", log: self.logger, type: .error, error.localizedDescription)
+                }
+            }
+        }
+
+        static func runs(fromRaw value: Any?) -> [DocxExporter.InlineRun] {
+            guard let array = value as? [[String: Any]] else { return [] }
+            return array.map { item in
+                DocxExporter.InlineRun(
+                    text: item["text"] as? String ?? "",
+                    bold: item["bold"] as? Bool ?? false,
+                    italic: item["italic"] as? Bool ?? false,
+                    code: item["code"] as? Bool ?? false,
+                    linkURL: item["linkURL"] as? String)
+            }
+        }
+
+        static func runsArray(fromRaw value: Any?) -> [[DocxExporter.InlineRun]] {
+            guard let cells = value as? [[[String: Any]]] else { return [] }
+            return cells.map { cell in
+                cell.map { item in
+                    DocxExporter.InlineRun(
+                        text: item["text"] as? String ?? "",
+                        bold: item["bold"] as? Bool ?? false,
+                        italic: item["italic"] as? Bool ?? false,
+                        code: item["code"] as? Bool ?? false,
+                        linkURL: item["linkURL"] as? String)
+                }
+            }
+        }
+
+        static func extensionForMIME(_ mime: String) -> String {
+            switch mime {
+            case "image/gif": return "gif"
+            case "image/jpeg": return "jpg"
+            case "image/svg+xml": return "svg"
+            case "image/webp": return "webp"
+            default: return "png"
+            }
+        }
+
         @objc func handleExportPDF() {
             guard let webView = currentWebView,
                   let win = webView.window,
