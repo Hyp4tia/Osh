@@ -2,7 +2,7 @@
   <h1 align="center">Osh <samp>ⲱϣ</samp></h1>
   <p align="center"><strong>Un lector de Markdown y extensión QuickLook elegante y ligero para macOS.</strong></p>
   <p align="center">
-    <a href="https://github.com/Zeyadistired/Osh/releases/latest"><img src="https://img.shields.io/github/v/release/Zeyadistired/Osh?style=flat-square&color=blue" alt="Versión"></a>
+    <a href="https://github.com/Zeyadistired/Osh/releases"><img src="https://img.shields.io/github/v/release/Zeyadistired/Osh?include_prereleases&style=flat-square&color=blue" alt="Versión"></a>
     <a href="https://github.com/Zeyadistired/Osh/stargazers"><img src="https://img.shields.io/github/stars/Zeyadistired/Osh?style=flat-square&color=gold" alt="Estrellas"></a>
     <a href="https://github.com/Zeyadistired/Osh/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Zeyadistired/Osh?style=flat-square" alt="Licencia"></a>
     <img src="https://img.shields.io/badge/platform-macOS%2011%2B-lightgrey?style=flat-square" alt="macOS">
