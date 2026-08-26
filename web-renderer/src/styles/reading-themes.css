@@ -1,35 +1,75 @@
 /* ==========================================================================
    Osh reading themes.
-   Each preset defines a complete reading palette (page, text, links, code,
-   tables, quotes, alerts) on html[data-reading-theme="..."], layered on top
-   of github-markdown-css so every element stays readable.
+   Each preset defines a complete, high-contrast reading palette (page, text,
+   headings, links, inline code, pre blocks, tables, quotes, hr) on
+   html[data-reading-theme="..."], layered on top of github-markdown-css
+   so every element stays crystal clear and readable in both Light and Dark modes.
    ========================================================================== */
 
-/* --- Base GitHub Dark Mode (applies whenever data-theme="dark") --- */
+/* ==========================================================================
+   1. Base GitHub Dark Mode (applies whenever data-theme="dark" or system dark)
+   ========================================================================== */
+
+html[data-theme="dark"] body {
+  background-color: #0d1117;
+  color: #f0f6fc;
+}
+
 html[data-theme="dark"] .markdown-body {
   color-scheme: dark;
+  color: #f0f6fc;
+  background-color: #0d1117;
+
+  /* GitHub Dark theme variables */
   --focus-outlineColor: #1f6feb;
   --fgColor-default: #f0f6fc;
   --fgColor-muted: #9198a1;
-  --fgColor-accent: #4493f8;
+  --fgColor-accent: #58a6ff;
   --fgColor-success: #3fb950;
   --fgColor-attention: #d29922;
   --fgColor-danger: #f85149;
   --fgColor-done: #ab7df8;
   --bgColor-default: #0d1117;
-  --bgColor-muted: #151b23;
-  --bgColor-neutral-muted: #656c7633;
-  --bgColor-attention-muted: #bb800926;
-  --borderColor-default: #3d444d;
-  --borderColor-muted: #3d444db3;
-  --borderColor-neutral-muted: #3d444db3;
+  --bgColor-muted: #161b22;
+  --bgColor-neutral-muted: rgba(110, 118, 129, 0.4);
+  --bgColor-attention-muted: rgba(187, 128, 9, 0.15);
+  --borderColor-default: #30363d;
+  --borderColor-muted: #21262d;
+  --borderColor-neutral-muted: #30363d;
   --borderColor-accent-emphasis: #1f6feb;
   --borderColor-success-emphasis: #238636;
   --borderColor-attention-emphasis: #9e6a03;
   --borderColor-danger-emphasis: #da3633;
   --borderColor-done-emphasis: #8957e5;
+}
+
+/* Explicit high-contrast rules for all markdown elements in dark mode */
+html[data-theme="dark"] .markdown-body h1,
+html[data-theme="dark"] .markdown-body h2,
+html[data-theme="dark"] .markdown-body h3,
+html[data-theme="dark"] .markdown-body h4,
+html[data-theme="dark"] .markdown-body h5 {
   color: #f0f6fc;
-  background-color: #0d1117;
+}
+
+html[data-theme="dark"] .markdown-body h1,
+html[data-theme="dark"] .markdown-body h2 {
+  border-bottom-color: #30363d;
+}
+
+html[data-theme="dark"] .markdown-body h6 {
+  color: #8b949e;
+}
+
+html[data-theme="dark"] .markdown-body p,
+html[data-theme="dark"] .markdown-body li,
+html[data-theme="dark"] .markdown-body dt,
+html[data-theme="dark"] .markdown-body dd {
+  color: #f0f6fc;
+}
+
+html[data-theme="dark"] .markdown-body a {
+  color: #58a6ff;
 }
 
 html[data-theme="dark"] .markdown-body code:not(pre code) {
@@ -37,44 +77,60 @@ html[data-theme="dark"] .markdown-body code:not(pre code) {
   color: #f0f6fc;
 }
 
-html[data-theme="dark"] .markdown-body pre {
+html[data-theme="dark"] .markdown-body pre,
+html[data-theme="dark"] .markdown-body pre code {
   background-color: #161b22;
-  border-color: #3d444d;
+  color: #c9d1d9;
+  border-color: #30363d;
 }
 
 html[data-theme="dark"] .markdown-body blockquote {
   color: #9198a1;
-  border-left-color: #3d444d;
+  border-left-color: #3b444d;
 }
 
 html[data-theme="dark"] .markdown-body hr {
-  background-color: #3d444d;
+  background-color: #30363d;
+}
+
+html[data-theme="dark"] .markdown-body table th {
+  background-color: #161b22;
+  color: #f0f6fc;
+  border-color: #30363d;
+}
+
+html[data-theme="dark"] .markdown-body table td {
+  color: #e6edf3;
+  border-color: #30363d;
 }
 
 html[data-theme="dark"] .markdown-body table tr {
   background-color: #0d1117;
-  border-top-color: #3d444d;
+  border-top-color: #30363d;
 }
 
 html[data-theme="dark"] .markdown-body table tr:nth-child(2n) {
   background-color: #151b23;
 }
 
-html[data-theme="dark"] .markdown-body table th,
-html[data-theme="dark"] .markdown-body table td {
-  border-color: #3d444d;
+/* ==========================================================================
+   2. Base GitHub Light Mode
+   ========================================================================== */
+
+html[data-theme="default"] body,
+html[data-theme="light"] body,
+html:not([data-theme="dark"]) body {
+  background-color: #ffffff;
+  color: #1f2328;
 }
 
-html[data-theme="dark"] .markdown-body h1,
-html[data-theme="dark"] .markdown-body h2 {
-  border-bottom-color: #3d444d !important;
-}
-
-/* --- Base GitHub Light Mode --- */
 html[data-theme="default"] .markdown-body,
 html[data-theme="light"] .markdown-body,
 html:not([data-theme="dark"]) .markdown-body {
   color-scheme: light;
+  color: #1f2328;
+  background-color: #ffffff;
+
   --focus-outlineColor: #0969da;
   --fgColor-default: #1f2328;
   --fgColor-muted: #59636e;
@@ -97,141 +153,189 @@ html:not([data-theme="dark"]) .markdown-body {
   --borderColor-done-emphasis: #8250df;
 }
 
-/* --- Sepia: warm paper for long-form daylight reading --- */
-html[data-reading-theme="sepia"] body {
+/* ==========================================================================
+   3. Sepia Reading Theme
+   ========================================================================== */
+
+/* Sepia - Light App Appearance */
+html[data-reading-theme="sepia"] body,
+html[data-reading-theme="sepia"] .markdown-body {
   background-color: #f4ecd8;
+  color: #5b4636;
 }
 html[data-reading-theme="sepia"] .markdown-body {
-  color: #5b4636;
-  --bg-color: #f4ecd8;
-  --fg-color: #5b4636;
-  --border-color: #d9c7a7;
-  --color-border-default: #d9c7a7;
-  --color-fg-muted: #8a704d;
-  --color-accent-fg: #9a6b2f;
-  --color-prettylights-syntax-comment: #a08a63;
+  --bgColor-default: #f4ecd8;
+  --bgColor-muted: #ece0c4;
+  --fgColor-default: #5b4636;
+  --fgColor-muted: #8a704d;
+  --borderColor-default: #d9c7a7;
+  --borderColor-muted: #d9c7a7;
 }
-html[data-reading-theme="sepia"] .markdown-body a {
-  color: #8c4a1d;
-}
-html[data-reading-theme="sepia"] .markdown-body blockquote {
-  color: #7a5f42;
-  border-left-color: #c9b088;
-}
-html[data-reading-theme="sepia"] .markdown-body code,
-html[data-reading-theme="sepia"] .markdown-body pre {
-  background-color: #ece0c4;
-}
-html[data-reading-theme="sepia"] .markdown-body table tr,
+html[data-reading-theme="sepia"] .markdown-body a { color: #8c4a1d; }
+html[data-reading-theme="sepia"] .markdown-body blockquote { color: #7a5f42; border-left-color: #c9b088; }
+html[data-reading-theme="sepia"] .markdown-body code:not(pre code),
+html[data-reading-theme="sepia"] .markdown-body pre { background-color: #ece0c4; color: #5b4636; }
+html[data-reading-theme="sepia"] .markdown-body table tr { background-color: #f4ecd8; border-top-color: #d9c7a7; }
+html[data-reading-theme="sepia"] .markdown-body table tr:nth-child(2n) { background-color: #ece0c4; }
 html[data-reading-theme="sepia"] .markdown-body h1,
-html[data-reading-theme="sepia"] .markdown-body h2 {
-  border-bottom-color: #d9c7a7 !important;
-  border-top-color: transparent;
-}
-html[data-reading-theme="sepia"] .markdown-body img {
-  background-color: transparent;
-}
+html[data-reading-theme="sepia"] .markdown-body h2 { border-bottom-color: #d9c7a7 !important; }
 
-/* --- Paper: high-contrast print-like grayscale --- */
-html[data-reading-theme="paper"] body {
+/* Sepia - Dark App Appearance */
+html[data-theme="dark"][data-reading-theme="sepia"] body,
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body {
+  background-color: #1f1a14;
+  color: #e8d8c3;
+}
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body {
+  --bgColor-default: #1f1a14;
+  --bgColor-muted: #2a2219;
+  --fgColor-default: #e8d8c3;
+  --fgColor-muted: #bfaea0;
+  --borderColor-default: #4a3d2e;
+  --borderColor-muted: #3a2f22;
+}
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body h1,
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body h2,
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body h3,
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body h4,
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body h5,
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body p,
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body li { color: #e8d8c3; }
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body a { color: #e09f5a; }
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body blockquote { color: #c2b19b; border-left-color: #5c4c39; }
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body code:not(pre code),
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body pre { background-color: #2a2219; color: #e8d8c3; }
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body table tr { background-color: #1f1a14; border-top-color: #4a3d2e; }
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body table tr:nth-child(2n) { background-color: #2a2219; }
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body h1,
+html[data-theme="dark"][data-reading-theme="sepia"] .markdown-body h2 { border-bottom-color: #4a3d2e !important; }
+
+/* ==========================================================================
+   4. Paper Reading Theme
+   ========================================================================== */
+
+/* Paper - Light App Appearance */
+html[data-reading-theme="paper"] body,
+html[data-reading-theme="paper"] .markdown-body {
   background-color: #fdfdfb;
+  color: #1a1a1a;
 }
 html[data-reading-theme="paper"] .markdown-body {
-  color: #1a1a1a;
-  --bg-color: #fdfdfb;
-  --fg-color: #1a1a1a;
-  --color-fg-muted: #555555;
-  --color-accent-fg: #000000;
+  --bgColor-default: #fdfdfb;
+  --bgColor-muted: #f0f0ec;
+  --fgColor-default: #1a1a1a;
+  --fgColor-muted: #555555;
+  --borderColor-default: #d8d8d4;
+  --borderColor-muted: #d8d8d4;
   max-width: 46rem;
   margin-left: auto;
   margin-right: auto;
 }
-html[data-reading-theme="paper"] .markdown-body a {
-  color: #000000;
-  text-decoration-color: #888888;
-}
-html[data-reading-theme="paper"] .markdown-body blockquote {
-  color: #444444;
-  border-left-color: #1a1a1a;
-}
-html[data-reading-theme="paper"] .markdown-body code,
-html[data-reading-theme="paper"] .markdown-body pre {
-  background-color: #f0f0ec;
-}
-html[data-reading-theme="paper"] .markdown-body table tr,
+html[data-reading-theme="paper"] .markdown-body a { color: #000000; text-decoration: underline; }
+html[data-reading-theme="paper"] .markdown-body blockquote { color: #444444; border-left-color: #1a1a1a; }
+html[data-reading-theme="paper"] .markdown-body code:not(pre code),
+html[data-reading-theme="paper"] .markdown-body pre { background-color: #f0f0ec; color: #1a1a1a; }
+html[data-reading-theme="paper"] .markdown-body table tr { background-color: #fdfdfb; border-top-color: #d8d8d4; }
+html[data-reading-theme="paper"] .markdown-body table tr:nth-child(2n) { background-color: #f0f0ec; }
 html[data-reading-theme="paper"] .markdown-body h1,
-html[data-reading-theme="paper"] .markdown-body h2 {
-  border-bottom-color: #d8d8d4 !important;
-}
+html[data-reading-theme="paper"] .markdown-body h2 { border-bottom-color: #d8d8d4 !important; }
 
-/* --- Midnight: true black OLED-friendly dark --- */
-html[data-reading-theme="midnight"] body {
+/* Paper - Dark App Appearance */
+html[data-theme="dark"][data-reading-theme="paper"] body,
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body {
+  background-color: #121212;
+  color: #f5f5f5;
+}
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body {
+  --bgColor-default: #121212;
+  --bgColor-muted: #1e1e1e;
+  --fgColor-default: #f5f5f5;
+  --fgColor-muted: #aaaaaa;
+  --borderColor-default: #333333;
+  --borderColor-muted: #262626;
+  max-width: 46rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body h1,
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body h2,
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body h3,
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body h4,
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body h5,
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body p,
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body li { color: #f5f5f5; }
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body a { color: #ffffff; text-decoration: underline; }
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body blockquote { color: #cccccc; border-left-color: #ffffff; }
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body code:not(pre code),
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body pre { background-color: #1e1e1e; color: #f5f5f5; }
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body table tr { background-color: #121212; border-top-color: #333333; }
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body table tr:nth-child(2n) { background-color: #1e1e1e; }
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body h1,
+html[data-theme="dark"][data-reading-theme="paper"] .markdown-body h2 { border-bottom-color: #333333 !important; }
+
+/* ==========================================================================
+   5. Midnight Reading Theme (True Black OLED)
+   ========================================================================== */
+
+html[data-reading-theme="midnight"] body,
+html[data-reading-theme="midnight"] .markdown-body {
   background-color: #000000;
+  color: #e0e0e0;
 }
 html[data-reading-theme="midnight"] .markdown-body {
-  color: #d4d4d4;
-  --bg-color: #000000;
-  --fg-color: #d4d4d4;
-  --color-fg-muted: #909090;
-  --color-border-default: #262626;
-  --color-accent-fg: #6cb2ff;
-  --color-prettylights-syntax-comment: #767676;
-}
-html[data-reading-theme="midnight"] .markdown-body a {
-  color: #6cb2ff;
-}
-html[data-reading-theme="midnight"] .markdown-body blockquote {
-  color: #aaaaaa;
-  border-left-color: #404040;
-}
-html[data-reading-theme="midnight"] .markdown-body code,
-html[data-reading-theme="midnight"] .markdown-body pre {
-  background-color: #101010;
-}
-html[data-reading-theme="midnight"] .markdown-body table tr {
-  background-color: #000000;
-  border-top-color: #262626;
-}
-html[data-reading-theme="midnight"] .markdown-body table tr:nth-child(2n) {
-  background-color: #0d0d0d;
+  --bgColor-default: #000000;
+  --bgColor-muted: #101010;
+  --fgColor-default: #e0e0e0;
+  --fgColor-muted: #909090;
+  --borderColor-default: #262626;
+  --borderColor-muted: #1c1c1c;
 }
 html[data-reading-theme="midnight"] .markdown-body h1,
-html[data-reading-theme="midnight"] .markdown-body h2 {
-  border-bottom-color: #262626 !important;
-}
+html[data-reading-theme="midnight"] .markdown-body h2,
+html[data-reading-theme="midnight"] .markdown-body h3,
+html[data-reading-theme="midnight"] .markdown-body h4,
+html[data-reading-theme="midnight"] .markdown-body h5,
+html[data-reading-theme="midnight"] .markdown-body p,
+html[data-reading-theme="midnight"] .markdown-body li { color: #e0e0e0; }
+html[data-reading-theme="midnight"] .markdown-body a { color: #6cb2ff; }
+html[data-reading-theme="midnight"] .markdown-body blockquote { color: #aaaaaa; border-left-color: #404040; }
+html[data-reading-theme="midnight"] .markdown-body code:not(pre code),
+html[data-reading-theme="midnight"] .markdown-body pre { background-color: #101010; color: #e0e0e0; }
+html[data-reading-theme="midnight"] .markdown-body table tr { background-color: #000000; border-top-color: #262626; }
+html[data-reading-theme="midnight"] .markdown-body table tr:nth-child(2n) { background-color: #0d0d0d; }
+html[data-reading-theme="midnight"] .markdown-body h1,
+html[data-reading-theme="midnight"] .markdown-body h2 { border-bottom-color: #262626 !important; }
 
-/* --- Nord: cool blue-slate palette (nordtheme.com) --- */
-html[data-reading-theme="nord"] body {
+/* ==========================================================================
+   6. Nord Reading Theme (Cool Slate)
+   ========================================================================== */
+
+html[data-reading-theme="nord"] body,
+html[data-reading-theme="nord"] .markdown-body {
   background-color: #2e3440;
+  color: #eceff4;
 }
 html[data-reading-theme="nord"] .markdown-body {
-  color: #d8dee9;
-  --bg-color: #2e3440;
-  --fg-color: #d8dee9;
-  --color-fg-muted: #8892a4;
-  --color-border-default: #3b4252;
-  --color-accent-fg: #88c0d0;
-  --color-prettylights-syntax-comment: #6f7d95;
-}
-html[data-reading-theme="nord"] .markdown-body a {
-  color: #88c0d0;
-}
-html[data-reading-theme="nord"] .markdown-body blockquote {
-  color: #b9c2cf;
-  border-left-color: #4c566a;
-}
-html[data-reading-theme="nord"] .markdown-body code,
-html[data-reading-theme="nord"] .markdown-body pre {
-  background-color: #353c48;
-}
-html[data-reading-theme="nord"] .markdown-body table tr {
-  background-color: #2e3440;
-  border-top-color: #3b4252;
-}
-html[data-reading-theme="nord"] .markdown-body table tr:nth-child(2n) {
-  background-color: #333a47;
+  --bgColor-default: #2e3440;
+  --bgColor-muted: #353c48;
+  --fgColor-default: #eceff4;
+  --fgColor-muted: #8892a4;
+  --borderColor-default: #3b4252;
+  --borderColor-muted: #2e3440;
 }
 html[data-reading-theme="nord"] .markdown-body h1,
-html[data-reading-theme="nord"] .markdown-body h2 {
-  border-bottom-color: #3b4252 !important;
-}
+html[data-reading-theme="nord"] .markdown-body h2,
+html[data-reading-theme="nord"] .markdown-body h3,
+html[data-reading-theme="nord"] .markdown-body h4,
+html[data-reading-theme="nord"] .markdown-body h5,
+html[data-reading-theme="nord"] .markdown-body p,
+html[data-reading-theme="nord"] .markdown-body li { color: #eceff4; }
+html[data-reading-theme="nord"] .markdown-body a { color: #88c0d0; }
+html[data-reading-theme="nord"] .markdown-body blockquote { color: #b9c2cf; border-left-color: #4c566a; }
+html[data-reading-theme="nord"] .markdown-body code:not(pre code),
+html[data-reading-theme="nord"] .markdown-body pre { background-color: #353c48; color: #eceff4; }
+html[data-reading-theme="nord"] .markdown-body table tr { background-color: #2e3440; border-top-color: #3b4252; }
+html[data-reading-theme="nord"] .markdown-body table tr:nth-child(2n) { background-color: #333a47; }
+html[data-reading-theme="nord"] .markdown-body h1,
+html[data-reading-theme="nord"] .markdown-body h2 { border-bottom-color: #3b4252 !important; }
+
