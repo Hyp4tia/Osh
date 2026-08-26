@@ -544,7 +544,7 @@ build_target() {
     log "Building $target ($config)..."
     
     xcodebuild \
-        -project FluxMarkdown.xcodeproj \
+        -project Osh.xcodeproj \
         -scheme "$target" \
         -configuration "$config" \
         -destination 'platform=macOS,arch=arm64' \
@@ -561,7 +561,7 @@ build_target() {
 run_tests() {
     log "Running test suite..."
     xcodebuild test \
-        -project FluxMarkdown.xcodeproj \
+        -project Osh.xcodeproj \
         -scheme Markdown \
         -destination 'platform=macOS,arch=arm64' \
         2>&1 | xcpretty --color

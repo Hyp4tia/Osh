@@ -1,6 +1,6 @@
 ---
 title: Feature Validation Document
-author: FluxMarkdown Test
+author: Osh Test
 date: 2026-02-22
 version: 1.0
 tags:
@@ -13,7 +13,7 @@ nested:
 
 # Feature Validation
 
-This document tests all 9 new features added to FluxMarkdown.
+This document tests all 9 new features added to Osh.
 
 ## 1. YAML Front Matter
 

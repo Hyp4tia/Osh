@@ -5,7 +5,7 @@ This represents a realistic complex technical document.
 
 ## Executive Summary
 
-This document benchmarks the full rendering pipeline of FluxMarkdown under realistic conditions.
+This document benchmarks the full rendering pipeline of Osh under realistic conditions.
 A complex technical document typically includes **all** of these feature types simultaneously.
 
 | Metric | Target | Measurement |
