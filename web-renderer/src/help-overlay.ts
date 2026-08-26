@@ -1,11 +1,11 @@
-const FIRST_RUN_KEY = 'fluxmd-help-shown-v1';
+const FIRST_RUN_KEY = 'osh-help-shown-v1';
 const CMD_HOLD_DELAY_MS = 2000;
-const CMD_HOLD_ENABLED_KEY = 'fluxmd-cmd-hold-enabled';
+const CMD_HOLD_ENABLED_KEY = 'osh-cmd-hold-enabled';
 
 declare global {
     interface Window {
-        __fluxContext?: string;
-        __fluxLang?: string;
+        __oshContext?: string;
+        __oshLang?: string;
     }
 }
 
@@ -263,7 +263,7 @@ const SHORTCUT_GROUPS: ShortcutGroup[] = [
 ];
 
 function detectLang(): Lang {
-    const stored = window.__fluxLang;
+    const stored = window.__oshLang;
     if (stored === 'zh' || stored === 'en' || stored === 'de' || stored === 'fr' || stored === 'ar') return stored;
     const sys = (navigator.language || '').toLowerCase();
     if (sys.startsWith('zh')) return 'zh';
@@ -320,7 +320,7 @@ export class HelpOverlay {
     }
 
     private buildOverlayHTML(): string {
-        const isQuickLook = window.__fluxContext === 'quicklook';
+        const isQuickLook = window.__oshContext === 'quicklook';
         const lang = detectLang();
         const s = STRINGS[lang];
 

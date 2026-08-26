@@ -35,19 +35,19 @@
 				<string>net.daringfireball.markdown</string>
 				<string>public.markdown</string>
 				<string>net.ia.markdown</string>
-				<string>com.fluxmarkdown.mdx</string>
-				<string>com.fluxmarkdown.rmd</string>
-				<string>com.fluxmarkdown.qmd</string>
-				<string>com.fluxmarkdown.mdoc</string>
-				<string>com.fluxmarkdown.mdc</string>
-				<string>com.fluxmarkdown.mmd</string>
-				<string>com.fluxmarkdown.livemd</string>
-				<string>com.fluxmarkdown.markdown</string>
-				<string>com.fluxmarkdown.mdown</string>
-				<string>com.fluxmarkdown.mkd</string>
-				<string>com.fluxmarkdown.mkdn</string>
-				<string>com.fluxmarkdown.mkdown</string>
-				<string>com.fluxmarkdown.mdwn</string>
+				<string>com.osh.mdx</string>
+				<string>com.osh.rmd</string>
+				<string>com.osh.qmd</string>
+				<string>com.osh.mdoc</string>
+				<string>com.osh.mdc</string>
+				<string>com.osh.mmd</string>
+				<string>com.osh.livemd</string>
+				<string>com.osh.markdown</string>
+				<string>com.osh.mdown</string>
+				<string>com.osh.mkd</string>
+				<string>com.osh.mkdn</string>
+				<string>com.osh.mkdown</string>
+				<string>com.osh.mdwn</string>
 			</array>
 		</dict>
 	</array>
@@ -77,7 +77,7 @@
 			<key>UTTypeDescription</key>
 			<string>Markdown Document (markdown)</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.markdown</string>
+			<string>com.osh.markdown</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -94,7 +94,7 @@
 			<key>UTTypeDescription</key>
 			<string>Markdown Document (mdown)</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.mdown</string>
+			<string>com.osh.mdown</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -111,7 +111,7 @@
 			<key>UTTypeDescription</key>
 			<string>Markdown Document (mkd)</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.mkd</string>
+			<string>com.osh.mkd</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -128,7 +128,7 @@
 			<key>UTTypeDescription</key>
 			<string>Markdown Document (mkdn)</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.mkdn</string>
+			<string>com.osh.mkdn</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -145,7 +145,7 @@
 			<key>UTTypeDescription</key>
 			<string>Markdown Document (mkdown)</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.mkdown</string>
+			<string>com.osh.mkdown</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -162,7 +162,7 @@
 			<key>UTTypeDescription</key>
 			<string>Markdown Document (mdwn)</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.mdwn</string>
+			<string>com.osh.mdwn</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -200,7 +200,7 @@
 			<key>UTTypeDescription</key>
 			<string>MDX Document</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.mdx</string>
+			<string>com.osh.mdx</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -217,7 +217,7 @@
 			<key>UTTypeDescription</key>
 			<string>R Markdown Document</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.rmd</string>
+			<string>com.osh.rmd</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -234,7 +234,7 @@
 			<key>UTTypeDescription</key>
 			<string>Quarto Document</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.qmd</string>
+			<string>com.osh.qmd</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -251,7 +251,7 @@
 			<key>UTTypeDescription</key>
 			<string>Markdoc Document</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.mdoc</string>
+			<string>com.osh.mdoc</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -268,7 +268,7 @@
 			<key>UTTypeDescription</key>
 			<string>MDC Document</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.mdc</string>
+			<string>com.osh.mdc</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -285,7 +285,7 @@
 			<key>UTTypeDescription</key>
 			<string>Mermaid Diagram</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.mmd</string>
+			<string>com.osh.mmd</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -302,7 +302,7 @@
 			<key>UTTypeDescription</key>
 			<string>Livebook Notebook</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.fluxmarkdown.livemd</string>
+			<string>com.osh.livemd</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

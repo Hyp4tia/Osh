@@ -29,8 +29,7 @@ final class FinderPanePreviewTests: XCTestCase {
     private func makePreference() -> AppearancePreference {
         AppearancePreference(
             sharedStore: SharedPreferenceStore(fileURL: tempFile),
-            localStore: localDefaults,
-            migrateFromAppGroup: false
+            localStore: localDefaults
         )
     }
     

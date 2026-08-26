@@ -20,8 +20,8 @@ contrast in Light mode. QuickLook is reported as fixed.
 ## Reproduction
 
 1. Set macOS to Dark appearance.
-2. Open a Markdown file in the standalone FluxMarkdown app.
-3. Set FluxMarkdown appearance to Light.
+2. Open a Markdown file in the standalone Osh app.
+3. Set Osh appearance to Light.
 4. Observe the native toolbar controls over the light renderer background.
 
 ## Hypothesis
@@ -58,9 +58,9 @@ over a light page.
 - Green: the `Markdown` scheme built successfully in Release configuration.
 - E2E: installed development build
   `1.34.449-dev-20260717-131319` on macOS 26.5.2.
-- E2E: with the macOS host in Light appearance and FluxMarkdown explicitly
+- E2E: with the macOS host in Light appearance and Osh explicitly
   set to Dark, all seven main-app toolbar controls remained visible over the
   dark preview.
 - E2E: the same fixture rendered through Finder QuickLook using
-  `flux-renderer://bundle/index.html`; all seven QuickLook controls remained
+  `osh-renderer://bundle/index.html`; all seven QuickLook controls remained
   visible and the preview content matched the standalone app.

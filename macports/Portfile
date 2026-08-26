@@ -56,6 +56,6 @@ destroot {
 post-activate {
     system "/usr/bin/xattr -cr ${applications_dir}/Osh.app"
     system "/usr/bin/pluginkit -a \
-        ${applications_dir}/Osh.app/Contents/PlugIns/MarkdownPreview.appex"
+        ${applications_dir}/Osh.app/Contents/PlugIns/OshQuickLook.appex"
     system "/usr/bin/qlmanage -r"
 }

@@ -38,11 +38,11 @@ final class NativeMagnificationTests: XCTestCase {
     func testBothHostsUseNativeMagnifyingWebViewWithoutJavaScriptZoomBridges() throws {
         let root = projectRoot()
         let quickLookSource = try String(
-            contentsOf: root.appendingPathComponent("Sources/MarkdownPreview/PreviewViewController.swift"),
+            contentsOf: root.appendingPathComponent("Sources/OshQuickLook/PreviewViewController.swift"),
             encoding: .utf8
         )
         let appSource = try String(
-            contentsOf: root.appendingPathComponent("Sources/Markdown/MarkdownWebView.swift"),
+            contentsOf: root.appendingPathComponent("Sources/OshApp/MarkdownWebView.swift"),
             encoding: .utf8
         )
 

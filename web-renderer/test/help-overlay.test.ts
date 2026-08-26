@@ -124,35 +124,35 @@ describe('HelpOverlay — Cmd-hold checkbox preference', () => {
     });
 
     test('checkbox is rendered in footer in App mode', () => {
-        window.__fluxContext = 'app';
+        window.__oshContext = 'app';
         overlay.show();
         const checkbox = document.querySelector('#help-cmd-hold-checkbox');
         expect(checkbox).not.toBeNull();
-        window.__fluxContext = undefined;
+        window.__oshContext = undefined;
     });
 
     test('checkbox is NOT rendered in QuickLook mode', () => {
-        window.__fluxContext = 'quicklook';
+        window.__oshContext = 'quicklook';
         overlay.show();
         const checkbox = document.querySelector('#help-cmd-hold-checkbox');
         expect(checkbox).toBeNull();
-        window.__fluxContext = undefined;
+        window.__oshContext = undefined;
     });
 
     test('checkbox is checked by default', () => {
-        window.__fluxContext = 'app';
+        window.__oshContext = 'app';
         overlay.show();
         const checkbox = document.querySelector<HTMLInputElement>('#help-cmd-hold-checkbox');
         expect(checkbox?.checked).toBe(true);
-        window.__fluxContext = undefined;
+        window.__oshContext = undefined;
     });
 
     test('checkbox unchecked when preference is disabled', () => {
         overlay['setCmdHoldEnabled'](false);
-        window.__fluxContext = 'app';
+        window.__oshContext = 'app';
         overlay.show();
         const checkbox = document.querySelector<HTMLInputElement>('#help-cmd-hold-checkbox');
         expect(checkbox?.checked).toBe(false);
-        window.__fluxContext = undefined;
+        window.__oshContext = undefined;
     });
 });

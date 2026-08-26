@@ -7,8 +7,8 @@ final class ReleaseEntitlementsTests: XCTestCase {
             encoding: .utf8
         )
 
-        XCTAssertTrue(project.contains("CODE_SIGN_ENTITLEMENTS: Sources/Markdown/MarkdownRelease.entitlements"))
-        XCTAssertTrue(project.contains("CODE_SIGN_ENTITLEMENTS: Sources/MarkdownPreview/MarkdownPreviewRelease.entitlements"))
+        XCTAssertTrue(project.contains("CODE_SIGN_ENTITLEMENTS: Sources/OshApp/OshRelease.entitlements"))
+        XCTAssertTrue(project.contains("CODE_SIGN_ENTITLEMENTS: Sources/OshQuickLook/OshQuickLookRelease.entitlements"))
         XCTAssertEqual(
             project.components(separatedBy: "CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO").count - 1,
             2,
@@ -19,11 +19,11 @@ final class ReleaseEntitlementsTests: XCTestCase {
     func testReleaseEntitlementsDoNotAllowDebuggerOrHomeDirectoryException() throws {
         let root = projectRoot()
         let appRelease = try String(
-            contentsOf: root.appendingPathComponent("Sources/Markdown/MarkdownRelease.entitlements"),
+            contentsOf: root.appendingPathComponent("Sources/OshApp/OshRelease.entitlements"),
             encoding: .utf8
         )
         let previewRelease = try String(
-            contentsOf: root.appendingPathComponent("Sources/MarkdownPreview/MarkdownPreviewRelease.entitlements"),
+            contentsOf: root.appendingPathComponent("Sources/OshQuickLook/OshQuickLookRelease.entitlements"),
             encoding: .utf8
         )
 

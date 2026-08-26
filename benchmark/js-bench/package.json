@@ -1,7 +1,7 @@
 {
-  "name": "flux-markdown-js-bench",
+  "name": "osh-js-bench",
   "version": "1.0.0",
-  "description": "JS rendering layer benchmark for flux-markdown",
+  "description": "JS rendering layer benchmark for Osh",
   "type": "module",
   "scripts": {
     "bench": "node bench.mjs",

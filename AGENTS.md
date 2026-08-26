@@ -31,8 +31,8 @@ macOS QuickLook extension for Markdown files. Hybrid architecture: Native Swift 
 ├── Makefile            # Main build orchestrator (npm + xcodegen + xcodebuild)
 ├── project.yml         # XcodeGen config (Generates .xcodeproj - DO NOT EDIT PROJECT DIRECTLY)
 ├── Sources/
-│   ├── Markdown/       # Host App (SwiftUI) - Container for extension
-│   └── MarkdownPreview/# Extension (AppKit) - WKWebView, QLPreviewingController
+│   ├── OshApp/         # Host App (SwiftUI) - Container for extension
+│   └── OshQuickLook/   # Extension (AppKit) - WKWebView, QLPreviewingController
 ├── web-renderer/       # Rendering Engine (TypeScript/Vite) -> See web-renderer/AGENTS.md
 └── scripts/            # Versioning and packaging scripts
 ```
@@ -42,8 +42,8 @@ macOS QuickLook extension for Markdown files. Hybrid architecture: Native Swift 
 |------|----------|-------|
 | **Project Config** | `project.yml` | Add files/targets here. Run `make generate` to apply. |
 | **Build Logic** | `Makefile` | `make all` builds everything. |
-| **Extension Logic** | `Sources/MarkdownPreview/PreviewViewController.swift` | Lifecycle, File I/O, JS Bridge. |
-| **Host UI** | `Sources/Markdown/MarkdownApp.swift` | Minimal SwiftUI container. |
+| **Extension Logic** | `Sources/OshQuickLook/PreviewViewController.swift` | Lifecycle, File I/O, JS Bridge. |
+| **Host UI** | `Sources/OshApp/MarkdownApp.swift` | Minimal SwiftUI container. |
 | **Rendering** | `web-renderer/src/index.ts` | Markdown parsing (see subdir AGENTS.md). |
 | **Rules** | `.clinerules` | TDD & Doc-first requirements. |
 | **Release Process** | `docs/release/RELEASE_PROCESS.md` | Complete PR handling and release workflow. |

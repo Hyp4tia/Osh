@@ -4,20 +4,20 @@
 
 In Finder Quick Look, a Markdown preview scrolls unevenly with a two-finger
 trackpad gesture after entering full screen. The same document scrolls smoothly
-when the standalone FluxMarkdown app is full screen.
+when the standalone Osh app is full screen.
 
 ## Test Environment
 
 - Investigated and fixed on 2026-08-12.
 - macOS: 26.5.2 (25F84).
-- Baseline: FluxMarkdown 1.34.464 (build 464).
+- Baseline: Osh 1.34.464 (build 464).
 - Verified development build: `1.34.464-dev-20260812-115104`.
 - Fixture: `CHANGELOG.md` (591 lines, about 43 KB).
 
 ## Reproduction
 
 1. Select `CHANGELOG.md` in Finder and press Space.
-2. Wait for the FluxMarkdown Quick Look renderer to finish loading.
+2. Wait for the Osh Quick Look renderer to finish loading.
 3. Enter Quick Look full screen.
 4. Scroll vertically with a continuous two-finger trackpad gesture.
 5. Compare the motion with the same file in the standalone app in full screen.

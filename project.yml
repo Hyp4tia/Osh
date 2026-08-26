@@ -11,11 +11,11 @@ packages:
     url: https://github.com/sparkle-project/Sparkle
     exactVersion: 2.8.1
 targets:
-  Markdown:
+  Osh:
     type: application
     platform: macOS
     sources: 
-      - Sources/Markdown
+      - Sources/OshApp
       - Sources/Shared
       - path: web-renderer/dist
         name: WebRenderer
@@ -25,28 +25,28 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         PRODUCT_NAME: "Osh"
         PRODUCT_BUNDLE_IDENTIFIER: com.zeyadistired.osh
-        INFOPLIST_FILE: Sources/Markdown/Info.plist
+        INFOPLIST_FILE: Sources/OshApp/Info.plist
         INFOPLIST_KEY_NSMainStoryboardFile: ""
         ENABLE_PREVIEWS: NO
         MARKETING_VERSION: ${MARKETING_VERSION}
         CURRENT_PROJECT_VERSION: ${CURRENT_PROJECT_VERSION}
       configs:
         Debug:
-          CODE_SIGN_ENTITLEMENTS: Sources/Markdown/Markdown.entitlements
+          CODE_SIGN_ENTITLEMENTS: Sources/OshApp/Osh.entitlements
         Release:
-          CODE_SIGN_ENTITLEMENTS: Sources/Markdown/MarkdownRelease.entitlements
+          CODE_SIGN_ENTITLEMENTS: Sources/OshApp/OshRelease.entitlements
           CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
     dependencies:
-      - target: MarkdownPreview
+      - target: OshQuickLook
         embed: true
       - package: Sparkle
         product: Sparkle
 
-  MarkdownPreview:
+  OshQuickLook:
     type: app-extension
     platform: macOS
     sources:
-      - Sources/MarkdownPreview
+      - Sources/OshQuickLook
       - Sources/Shared
       - path: web-renderer/dist
         name: WebRenderer
@@ -54,28 +54,28 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.zeyadistired.osh.QuickLook
-        INFOPLIST_FILE: Sources/MarkdownPreview/Info.plist
+        INFOPLIST_FILE: Sources/OshQuickLook/Info.plist
         SKIP_INSTALL: YES
         MARKETING_VERSION: ${MARKETING_VERSION}
         CURRENT_PROJECT_VERSION: ${CURRENT_PROJECT_VERSION}
       configs:
         Debug:
-          CODE_SIGN_ENTITLEMENTS: Sources/MarkdownPreview/MarkdownPreview.entitlements
+          CODE_SIGN_ENTITLEMENTS: Sources/OshQuickLook/OshQuickLook.entitlements
         Release:
-          CODE_SIGN_ENTITLEMENTS: Sources/MarkdownPreview/MarkdownPreviewRelease.entitlements
+          CODE_SIGN_ENTITLEMENTS: Sources/OshQuickLook/OshQuickLookRelease.entitlements
           CODE_SIGN_INJECT_BASE_ENTITLEMENTS: NO
     dependencies:
       - sdk: QuickLookUI.framework
 
-  MarkdownTests:
+  OshTests:
     type: bundle.unit-test
     platform: macOS
     sources:
-      - Tests/MarkdownTests
-      - Sources/Markdown/WindowAccessor.swift
-      - Sources/Markdown/ResourceLoader.swift
-      - Sources/Markdown/EditingSessionController.swift
-      - Sources/MarkdownPreview
+      - Tests/OshTests
+      - Sources/OshApp/WindowAccessor.swift
+      - Sources/OshApp/ResourceLoader.swift
+      - Sources/OshApp/EditingSessionController.swift
+      - Sources/OshQuickLook
       - Sources/Shared
       - benchmark/swift-bench/RenderBenchmarkTests.swift
       - path: web-renderer/dist
@@ -87,16 +87,16 @@ targets:
       MARKETING_VERSION: ${MARKETING_VERSION}
       CURRENT_PROJECT_VERSION: ${CURRENT_PROJECT_VERSION}
 schemes:
-  Markdown:
+  Osh:
     build:
       targets:
-        Markdown: all
+        Osh: all
     run:
       config: Debug
     test:
       config: Debug
       targets:
-        - name: MarkdownTests
+        - name: OshTests
     profile:
       config: Release
     analyze:

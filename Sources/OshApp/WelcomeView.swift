@@ -3,8 +3,7 @@ import UniformTypeIdentifiers
 import AppKit
 
 /// Osh launch window: wordmark, one quiet open/drop hero, recent files, footer.
-///
-/// Deliberately unlike the old FluxMarkdown-style tips card: no tutorial list.
+/// Designed as a clean, quiet open/drop zone without unnecessary clutter.
 /// The document is the product; the window just gets out of the way.
 struct WelcomeView: View {
     @State private var isTargeted = false

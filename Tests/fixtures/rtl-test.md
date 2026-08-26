@@ -1,6 +1,6 @@
 # RTL Language Support Test / اختبار دعم اللغات من اليمين إلى اليسار
 
-This document tests automatic RTL detection in FluxMarkdown.
+This document tests automatic RTL detection in Osh.
 Press `Space` in Finder to preview — the text below should render right-to-left.
 
 ---

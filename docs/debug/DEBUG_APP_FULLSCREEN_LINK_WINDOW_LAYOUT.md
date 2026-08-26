@@ -2,7 +2,7 @@
 
 ## Symptom
 
-When FluxMarkdown is full screen and a local Markdown link opens another document, the new document initially fills the full-screen tab correctly. After a short flash, its content is constrained to a window-sized rectangle near the top-left while the rest of the full-screen window is black.
+When Osh is full screen and a local Markdown link opens another document, the new document initially fills the full-screen tab correctly. After a short flash, its content is constrained to a window-sized rectangle near the top-left while the rest of the full-screen window is black.
 
 Reported reproduction file:
 
@@ -19,7 +19,7 @@ Example links include `Project onboarding process` and `GitLab account and proje
 
 ## Reproduction
 
-1. Open the reported Markdown file in FluxMarkdown.
+1. Open the reported Markdown file in Osh.
 2. Enter full screen.
 3. Click a relative link to another Markdown document.
 4. Observe that the new full-screen tab is initially correct, then shrinks after a short delay.

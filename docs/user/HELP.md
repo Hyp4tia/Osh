@@ -33,7 +33,7 @@ If pressing Space still shows the old preview:
 
 1. Open **System Settings**
 2. Go to **Extensions** → **Quick Look**
-3. Make sure the **Osh / MarkdownPreview** item is enabled
+3. Make sure the **Osh / OshQuickLook** item is enabled
 
 ---
 

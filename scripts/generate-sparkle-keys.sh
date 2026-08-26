@@ -52,7 +52,7 @@ echo "🔒 Private Key (keep secret!):"
 echo "   $PRIVATE_KEY_FILE"
 echo ""
 echo "⚠️  IMPORTANT:"
-echo "   1. Add the public key to Sources/Markdown/Info.plist:"
+echo "   1. Add the public key to Sources/OshApp/Info.plist:"
 echo "      Replace 'SPARKLE_PUBLIC_KEY_PLACEHOLDER' with the key above"
 echo ""
 echo "   2. Keep the private key SECRET!"
@@ -76,7 +76,7 @@ Generated on: $(date)
 ## Usage
 
 ### Public Key
-Add to \`Sources/Markdown/Info.plist\`:
+Add to \`Sources/OshApp/Info.plist\`:
 
 \`\`\`xml
 <key>SUPublicEDKey</key>

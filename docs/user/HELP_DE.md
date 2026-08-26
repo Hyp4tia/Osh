@@ -33,7 +33,7 @@ Falls das Drücken der Leertaste weiterhin die alte Vorschau zeigt:
 
 1. Öffnen Sie die **Systemeinstellungen**
 2. Gehen Sie zu **Erweiterungen** → **Quick Look**
-3. Stellen Sie sicher, dass **Osh / MarkdownPreview** aktiviert ist
+3. Stellen Sie sicher, dass **Osh / OshQuickLook** aktiviert ist
 
 ---
 

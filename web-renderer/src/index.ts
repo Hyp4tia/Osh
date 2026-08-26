@@ -762,12 +762,12 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
 
     if (options.context) {
         currentContext = options.context;
-        (window as any).__fluxContext = currentContext;
+        (window as any).__oshContext = currentContext;
         document.documentElement.setAttribute('data-context', currentContext);
     }
 
     if (options.uiLanguage) {
-        (window as any).__fluxLang = options.uiLanguage === 'system' ? undefined : options.uiLanguage;
+        (window as any).__oshLang = options.uiLanguage === 'system' ? undefined : options.uiLanguage;
         if (options.uiLanguage === 'ar' || options.uiLanguage === 'he') {
             document.documentElement.setAttribute('dir', 'rtl');
         } else if (options.uiLanguage !== 'system') {

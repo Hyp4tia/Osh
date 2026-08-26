@@ -166,7 +166,7 @@ stateDiagram-v2
 
 ```mermaid
 gantt
-    title FluxMarkdown Development Timeline
+    title Osh Development Timeline
     dateFormat  YYYY-MM-DD
     section Architecture
     Design spec           :done, arch1, 2024-01-01, 2024-01-07

@@ -2,7 +2,7 @@
 
 ## 问题描述
 
-FluxMarkdown v1.22.275 在 **macOS 26 Tahoe** 上打开 Markdown 文件时，渲染结果无样式（CSS 未应用）。
+Osh v1.22.275 在 **macOS 26 Tahoe** 上打开 Markdown 文件时，渲染结果无样式（CSS 未应用）。
 日志中可见：
 
 ```

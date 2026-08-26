@@ -240,9 +240,9 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/Markdown/Info.plist")
+            .appendingPathComponent("Sources/OshApp/Info.plist")
         XCTAssertTrue(FileManager.default.fileExists(atPath: plistURL.path),
-                      "Sources/Markdown/Info.plist must exist")
+                      "Sources/OshApp/Info.plist must exist")
     }
 
     func testUTIDeclarations_extensionInfoPlistExists() {
@@ -250,9 +250,9 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/MarkdownPreview/Info.plist")
+            .appendingPathComponent("Sources/OshQuickLook/Info.plist")
         XCTAssertTrue(FileManager.default.fileExists(atPath: plistURL.path),
-                      "Sources/MarkdownPreview/Info.plist must exist")
+                      "Sources/OshQuickLook/Info.plist must exist")
     }
 
     func testUTIDeclarations_appPlistContainsMmdUTI() throws {
@@ -260,10 +260,10 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/Markdown/Info.plist")
+            .appendingPathComponent("Sources/OshApp/Info.plist")
         let plistContent = try String(contentsOf: plistURL, encoding: .utf8)
-        XCTAssertTrue(plistContent.contains("com.fluxmarkdown.mmd"),
-                      "App Info.plist must declare com.fluxmarkdown.mmd UTI")
+        XCTAssertTrue(plistContent.contains("com.osh.mmd"),
+                      "App Info.plist must declare com.osh.mmd UTI")
         XCTAssertTrue(plistContent.contains("<string>mmd</string>"),
                       "App Info.plist must map .mmd extension to UTI")
     }
@@ -273,10 +273,10 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/Markdown/Info.plist")
+            .appendingPathComponent("Sources/OshApp/Info.plist")
         let plistContent = try String(contentsOf: plistURL, encoding: .utf8)
-        XCTAssertTrue(plistContent.contains("com.fluxmarkdown.livemd"),
-                      "App Info.plist must declare com.fluxmarkdown.livemd UTI")
+        XCTAssertTrue(plistContent.contains("com.osh.livemd"),
+                      "App Info.plist must declare com.osh.livemd UTI")
         XCTAssertTrue(plistContent.contains("<string>livemd</string>"),
                       "App Info.plist must map .livemd extension to UTI")
     }
@@ -286,10 +286,10 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/Markdown/Info.plist")
+            .appendingPathComponent("Sources/OshApp/Info.plist")
         let plistContent = try String(contentsOf: plistURL, encoding: .utf8)
-        XCTAssertTrue(plistContent.contains("com.fluxmarkdown.mdc"),
-                      "App Info.plist must declare com.fluxmarkdown.mdc UTI")
+        XCTAssertTrue(plistContent.contains("com.osh.mdc"),
+                      "App Info.plist must declare com.osh.mdc UTI")
         XCTAssertTrue(plistContent.contains("<string>mdc</string>"),
                       "App Info.plist must map .mdc extension to UTI")
     }
@@ -299,7 +299,7 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/Markdown/Info.plist")
+            .appendingPathComponent("Sources/OshApp/Info.plist")
         let plistContent = try String(contentsOf: plistURL, encoding: .utf8)
         XCTAssertTrue(plistContent.contains("<string>mdwn</string>"),
                       "App Info.plist must declare mdwn extension")
@@ -310,13 +310,13 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/Markdown/Info.plist")
+            .appendingPathComponent("Sources/OshApp/Info.plist")
         let plistContent = try String(contentsOf: plistURL, encoding: .utf8)
         XCTAssertTrue(plistContent.contains("UTExportedTypeDeclarations"),
                       "App Info.plist must use UTExportedTypeDeclarations for unknown extensions")
         let exportedExtensions = ["markdown", "mdown", "mkd", "mkdn", "mkdown", "mdwn"]
         for ext in exportedExtensions {
-            XCTAssertTrue(plistContent.contains("com.fluxmarkdown.\(ext)"),
+            XCTAssertTrue(plistContent.contains("com.osh.\(ext)"),
                           "App Info.plist must export UTI for .\(ext)")
         }
     }
@@ -326,10 +326,10 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/MarkdownPreview/Info.plist")
+            .appendingPathComponent("Sources/OshQuickLook/Info.plist")
         let plistContent = try String(contentsOf: plistURL, encoding: .utf8)
-        XCTAssertTrue(plistContent.contains("com.fluxmarkdown.mmd"),
-                      "Extension Info.plist QLSupportedContentTypes must include com.fluxmarkdown.mmd")
+        XCTAssertTrue(plistContent.contains("com.osh.mmd"),
+                      "Extension Info.plist QLSupportedContentTypes must include com.osh.mmd")
     }
 
     func testUTIDeclarations_extensionPlistContainsLivemdUTI() throws {
@@ -337,10 +337,10 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/MarkdownPreview/Info.plist")
+            .appendingPathComponent("Sources/OshQuickLook/Info.plist")
         let plistContent = try String(contentsOf: plistURL, encoding: .utf8)
-        XCTAssertTrue(plistContent.contains("com.fluxmarkdown.livemd"),
-                      "Extension Info.plist QLSupportedContentTypes must include com.fluxmarkdown.livemd")
+        XCTAssertTrue(plistContent.contains("com.osh.livemd"),
+                      "Extension Info.plist QLSupportedContentTypes must include com.osh.livemd")
     }
 
     func testUTIDeclarations_extensionPlistContainsMdcUTI() throws {
@@ -348,10 +348,10 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/MarkdownPreview/Info.plist")
+            .appendingPathComponent("Sources/OshQuickLook/Info.plist")
         let plistContent = try String(contentsOf: plistURL, encoding: .utf8)
-        XCTAssertTrue(plistContent.contains("com.fluxmarkdown.mdc"),
-                      "Extension Info.plist QLSupportedContentTypes must include com.fluxmarkdown.mdc")
+        XCTAssertTrue(plistContent.contains("com.osh.mdc"),
+                      "Extension Info.plist QLSupportedContentTypes must include com.osh.mdc")
     }
 
     func testUTIDeclarations_extensionPlistContainsIAWriterMarkdownUTI() throws {
@@ -359,7 +359,7 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-            .appendingPathComponent("Sources/MarkdownPreview/Info.plist")
+            .appendingPathComponent("Sources/OshQuickLook/Info.plist")
         let plistContent = try String(contentsOf: plistURL, encoding: .utf8)
         XCTAssertTrue(plistContent.contains("net.ia.markdown"),
                       "Extension Info.plist QLSupportedContentTypes must include iA Writer's net.ia.markdown UTI")
@@ -370,26 +370,26 @@ final class FileExtensionTests: XCTestCase {
             .deletingLastPathComponent()
             .deletingLastPathComponent()
             .deletingLastPathComponent()
-        let appPlist = try String(contentsOf: root.appendingPathComponent("Sources/Markdown/Info.plist"), encoding: .utf8)
-        let extPlist = try String(contentsOf: root.appendingPathComponent("Sources/MarkdownPreview/Info.plist"), encoding: .utf8)
+        let appPlist = try String(contentsOf: root.appendingPathComponent("Sources/OshApp/Info.plist"), encoding: .utf8)
+        let extPlist = try String(contentsOf: root.appendingPathComponent("Sources/OshQuickLook/Info.plist"), encoding: .utf8)
 
         let requiredUTIs = [
             "net.daringfireball.markdown",
             "public.markdown",
             "net.ia.markdown",
-            "com.fluxmarkdown.mdx",
-            "com.fluxmarkdown.rmd",
-            "com.fluxmarkdown.qmd",
-            "com.fluxmarkdown.mdoc",
-            "com.fluxmarkdown.mmd",
-            "com.fluxmarkdown.livemd",
-            "com.fluxmarkdown.mdc",
-            "com.fluxmarkdown.markdown",
-            "com.fluxmarkdown.mdown",
-            "com.fluxmarkdown.mkd",
-            "com.fluxmarkdown.mkdn",
-            "com.fluxmarkdown.mkdown",
-            "com.fluxmarkdown.mdwn",
+            "com.osh.mdx",
+            "com.osh.rmd",
+            "com.osh.qmd",
+            "com.osh.mdoc",
+            "com.osh.mmd",
+            "com.osh.livemd",
+            "com.osh.mdc",
+            "com.osh.markdown",
+            "com.osh.mdown",
+            "com.osh.mkd",
+            "com.osh.mkdn",
+            "com.osh.mkdown",
+            "com.osh.mdwn",
         ]
         for uti in requiredUTIs {
             XCTAssertTrue(appPlist.contains(uti),

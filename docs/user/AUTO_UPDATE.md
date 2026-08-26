@@ -12,7 +12,7 @@ Sparkle needs access to `appcast.xml` to check for updates.
 
 ### Method 1 (recommended): GitHub Raw (no Pages needed)
 
-Set it in `Sources/Markdown/Info.plist`:
+Set it in `Sources/OshApp/Info.plist`:
 
 ```xml
 <key>SUFeedURL</key>

@@ -29,19 +29,19 @@
 				<string>net.daringfireball.markdown</string>
 				<string>public.markdown</string>
 				<string>net.ia.markdown</string>
-				<string>com.fluxmarkdown.mdx</string>
-				<string>com.fluxmarkdown.rmd</string>
-				<string>com.fluxmarkdown.qmd</string>
-				<string>com.fluxmarkdown.mdoc</string>
-				<string>com.fluxmarkdown.mdc</string>
-				<string>com.fluxmarkdown.mmd</string>
-				<string>com.fluxmarkdown.livemd</string>
-				<string>com.fluxmarkdown.markdown</string>
-				<string>com.fluxmarkdown.mdown</string>
-				<string>com.fluxmarkdown.mkd</string>
-				<string>com.fluxmarkdown.mkdn</string>
-				<string>com.fluxmarkdown.mkdown</string>
-				<string>com.fluxmarkdown.mdwn</string>
+				<string>com.osh.mdx</string>
+				<string>com.osh.rmd</string>
+				<string>com.osh.qmd</string>
+				<string>com.osh.mdoc</string>
+				<string>com.osh.mdc</string>
+				<string>com.osh.mmd</string>
+				<string>com.osh.livemd</string>
+				<string>com.osh.markdown</string>
+				<string>com.osh.mdown</string>
+				<string>com.osh.mkd</string>
+				<string>com.osh.mkdn</string>
+				<string>com.osh.mkdown</string>
+				<string>com.osh.mdwn</string>
 			</array>
 			<key>QLSupportsSearchableItems</key>
 			<false/>

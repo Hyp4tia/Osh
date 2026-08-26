@@ -33,7 +33,7 @@ Si al presionar la barra espaciadora todavía aparece la vista previa antigua:
 
 1. Abra **Ajustes del Sistema**
 2. Vaya a **Extensiones** → **Quick Look**
-3. Asegúrese de que el elemento **Osh / MarkdownPreview** esté activado
+3. Asegúrese de que el elemento **Osh / OshQuickLook** esté activado
 
 ---
 

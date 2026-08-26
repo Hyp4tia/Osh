@@ -33,7 +33,7 @@
 
 1. افتح **إعدادات النظام (System Settings)**
 2. انتقل إلى **الملحقات (Extensions)** ← **Quick Look**
-3. تأكد من تفعيل عنصر **Osh / MarkdownPreview**
+3. تأكد من تفعيل عنصر **Osh / OshQuickLook**
 
 ---
 

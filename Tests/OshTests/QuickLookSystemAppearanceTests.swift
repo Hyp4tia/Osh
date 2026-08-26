@@ -52,7 +52,7 @@ final class QuickLookSystemAppearanceTests: XCTestCase {
     func testQuickLookAppliesResolvedAppearanceToWebView() throws {
         let source = try String(
             contentsOf: projectRoot()
-                .appendingPathComponent("Sources/MarkdownPreview/PreviewViewController.swift"),
+                .appendingPathComponent("Sources/OshQuickLook/PreviewViewController.swift"),
             encoding: .utf8
         )
 
