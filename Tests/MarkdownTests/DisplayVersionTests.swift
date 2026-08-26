@@ -34,4 +34,8 @@ final class DisplayVersionTests: XCTestCase {
     func testDisplayVersionReturnsNilWhenNoVersionExists() {
         XCTAssertNil(DisplayVersion.text(from: [:]))
     }
+
+    func testFormattedBetaTextUsesVersion() {
+        XCTAssertTrue(DisplayVersion.formattedBetaText().contains("Beta"))
+    }
 }

@@ -28,6 +28,9 @@
   <a href="#-solución-de-problemas">Solución de problemas</a>
 </p>
 
+> [!NOTE]
+> **Osh se encuentra actualmente en fase Beta Pública (v1.0.0 Beta).** Las funciones se están perfeccionando activamente. Si encuentra algún problema o tiene sugerencias, por favor [abra un issue](https://github.com/Zeyadistired/Osh/issues).
+
 ---
 
 ## 📖 El nombre

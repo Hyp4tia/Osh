@@ -28,6 +28,9 @@
   <a href="#-troubleshooting">Troubleshooting</a>
 </p>
 
+> [!NOTE]
+> **Osh is currently in Public Beta (v1.0.0 Beta).** Features and functionality are actively being polished. If you encounter any issues or have feedback, please [open an issue](https://github.com/Zeyadistired/Osh/issues)!
+
 ---
 
 ## 📖 The Name

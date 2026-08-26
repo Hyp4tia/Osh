@@ -362,12 +362,10 @@ private struct DocumentPreviewScene: View {
                 // Extra trailing inset keeps the icon row clear of the scrollbar.
                 .padding(.trailing, 26)
 
-                if let version = DisplayVersion.text(in: .main) {
-                    Text("v\(version)")
-                        .font(.system(size: 10, weight: .regular, design: .monospaced))
-                        .foregroundColor(Color.secondary.opacity(0.5))
-                        .padding(.trailing, 28)
-                }
+                Text(DisplayVersion.formattedBetaText())
+                    .font(.system(size: 10, weight: .regular, design: .monospaced))
+                    .foregroundColor(Color.secondary.opacity(0.5))
+                    .padding(.trailing, 28)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
             .environment(\.layoutDirection, .leftToRight)

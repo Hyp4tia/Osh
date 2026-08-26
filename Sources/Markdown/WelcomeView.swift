@@ -192,7 +192,7 @@ struct WelcomeView: View {
 
             Spacer()
 
-            Text(DisplayVersion.text(in: .main) ?? "1.0.0B")
+            Text(DisplayVersion.formattedBetaText())
                 .font(.system(size: 10, weight: .regular, design: .monospaced))
                 .foregroundColor(Color.secondary.opacity(0.55))
         }
