@@ -16,7 +16,7 @@ PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$PROJECT_ROOT"
 
 echo "📦 步骤 1/3: 下载旧版本 (v1.6.96)..."
-OLD_DMG_URL="https://github.com/xykong/flux-markdown/releases/download/v1.6.96/FluxMarkdown.dmg"
+OLD_DMG_URL="https://github.com/xykong/flux-markdown/releases/download/v1.6.96/Osh.dmg"
 TMP_DIR=$(mktemp -d)
 OLD_DMG="$TMP_DIR/old_version.dmg"
 
@@ -31,10 +31,10 @@ echo "   ✓ 旧版本已下载"
 echo ""
 echo "📲 步骤 2/3: 安装旧版本 (v1.6.96)..."
 hdiutil attach "$OLD_DMG" -mountpoint "$TMP_DIR/mount" -quiet
-rm -rf "/Applications/FluxMarkdown.app"
-cp -R "$TMP_DIR/mount/FluxMarkdown.app" "/Applications/"
+rm -rf "/Applications/Osh.app"
+cp -R "$TMP_DIR/mount/Osh.app" "/Applications/"
 hdiutil detach "$TMP_DIR/mount" -quiet
-xattr -cr "/Applications/FluxMarkdown.app"
+xattr -cr "/Applications/Osh.app"
 
 echo "   ✓ 旧版本已安装"
 
@@ -50,7 +50,7 @@ echo "   • 已安装版本: v1.6.96"
 echo "   • 可更新版本: v1.6.100+"
 echo ""
 echo "🧪 开始测试:"
-echo "   1. 打开 'FluxMarkdown' 应用"
+echo "   1. 打开 'Osh' 应用"
 echo "   2. 点击 '检查更新...' 或按 ⌘U"
 echo "   3. 应该检测到新版本（v1.6.100 或更高）"
 echo "   4. 点击 'Install' 按钮"

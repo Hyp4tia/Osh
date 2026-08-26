@@ -17,7 +17,7 @@ reported to have this problem.
 ## Reproduction
 
 1. Set macOS appearance to Light.
-2. Set FluxMarkdown preview appearance to System.
+2. Set Osh preview appearance to System.
 3. Open a Markdown file with Finder Quick Look.
 4. Confirm the windowed preview is light.
 5. Enter Quick Look full screen.

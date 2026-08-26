@@ -8,7 +8,7 @@
 
 ## 概述
 
-本文档记录了 FluxMarkdown 在优化前的渲染性能基线数据。测试分为三个层次，分别覆盖 JS 引擎层、Swift/WKWebView 桥接层、以及 QuickLook 系统层，用于后续优化效果的量化对比。
+本文档记录了 Osh 在优化前的渲染性能基线数据。测试分为三个层次，分别覆盖 JS 引擎层、Swift/WKWebView 桥接层、以及 QuickLook 系统层，用于后续优化效果的量化对比。
 
 所有测试均使用固定的 7 个 Markdown fixture 文件，区分 **冷启动** （Cold）和 **热启动** （Warm）两种场景。
 

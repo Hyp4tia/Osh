@@ -3,7 +3,7 @@
 > **Note:** As of the macOS 26 (Tahoe) fix, App Groups are no longer used.
 > See [#13](https://github.com/xykong/flux-markdown/issues/13) for background.
 
-To make the **Main App**'s appearance setting apply to the **QuickLook Extension**, we use a shared plist file at `~/Library/Application Support/FluxMarkdown/shared-preferences.plist`.
+To make the **Main App**'s appearance setting apply to the **QuickLook Extension**, we use a shared plist file at `~/Library/Application Support/Osh/shared-preferences.plist`.
 
 ## How It Works
 
@@ -22,12 +22,12 @@ To make the **Main App**'s appearance setting apply to the **QuickLook Extension
 ## Troubleshooting
 
 - **Setting doesn't sync?**
-  - Check that `~/Library/Application Support/FluxMarkdown/shared-preferences.plist` exists and contains your settings.
+  - Check that `~/Library/Application Support/Osh/shared-preferences.plist` exists and contains your settings.
   - Open a new QuickLook preview (close and re-press Space) — the extension reads settings on launch.
   - Clean Build Folder (`Cmd+Shift+K`) and rebuild.
 
 - **Plist file missing?**
-  - Open FluxMarkdown.app and change any setting. The file is created on first write.
+  - Open Osh.app and change any setting. The file is created on first write.
   - Check permissions: the directory must be writable by the main app.
 
 ## Previous Approach (Pre-Tahoe)

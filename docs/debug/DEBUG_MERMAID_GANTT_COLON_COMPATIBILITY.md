@@ -20,7 +20,7 @@ gantt
     P1-P2: Title & 需求痛点引入 :active, 0, 90
 ```
 
-The source document must remain unchanged. FluxMarkdown should render the
+The source document must remain unchanged. Osh should render the
 diagram when the intended metadata suffix is unambiguous.
 
 ## Reproduction
@@ -49,7 +49,7 @@ visible label while leaving the user's document untouched.
 
 ## Findings
 
-- The installed FluxMarkdown 1.34.449 bundle is byte-for-byte identical to the
+- The installed Osh 1.34.449 bundle is byte-for-byte identical to the
   repository's current `web-renderer/dist/index.html`.
 - The real QuickLook extension logs the exact error:
   `Invalid date:“嘟嘟” PRD 自动生成器 : 90`.

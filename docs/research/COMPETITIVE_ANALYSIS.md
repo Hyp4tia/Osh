@@ -1,4 +1,4 @@
-# FluxMarkdown 竞品分析与差距报告
+# Osh 竞品分析与差距报告
 
 **版本** ：基于 v1.16.182  
 **日期** ：2026-02-23  
@@ -33,7 +33,7 @@
 
 ### 2.1 直接竞品：QuickLook 插件
 
-| 特性 | FluxMarkdown | QLMarkdown (sbarex) | PreviewMarkdown | qlmarkdown (toland) |
+| 特性 | Osh | QLMarkdown (sbarex) | PreviewMarkdown | qlmarkdown (toland) |
 |------|:---:|:---:|:---:|:---:|
 | 渲染引擎 | TS/Vite 自研 | cmark-gfm | Markdown-It | Discount (C) |
 | Mermaid | ✅ | ✅ | ❌ | ❌ |
@@ -63,7 +63,7 @@
 
 ### 2.2 间接竞品：专用 Markdown 预览器
 
-| 特性 | FluxMarkdown | Marked 2 | Typora | iA Writer |
+| 特性 | Osh | Marked 2 | Typora | iA Writer |
 |------|:---:|:---:|:---:|:---:|
 | 使用方式 | QuickLook（Space 键） | 独立应用 | 编辑器 | 编辑器 |
 | Mermaid | ✅ | ✅ | ✅ | ❌ |

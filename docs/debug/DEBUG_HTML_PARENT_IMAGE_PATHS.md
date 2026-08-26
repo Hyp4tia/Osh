@@ -14,7 +14,7 @@ All 20 referenced files exist and are valid RGBA PNGs. The source pack is about 
 
 ## Reproduction
 
-1. Open the document above in Flux Markdown or Finder Quick Look.
+1. Open the document above in Osh or Finder Quick Look.
 2. Scroll to the `原图图鉴` table.
 3. Observe yellow image placeholders instead of transparent character artwork.
 
@@ -56,6 +56,6 @@ Completed on 2026-07-20:
   under the test sandbox, so it was interrupted after 165 seconds.
 - Production renderer bundle built successfully with Vite.
 - All 20 image references in the reported Animal Workers document resolve to existing PNG files.
-- Flux Markdown CLI rendered the real document to a 7-page PDF containing 20 image objects and
+- Osh CLI rendered the real document to a 7-page PDF containing 20 image objects and
   their 20 transparency masks. Visual inspection of pages 2-4 confirmed every character and atlas
   image rendered without a yellow placeholder.
