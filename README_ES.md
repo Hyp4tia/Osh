@@ -69,6 +69,13 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 - **Citas colapsables**: Opción de contraer citas largas automáticamente.
 - **Exportación en un clic**: Exporte documentos a **PDF**, **HTML** y **DOCX** con estilos incrustados.
 
+### 🛡️ Seguridad Avanzada y Privacidad Total
+- **Sanitización HTML con DOMPurify**: Filtra rigurosamente todo el código HTML de Markdown antes de insertarlo en el DOM, neutralizando XSS, scripts maliciosos y controladores de eventos (`onerror`, `onload`).
+- **Política de Seguridad de Contenido Estricta (CSP)**: Entorno WebKit blindado que bloquea la ejecución dinámica no autorizada de scripts y la extracción de datos por red.
+- **Contención de Rutas y Enlaces Simbólicos**: Resolución canónica de enlaces simbólicos antes de verificar los límites del directorio, impidiendo escapes (`../`) o acceso indebido al sistema de archivos.
+- **Bloqueo de Ejecutables y Aplicaciones**: Impide la ejecución de archivos `.app`, `.sh`, `.command`, `.pkg`, `.dmg` o scripts de automatización desde enlaces del documento.
+- **100% Offline y Cero Telemetría**: Sin análisis, rastreadores ni conexiones en segundo plano. Completamente documentado y verificado en [Security_Audit.md](Security_Audit.md).
+
 ---
 
 ## 📊 Comparación con otros visores de Markdown en macOS
@@ -87,9 +94,12 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 | **Alertas de GitHub (`[!NOTE]`)** | 🟢 **Sí** | 🟢 Sí | 🟡 Básico | 🔴 No | 🟢 Sí | 🟡 Básico |
 | **Formatos de exportación** | **PDF, HTML, DOCX** | PDF, HTML | HTML | PDF, HTML | PDF, HTML, DOCX, RTF | PDF, HTML, DOCX, LaTeX |
 | **Herramienta CLI de exportación** | 🟢 **`osh export`** | 🔴 No | 🟡 Solo HTML | 🔴 No | 🟢 `marked` CLI | 🔴 No |
-| **Seguridad: CSP estricto y DOMPurify** | 🟢 **Sí (Auditado)** | 🟡 Básico | 🟡 Básico | 🔴 No | 🟢 Sí | 🟡 Chromium |
-| **Protección contra escapes y enlaces** | 🟢 **Sí (Auditado)** | 🔴 No | 🟡 Básico | 🔴 No | 🟢 Sí | 🟡 App Sandbox |
+| **Sanitización HTML (DOMPurify)** | 🟢 **Sí (Inmune a XSS)** | 🔴 No | 🟡 Básico (cmark) | 🔴 No | 🟢 Sí | 🟡 Chromium |
+| **Política de Seguridad Estricta (CSP)** | 🟢 **Sí (Reforzado)** | 🔴 No | 🔴 No | 🔴 No | 🟢 Sí | 🟡 Básico |
+| **Protección contra Traversal y Enlaces** | 🟢 **Sí (Auditado)** | 🔴 No | 🟡 Básico | 🔴 No | 🟢 Sí | 🟡 App Sandbox |
+| **Bloqueo de Ejecutables (.app, .sh)** | 🟢 **Sí (Estricto)** | 🔴 No | 🔴 No | 🔴 No | 🟢 Sí | 🟡 App Sandbox |
 | **Privacidad y telemetría (Offline)** | 🟢 **100% Offline** | 🟢 100% Offline | 🟢 100% Offline | 🟢 100% Offline | 🟢 100% Offline | 🟡 Cuenta/Auth |
+| **Informe de Auditoría de Seguridad** | 🟢 **[Sí (Verificado)](Security_Audit.md)** | 🔴 No | 🔴 No | 🔴 No | 🔴 No | 🔴 No |
 | **Arquitectura y tamaño** | **Nativo Swift (<25MB)** | Nativo Swift (<25MB) | Nativo Swift (<15MB) | Nativo Obj-C/Swift | Nativo Swift/Obj-C | Electron (~200MB+ RAM) |
 | **Licencia y precio** | **Gratis (GPL-3.0)** | Gratis (MIT) | Gratis (GPL-2.0) | Gratis (MIT) | De pago ($14.99–$19.99) | De pago ($14.99) |
 

@@ -69,6 +69,13 @@ Select any file in Finder, press `Space`, and enjoy instant, beautifully rendere
 - **Collapsible Blockquotes**: Keep long documents neat with automatic blockquote collapsing.
 - **One-Click Export**: Export cleanly formatted **PDF**, **HTML**, and **DOCX** files with all styling embedded.
 
+### 🛡️ Hardened Security & Privacy
+- **DOMPurify HTML Sanitization**: Sanitizes all Markdown HTML before DOM insertion, eliminating XSS, malicious inline scripts, and event handlers (`onerror`, `onload`).
+- **Strict Content Security Policy (CSP)**: Hardened WebKit environment blocking unauthorized dynamic script evaluation and network exfiltration.
+- **Path Traversal & Symlink Containment**: Resolves canonical symlinks before boundary checks, strictly prohibiting `../` traversal, root escapes, and filesystem tampering.
+- **Dangerous Executable & App Blocking**: Prevents executing `.app`, `.sh`, `.command`, `.tool`, `.pkg`, `.dmg`, or automation scripts via markdown links.
+- **100% Offline & Zero Telemetry**: Zero analytics, trackers, or hidden background listeners. Fully documented and verified in [Security_Audit.md](Security_Audit.md).
+
 ---
 
 ## 📊 Comparison with Other macOS Markdown Viewers
@@ -87,9 +94,12 @@ Select any file in Finder, press `Space`, and enjoy instant, beautifully rendere
 | **GitHub Alerts (`[!NOTE]`, `[!TIP]`)** | 🟢 **Yes** | 🟢 Yes | 🟡 Basic | 🔴 No | 🟢 Yes | 🟡 Basic |
 | **Export Formats** | **PDF, HTML, DOCX** | PDF, HTML | HTML | PDF, HTML | PDF, HTML, DOCX, RTF | PDF, HTML, DOCX, LaTeX |
 | **CLI Batch Exporter** | 🟢 **`osh export`** | 🔴 No | 🟡 HTML only | 🔴 No | 🟢 `marked` CLI | 🔴 No |
-| **Security: Strict CSP & DOMPurify** | 🟢 **Yes (Audited)** | 🟡 Basic | 🟡 Basic | 🔴 No | 🟢 Yes | 🟡 Chromium |
-| **Path Traversal & Symlink Protection** | 🟢 **Yes (Audited)** | 🔴 No | 🟡 Basic | 🔴 No | 🟢 Yes | 🟡 App Sandbox |
+| **HTML Sanitization (DOMPurify)** | 🟢 **Yes (XSS-immune)** | 🔴 No | 🟡 Basic (cmark) | 🔴 No | 🟢 Yes | 🟡 Chromium |
+| **Strict Content Security Policy (CSP)** | 🟢 **Yes (Hardened)** | 🔴 No | 🔴 No | 🔴 No | 🟢 Yes | 🟡 Basic |
+| **Path Traversal & Symlink Containment** | 🟢 **Yes (Audited)** | 🔴 No | 🟡 Basic | 🔴 No | 🟢 Yes | 🟡 App Sandbox |
+| **Executable & App Blocking (.app, .sh)** | 🟢 **Yes (Strict)** | 🔴 No | 🔴 No | 🔴 No | 🟢 Yes | 🟡 App Sandbox |
 | **Telemetry & Privacy** | 🟢 **100% Offline** | 🟢 100% Offline | 🟢 100% Offline | 🟢 100% Offline | 🟢 100% Offline | 🟡 Account/Auth |
+| **Public Security Audit Report** | 🟢 **[Yes (Verified)](Security_Audit.md)** | 🔴 No | 🔴 No | 🔴 No | 🔴 No | 🔴 No |
 | **Architecture / Footprint** | **Native Swift (<25MB)** | Native Swift (<25MB) | Native Swift (<15MB) | Native Obj-C/Swift | Native Swift/Obj-C | Electron (~200MB+ RAM) |
 | **License / Pricing** | **Free (GPL-3.0)** | Free (MIT) | Free (GPL-2.0) | Free (MIT) | Paid ($14.99–$19.99) | Paid ($14.99) |
 
