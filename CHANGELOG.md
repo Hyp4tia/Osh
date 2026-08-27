@@ -1,6 +1,17 @@
 ## [Unreleased]
 _无待发布的变更_
 
+## [1.0.2] - 2026-08-27
+
+### Added
+- **First-Launch Onboarding Experience**: Brief, native macOS introduction showcasing Osh's core workflow with fluid entrance animations and smooth transition to the standard Welcome drop-zone.
+- **Subtle Native Toolbar & UI Animations**: Restrained macOS motion across document toolbar buttons, Settings sidebar navigation, and Welcome screen controls with complete `accessibilityReduceMotion` support.
+
+### Refined
+- **Document Toolbar "More" Menu**: Extended hover highlight across the full control (ellipsis icon + chevron indicator) matching secondary toolbar buttons.
+- **Settings UI Polish**: Refined sidebar selection, unified 9pt continuous corner card geometry, clean theme segments, language hover feedback, and monospaced font-size readout badges.
+- **Welcome Empty-State Screen**: Refined app icon presentation (56x56, 12pt corner radius), soft native drop zone card, and clean recent files hover feedback.
+
 ## [1.0.1] - 2026-08-27
 
 ### Added

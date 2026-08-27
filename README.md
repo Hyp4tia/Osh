@@ -19,7 +19,7 @@
 </p>
 
 > [!NOTE]
-> **Osh is currently in Public Beta (v1.0.1 Beta).** Features and polish are evolving rapidly. If you run into anything unexpected or have suggestions, please feel free to [open an issue](https://github.com/Zeyadistired/Osh/issues)!
+> **Osh is currently in Public Beta (v1.0.2 Beta).** Features and polish are evolving rapidly. If you run into anything unexpected or have suggestions, please feel free to [open an issue](https://github.com/Zeyadistired/Osh/issues)!
 
 ---
 
