@@ -14,7 +14,8 @@
     <a href="README_AR.md">العربية</a> •
     <a href="#installation">Installation</a> •
     <a href="#features">Features</a> •
-    <a href="#shortcuts">Shortcuts</a>
+    <a href="#shortcuts">Shortcuts</a> •
+    <a href="Security_Audit.md">Security Audit</a>
   </p>
 </p>
 
@@ -70,6 +71,9 @@ Select any file in Finder, press `Space`, and enjoy instant, beautifully rendere
 ---
 
 ## 🚀 Installation
+
+> [!NOTE]
+> 🛡️ **Security & Privacy:** An independent, full-codebase security audit is available in [Security_Audit.md](Security_Audit.md) covering static analysis, sandboxing, data privacy, and vulnerability analysis.
 
 ### Download DMG
 1. Download the latest **`Osh.dmg`** from the [GitHub Releases](https://github.com/Zeyadistired/Osh/releases) page.

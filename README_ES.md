@@ -14,7 +14,8 @@
     <a href="README_AR.md">العربية</a> •
     <a href="#instalación">Instalación</a> •
     <a href="#características">Características</a> •
-    <a href="#atajos-de-teclado">Atajos</a>
+    <a href="#atajos-de-teclado">Atajos</a> •
+    <a href="Security_Audit.md">Auditoría de Seguridad</a>
   </p>
 </p>
 
@@ -70,6 +71,9 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 ---
 
 ## 🚀 Instalación
+
+> [!NOTE]
+> 🛡️ **Seguridad y privacidad:** Consulte el informe completo de auditoría de seguridad en [Security_Audit.md](Security_Audit.md).
 
 ### Descarga directa (DMG)
 1. Descargue el archivo **`Osh.dmg`** desde [GitHub Releases](https://github.com/Zeyadistired/Osh/releases).
