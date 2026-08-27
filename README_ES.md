@@ -20,7 +20,7 @@
 </p>
 
 > [!NOTE]
-> **Osh se encuentra actualmente en fase Beta Pública (v1.0.3 Beta).** Las funciones se están optimizando continuamente. Si encuentra algún problema o tiene sugerencias, por favor [abra un issue](https://github.com/Zeyadistired/Osh/issues).
+> **Osh está actualmente en Beta Pública (v1.0.4 Beta).** Las funciones y el pulido visual evolucionan rápidamente. Si encuentras algún problema o tienes sugerencias, ¡no dudes en [abrir un issue](https://github.com/Zeyadistired/Osh/issues)!.
 
 ---
 

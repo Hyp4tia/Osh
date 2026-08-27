@@ -1,3 +1,22 @@
+# FIXED
+
+**Release:** v1.0.4 Beta  
+**Date:** August 27, 2026  
+**Status:** Fixed & Verified  
+
+All security vulnerabilities and hardening items identified during our security audits have been remediated, verified, and regression-tested in the codebase:
+
+- **Local Link & Path Traversal Containment:** Hardened `LinkNavigation.resolveLocalURL()` with canonicalized, symlink-resolved directory containment (`resolvingSymlinksInPath()`, `standardizedFileURL`), strictly blocking directory traversal (`../`, `%2e%2e/`), root escapes, and out-of-scope filesystem access.
+- **Application (`.app`) & Dangerous Executable / Script Blocking:** Enforced strict blocking against application bundles (`.app`, `.app/Contents/...`), shell scripts (`.sh`, `.command`, `.tool`), package installers (`.pkg`, `.dmg`), and automation scripts (`.workflow`, `.scpt`, `.applescript`) when resolving Markdown links.
+- **Symlink Escape Prevention:** Enforced filesystem-level symlink resolution (`resolvingSymlinksInPath()`) before boundary containment checks, preventing symlinks located within the document directory from linking to files or directories outside the allowed scope.
+- **Removal of `allowUniversalAccessFromFileURLs`:** Completely removed `allowUniversalAccessFromFileURLs = true` across the Host App (`MarkdownWebView.swift`), CLI Exporter (`CLIExporter.swift`), and QuickLook Extension (`PreviewViewController.swift`).
+- **Renderer XSS, CSP & Dynamic Evaluation Hardening:**
+  - Integrated **DOMPurify** (`v3.4.14`) to sanitize all Markdown-rendered HTML before DOM insertion, neutralizing inline scripts, event handlers (`onerror`, `onload`, `onclick`), and `javascript:` URIs while preserving MathML, KaTeX, Mermaid, Vega, Graphviz, task lists, and RTL formatting.
+  - Added strict Content Security Policy (`default-src 'none'; script-src 'self' osh-renderer: 'wasm-unsafe-eval'; connect-src local-md: osh-renderer: blob:; img-src local-md: osh-renderer: data: blob: https: http:;`).
+  - Removed `new Function()` dynamic runtime evaluation from Typst rendering engine, replaced with static Vite WASM asset imports, and escaped all error template interpolations via `escapeHtml()`.
+
+---
+
 # Osh Security Audit
 
 **Date:** 2026-08-27  

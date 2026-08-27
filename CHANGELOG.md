@@ -1,6 +1,16 @@
 ## [Unreleased]
 _无待发布的变更_
 
+## [1.0.4] - 2026-08-27
+
+### Security & Hardening
+- **Comprehensive Security Remediation**: Formally verified and deployed end-to-end security protections across the rendering pipeline and native macOS application layer:
+  - **DOMPurify HTML Sanitization**: Integrated DOMPurify (`v3.4.14`) to strictly sanitize all Markdown-rendered HTML prior to DOM insertion, eliminating XSS vectors from untrusted Markdown while preserving legitimate MathML, KaTeX, Mermaid diagrams, Vega charts, Graphviz diagrams, task lists, and RTL attributes.
+  - **Strict Content Security Policy (CSP)**: Introduced restrictive CSP (`default-src 'none'`, `script-src 'self' osh-renderer: 'wasm-unsafe-eval'`, `connect-src local-md: osh-renderer: blob:`, `img-src local-md: osh-renderer: data: blob: https: http:`) to eliminate inline script execution and unauthorized outbound network exfiltration.
+  - **Link Navigation Directory Containment**: Hardened `LinkNavigation` with canonicalized, symlink-resolved directory containment (`resolvingSymlinksInPath()`, `standardizedFileURL`), strictly blocking directory traversal (`../`), external symlinks, and application bundle launches (`.app`, `.sh`, `.command`, etc.) via Markdown links.
+  - **Universal File Access Removal**: Fully removed `allowUniversalAccessFromFileURLs = true` across the Host App, CLI Exporter, and QuickLook extension.
+  - **Typst WASM & Dynamic Evaluation Hardening**: Removed `new Function()` dynamic runtime evaluation from Typst rendering engine, replaced with static Vite WASM asset loading, and added strict HTML escaping to all template error interpolations.
+
 ## [1.0.3] - 2026-08-27
 
 ### Security & Hardening
@@ -35,6 +45,17 @@ _无待发布的变更_
 - **Edit button click responsiveness**: Added explicit content shape and z-index ordering for reliable click hit-testing over the web view.
 - **Undo / Redo reliability & safety**: Connected toolbar actions directly to the window's authoritative document `NSUndoManager` with `breakUndoCoalescing()` and `canUndo`/`canRedo` guards, eliminating intermittent `EXC_BAD_ACCESS` crashes from un-targeted responder chain queries.
 - **Real-time font size scaling**: Fixed web renderer fast-path to immediately update `#markdown-preview` font size when adjusting the Text Size slider.
+
+## [1.0.0] - 2026-08-26
+
+### Added
+- Initial Osh public beta release: Native macOS Markdown and Typst reader, editor, and QuickLook extension.
+
+---
+
+# Historical Changelog (Pre-Fork)
+
+> The changelog entries below this line are historical records inherited from the repository Osh was originally forked from prior to version 1.0.0.
 
 ## [1.34.475] - 2026-08-14
 
