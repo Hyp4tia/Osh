@@ -224,6 +224,8 @@ private struct DocumentPreviewScene: View {
     let fileURL: URL?
     @ObservedObject var preference: AppearancePreference
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var isEditing: Bool = false
     @State private var viewMode: ViewMode = .preview
     @State private var toolbarToast: ToolbarToastState?
@@ -261,6 +263,7 @@ private struct DocumentPreviewScene: View {
             )
             .opacity(isEditing ? 0 : 1)
             .allowsHitTesting(!isEditing)
+            .animation(nil, value: isEditing)
 
             if isEditing {
                 SourceEditorView(
@@ -268,20 +271,23 @@ private struct DocumentPreviewScene: View {
                     appearanceMode: preference.currentMode,
                     onSave: { saveDocument() }
                 )
+                .animation(nil, value: isEditing)
             }
 
             // Document Toolbar
             HStack(spacing: 0) {
                 // Leading: Document Source / Preview toggle
                 Button(action: {
-                    viewMode = (viewMode == .preview) ? .source : .preview
+                    withAnimation(reduceMotion ? .none : .easeInOut(duration: 0.18)) {
+                        viewMode = (viewMode == .preview) ? .source : .preview
+                    }
                 }) {
                     Image(systemName: viewMode == .source ? "eye.fill" : "doc.plaintext")
                         .font(.system(size: 13, weight: .medium))
                         .frame(width: 28, height: 28)
                         .contentShape(Rectangle())
                 }
-                .buttonStyle(PlainButtonStyle())
+                .buttonStyle(NativeToolbarItemButtonStyle())
                 .foregroundColor(Color(NSColor.labelColor))
                 .help(viewMode == .source
                     ? NSLocalizedString("Show Preview", comment: "Show preview tooltip")
@@ -295,47 +301,39 @@ private struct DocumentPreviewScene: View {
                 // Trailing toolbar actions
                 HStack(spacing: 8) {
                     // 1. Edit / Done (Primary Action)
-                    if isEditing {
-                        Button(action: { isEditing.toggle() }) {
-                            HStack(spacing: 4) {
-                                Image(systemName: "checkmark")
-                                    .font(.system(size: 11, weight: .semibold))
-                                Text(NSLocalizedString("Done", comment: "Done editing button"))
-                                    .font(.system(size: 12, weight: .semibold))
-                            }
-                            .padding(.horizontal, 10)
-                            .frame(height: 28)
-                            .background(
-                                RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                    .fill(Color.accentColor)
-                            )
-                            .foregroundColor(.white)
-                            .contentShape(Rectangle())
+                    Button(action: {
+                        withAnimation(reduceMotion ? .none : .easeInOut(duration: 0.18)) {
+                            isEditing.toggle()
                         }
-                        .buttonStyle(PlainButtonStyle())
-                        .help(NSLocalizedString("Done Editing (⌘E)", comment: "Done editing tooltip"))
-                        .accessibilityLabel(NSLocalizedString("Done Editing", comment: "Done editing accessibility label"))
-                    } else {
-                        Button(action: { isEditing.toggle() }) {
-                            HStack(spacing: 4) {
-                                Image(systemName: "square.and.pencil")
-                                    .font(.system(size: 11, weight: .semibold))
-                                Text(NSLocalizedString("Edit", comment: "Edit markdown button"))
-                                    .font(.system(size: 12, weight: .medium))
-                            }
-                            .padding(.horizontal, 10)
-                            .frame(height: 28)
-                            .background(
-                                RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                    .stroke(Color.secondary.opacity(0.35), lineWidth: 1)
-                            )
-                            .foregroundColor(.primary)
-                            .contentShape(Rectangle())
+                    }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: isEditing ? "checkmark" : "square.and.pencil")
+                                .font(.system(size: 11, weight: .semibold))
+                            Text(isEditing
+                                ? NSLocalizedString("Done", comment: "Done editing button")
+                                : NSLocalizedString("Edit", comment: "Edit markdown button"))
+                                .font(.system(size: 12, weight: isEditing ? .semibold : .medium))
                         }
-                        .buttonStyle(PlainButtonStyle())
-                        .help(NSLocalizedString("Edit Markdown (⌘E)", comment: "Edit markdown tooltip"))
-                        .accessibilityLabel(NSLocalizedString("Edit Markdown", comment: "Edit markdown accessibility label"))
+                        .padding(.horizontal, 10)
+                        .frame(height: 28)
+                        .background(
+                            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                .fill(isEditing ? Color.accentColor : Color.clear)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                .stroke(isEditing ? Color.clear : Color.secondary.opacity(0.35), lineWidth: 1)
+                        )
+                        .foregroundColor(isEditing ? .white : .primary)
+                        .contentShape(Rectangle())
                     }
+                    .buttonStyle(NativePrimaryToolbarButtonStyle(isEditing: isEditing))
+                    .help(isEditing
+                        ? NSLocalizedString("Done Editing (⌘E)", comment: "Done editing tooltip")
+                        : NSLocalizedString("Edit Markdown (⌘E)", comment: "Edit markdown tooltip"))
+                    .accessibilityLabel(isEditing
+                        ? NSLocalizedString("Done Editing", comment: "Done editing accessibility label")
+                        : NSLocalizedString("Edit Markdown", comment: "Edit markdown accessibility label"))
 
                     // 2. Undo
                     Button(action: {
@@ -346,7 +344,7 @@ private struct DocumentPreviewScene: View {
                             .frame(width: 28, height: 28)
                             .contentShape(Rectangle())
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(NativeToolbarItemButtonStyle())
                     .foregroundColor(Color(NSColor.labelColor))
                     .help(NSLocalizedString("Undo (⌘Z)", comment: "Undo tooltip"))
                     .accessibilityLabel(NSLocalizedString("Undo", comment: "Undo accessibility label"))
@@ -360,7 +358,7 @@ private struct DocumentPreviewScene: View {
                             .frame(width: 28, height: 28)
                             .contentShape(Rectangle())
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(NativeToolbarItemButtonStyle())
                     .foregroundColor(Color(NSColor.labelColor))
                     .help(NSLocalizedString("Redo (⇧⌘Z)", comment: "Redo tooltip"))
                     .accessibilityLabel(NSLocalizedString("Redo", comment: "Redo accessibility label"))
@@ -400,11 +398,15 @@ private struct DocumentPreviewScene: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .toggleEditing)) { _ in
             guard NSApp.keyWindow === hostWindow else { return }
-            isEditing.toggle()
+            withAnimation(reduceMotion ? .none : .easeInOut(duration: 0.18)) {
+                isEditing.toggle()
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .toggleViewMode)) { _ in
             guard NSApp.keyWindow === hostWindow else { return }
-            viewMode = (viewMode == .preview) ? .source : .preview
+            withAnimation(reduceMotion ? .none : .easeInOut(duration: 0.18)) {
+                viewMode = (viewMode == .preview) ? .source : .preview
+            }
         }
         .onReceive(NotificationCenter.default.publisher(for: .reloadFile)) { _ in
             guard NSApp.keyWindow === hostWindow else { return }
@@ -731,6 +733,66 @@ struct CheckForUpdatesView: View {
     }
 }
 
+// MARK: - Toolbar Button Styles
+
+struct NativeToolbarItemButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(
+                        configuration.isPressed
+                            ? Color.primary.opacity(0.14)
+                            : (isHovered ? Color.primary.opacity(0.08) : Color.clear)
+                    )
+            )
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.96 : 1.0)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.08), value: configuration.isPressed)
+            .onHover { isHovered = $0 }
+    }
+}
+
+struct NativePrimaryToolbarButtonStyle: ButtonStyle {
+    let isEditing: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.84 : (isHovered && !isEditing ? 0.88 : 1.0))
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.97 : 1.0)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.08), value: configuration.isPressed)
+            .onHover { isHovered = $0 }
+    }
+}
+
+struct NativePopoverActionButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(.vertical, 4)
+            .padding(.horizontal, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 5, style: .continuous)
+                    .fill(
+                        configuration.isPressed
+                            ? Color.primary.opacity(0.12)
+                            : (isHovered ? Color.primary.opacity(0.06) : Color.clear)
+                    )
+            )
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.08), value: configuration.isPressed)
+            .onHover { isHovered = $0 }
+    }
+}
+
 // MARK: - Toolbar Components
 
 struct TextSizeToolbarButton: View {
@@ -747,7 +809,7 @@ struct TextSizeToolbarButton: View {
                 .frame(width: 28, height: 28)
                 .contentShape(Rectangle())
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(NativeToolbarItemButtonStyle())
         .foregroundColor(Color(NSColor.labelColor))
         .help(NSLocalizedString("Text Size", comment: "Text size tooltip"))
         .accessibilityLabel(NSLocalizedString("Text Size", comment: "Text size accessibility label"))
@@ -804,6 +866,7 @@ struct TextSizePopoverView: View {
                     .font(.system(size: 12))
                     .frame(maxWidth: .infinity)
             }
+            .buttonStyle(NativePopoverActionButtonStyle())
         }
         .padding(16)
         .frame(width: 220)
@@ -874,6 +937,7 @@ struct DocumentMoreMenu: View {
                 .contentShape(Rectangle())
         }
         .menuStyle(BorderlessButtonMenuStyle())
+        .buttonStyle(NativeToolbarItemButtonStyle())
         .foregroundColor(Color(NSColor.labelColor))
         .help(NSLocalizedString("More Actions", comment: "More actions menu tooltip"))
         .accessibilityLabel(NSLocalizedString("More Actions", comment: "More actions accessibility label"))
