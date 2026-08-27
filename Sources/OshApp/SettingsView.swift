@@ -44,7 +44,7 @@ struct SettingsView: View {
             // Sidebar
             VStack(alignment: .leading, spacing: 4) {
                 ForEach(SettingsTab.allCases) { tab in
-                    SidebarRow(
+                    SettingsSidebarRow(
                         title: tab.title,
                         icon: tab.icon,
                         isSelected: selectedTab == tab,
@@ -55,7 +55,7 @@ struct SettingsView: View {
             }
             .padding(.vertical, 16)
             .padding(.horizontal, 10)
-            .frame(width: 175)
+            .frame(width: 170)
             .background(Color.settingsSidebarBackground(for: colorScheme))
 
             Divider()
@@ -81,31 +81,46 @@ struct SettingsView: View {
         .environment(\.layoutDirection, isRTL ? .rightToLeft : .leftToRight)
         .preferredColorScheme(preference.currentMode == .dark ? .dark : preference.currentMode == .light ? .light : nil)
     }
+}
 
-    private func SidebarRow(title: String, icon: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+// MARK: - Sidebar Row
+
+private struct SettingsSidebarRow: View {
+    let title: String
+    let icon: String
+    let isSelected: Bool
+    let action: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    var body: some View {
         Button(action: action) {
             HStack(spacing: 10) {
                 Image(systemName: icon)
                     .font(.system(size: 13, weight: .medium))
                     .frame(width: 20)
                 Text(title)
-                    .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
+                    .font(.system(size: 13, weight: isSelected ? .medium : .regular))
                 Spacer()
             }
             .padding(.vertical, 6)
             .padding(.horizontal, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(
+                        isSelected
+                            ? Color.accentColor.opacity(0.12)
+                            : (isHovered ? Color.primary.opacity(0.05) : Color.clear)
+                    )
+            )
             .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())
-        .background(
-            RoundedRectangle(cornerRadius: 6)
-                .fill(isSelected ? Color.accentColor.opacity(0.15) : Color.clear)
-        )
         .foregroundColor(isSelected ? .accentColor : .primary)
+        .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+        .onHover { isHovered = $0 }
     }
 }
-
-// MARK: - Appearance Tab
 
 // MARK: - Appearance Tab
 
@@ -114,7 +129,7 @@ struct AppearanceSettingsView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 18) {
             SettingsSectionHeader(
                 title: NSLocalizedString("Theme", comment: "Theme section title"),
                 description: NSLocalizedString("Choose your preferred interface style", comment: "Theme section description")
@@ -139,12 +154,7 @@ struct AppearanceSettingsView: View {
                     preference.currentMode = .system
                 }
             }
-            .background(Color.settingsCardBackground(for: colorScheme))
-            .cornerRadius(8)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
-            )
+            .settingsCardStyle()
 
             SettingsSectionHeader(
                 title: NSLocalizedString("Language", comment: "Language section title"),
@@ -177,12 +187,7 @@ struct AppearanceSettingsView: View {
                     preference.uiLanguage = "ar"
                 }
             }
-            .background(Color.settingsCardBackground(for: colorScheme))
-            .cornerRadius(8)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
-            )
+            .settingsCardStyle()
 
             SettingsSectionHeader(
                 title: NSLocalizedString("Reading Theme", comment: "Reading theme section title"),
@@ -190,22 +195,27 @@ struct AppearanceSettingsView: View {
             )
 
             HStack(spacing: 0) {
-                readingThemeButton(preference, id: "default", label: NSLocalizedString("Default", comment: "Default reading theme"))
+                ReadingThemeButton(id: "default", label: NSLocalizedString("Default", comment: "Default reading theme"), isSelected: preference.readingTheme == "default") {
+                    preference.readingTheme = "default"
+                }
                 Divider()
-                readingThemeButton(preference, id: "sepia", label: NSLocalizedString("Sepia", comment: "Sepia reading theme"))
+                ReadingThemeButton(id: "sepia", label: NSLocalizedString("Sepia", comment: "Sepia reading theme"), isSelected: preference.readingTheme == "sepia") {
+                    preference.readingTheme = "sepia"
+                }
                 Divider()
-                readingThemeButton(preference, id: "paper", label: NSLocalizedString("Paper", comment: "Paper reading theme"))
+                ReadingThemeButton(id: "paper", label: NSLocalizedString("Paper", comment: "Paper reading theme"), isSelected: preference.readingTheme == "paper") {
+                    preference.readingTheme = "paper"
+                }
                 Divider()
-                readingThemeButton(preference, id: "midnight", label: NSLocalizedString("Midnight", comment: "Midnight reading theme"))
+                ReadingThemeButton(id: "midnight", label: NSLocalizedString("Midnight", comment: "Midnight reading theme"), isSelected: preference.readingTheme == "midnight") {
+                    preference.readingTheme = "midnight"
+                }
                 Divider()
-                readingThemeButton(preference, id: "nord", label: NSLocalizedString("Nord", comment: "Nord reading theme"))
+                ReadingThemeButton(id: "nord", label: NSLocalizedString("Nord", comment: "Nord reading theme"), isSelected: preference.readingTheme == "nord") {
+                    preference.readingTheme = "nord"
+                }
             }
-            .background(Color.settingsCardBackground(for: colorScheme))
-            .cornerRadius(8)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
-            )
+            .settingsCardStyle()
 
             if preference.uiLanguage != LocalizationManager.launchPreference {
                 HStack(spacing: 10) {
@@ -220,7 +230,7 @@ struct AppearanceSettingsView: View {
                     }
                     .buttonStyle(.bordered)
                 }
-                .padding(.top, 6)
+                .padding(.top, 4)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -237,53 +247,115 @@ struct AppearanceSettingsView: View {
         try? task.run()
         NSApp.terminate(nil)
     }
+}
 
-    private func LanguageOptionRow(label: String, value: String, current: String, action: @escaping () -> Void) -> some View {
+private struct LanguageOptionRow: View {
+    let label: String
+    let value: String
+    let current: String
+    let action: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    var isSelected: Bool { current == value }
+
+    var body: some View {
         Button(action: action) {
             HStack(spacing: 10) {
                 Text(label)
-                    .font(.system(size: 13))
+                    .font(.system(size: 13, weight: isSelected ? .medium : .regular))
                     .foregroundColor(.primary)
                 Spacer()
-                if current == value {
+                if isSelected {
                     Image(systemName: "checkmark")
                         .foregroundColor(.accentColor)
                         .font(.system(size: 12, weight: .bold))
                 }
             }
             .padding(.horizontal, 12)
-            .padding(.vertical, 10)
+            .padding(.vertical, 9)
+            .background(isHovered ? Color.primary.opacity(0.04) : Color.clear)
             .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())
+        .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+        .onHover { isHovered = $0 }
     }
+}
 
-    private func ThemeOptionButton(mode: AppearanceMode, icon: String, label: String, current: AppearanceMode, action: @escaping () -> Void) -> some View {
-        let isSelected = current == mode
-        return Button(action: action) {
-            ZStack(alignment: .bottom) {
-                if isSelected {
-                    Color.accentColor.opacity(0.12)
-                } else {
-                    Color.settingsCardBackground(for: colorScheme)
-                }
-                VStack(spacing: 6) {
-                    Image(systemName: icon)
-                        .font(.system(size: 18))
-                    Text(label)
-                        .font(.system(size: 12))
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .foregroundColor(isSelected ? .accentColor : .secondary)
+private struct ThemeOptionButton: View {
+    let mode: AppearanceMode
+    let icon: String
+    let label: String
+    let current: AppearanceMode
+    let action: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
 
-                Rectangle()
-                    .fill(isSelected ? Color.accentColor : Color.clear)
-                    .frame(height: 2)
+    var isSelected: Bool { current == mode }
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 6) {
+                Image(systemName: icon)
+                    .font(.system(size: 16, weight: .medium))
+                Text(label)
+                    .font(.system(size: 12, weight: isSelected ? .medium : .regular))
             }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(
+                isSelected
+                    ? Color.accentColor.opacity(0.09)
+                    : (isHovered ? Color.primary.opacity(0.03) : Color.clear)
+            )
+            .foregroundColor(isSelected ? .accentColor : .secondary)
             .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())
+        .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+        .onHover { isHovered = $0 }
+    }
+}
+
+private struct ReadingThemeButton: View {
+    let id: String
+    let label: String
+    let isSelected: Bool
+    let action: () -> Void
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 6) {
+                RoundedRectangle(cornerRadius: 5, style: .continuous)
+                    .fill(ReadingThemePalette.swatch(for: id))
+                    .frame(width: 34, height: 22)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+                            .strokeBorder(
+                                isSelected ? Color.accentColor : Color.settingsBorder(for: colorScheme),
+                                lineWidth: isSelected ? 1.5 : 1
+                            )
+                    )
+                Text(label)
+                    .font(.system(size: 11, weight: isSelected ? .medium : .regular))
+                    .foregroundColor(isSelected ? .accentColor : .primary)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 10)
+            .background(
+                isSelected
+                    ? Color.accentColor.opacity(0.06)
+                    : (isHovered ? Color.primary.opacity(0.03) : Color.clear)
+            )
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(PlainButtonStyle())
+        .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+        .onHover { isHovered = $0 }
     }
 }
 
@@ -291,10 +363,9 @@ struct AppearanceSettingsView: View {
 
 struct RenderingSettingsView: View {
     @ObservedObject var preference: AppearancePreference
-    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 18) {
             SettingsSectionHeader(
                 title: NSLocalizedString("Features", comment: "Features section title"),
                 description: NSLocalizedString("Enable or disable rendering capabilities", comment: "Features section description")
@@ -343,29 +414,33 @@ struct RenderingSettingsView: View {
                     isOn: Binding(get: { preference.showLineNumbers }, set: { preference.showLineNumbers = $0 })
                 )
             }
-            .background(Color.settingsCardBackground(for: colorScheme))
-            .cornerRadius(8)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
-            )
+            .settingsCardStyle()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
+}
 
-    private func FeatureToggleRow(title: String, subtitle: String, icon: String, isOn: Binding<Bool>) -> some View {
+private struct FeatureToggleRow: View {
+    let title: String
+    let subtitle: String
+    let icon: String
+    let isOn: Binding<Bool>
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    var body: some View {
         HStack(spacing: 12) {
             Image(systemName: icon)
-                .font(.system(size: 16))
+                .font(.system(size: 15, weight: .medium))
                 .foregroundColor(.accentColor)
-                .frame(width: 28)
+                .frame(width: 24)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(title)
                     .font(.system(size: 13, weight: .medium))
                     .foregroundColor(.primary)
                 Text(subtitle)
-                    .font(.caption)
+                    .font(.system(size: 11.5))
                     .foregroundColor(.secondary)
             }
 
@@ -376,7 +451,10 @@ struct RenderingSettingsView: View {
                 .labelsHidden()
         }
         .padding(.horizontal, 12)
-        .padding(.vertical, 10)
+        .padding(.vertical, 9)
+        .background(isHovered ? Color.primary.opacity(0.03) : Color.clear)
+        .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+        .onHover { isHovered = $0 }
     }
 }
 
@@ -384,12 +462,11 @@ struct RenderingSettingsView: View {
 
 struct EditorSettingsView: View {
     @ObservedObject var preference: AppearancePreference
-    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 24) {
+        VStack(alignment: .leading, spacing: 22) {
             // Font Size
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 10) {
                 SettingsSectionHeader(
                     title: NSLocalizedString("Typography", comment: "Typography section title"),
                     description: NSLocalizedString("Adjust the reading experience", comment: "Typography section description")
@@ -401,16 +478,16 @@ struct EditorSettingsView: View {
                             .font(.system(size: 13))
                         Spacer()
                         Text("\(Int(preference.baseFontSize))px")
-                            .font(.system(size: 13, weight: .medium, design: .monospaced))
+                            .font(.system(size: 12, weight: .semibold, design: .monospaced))
                             .foregroundColor(.accentColor)
                     }
                     .padding(.horizontal, 12)
-                    .padding(.vertical, 10)
+                    .padding(.vertical, 9)
 
                     Divider()
 
                     HStack(spacing: 8) {
-                        Text("A").font(.system(size: 11)).foregroundColor(.secondary)
+                        Text("A").font(.system(size: 11, weight: .medium)).foregroundColor(.secondary)
                         Slider(
                             value: Binding(
                                 get: { preference.baseFontSize },
@@ -420,21 +497,16 @@ struct EditorSettingsView: View {
                             step: 1
                         )
                         .accentColor(.accentColor)
-                        Text("A").font(.system(size: 20)).foregroundColor(.secondary)
+                        Text("A").font(.system(size: 18, weight: .medium)).foregroundColor(.secondary)
                     }
                     .padding(.horizontal, 12)
-                    .padding(.vertical, 10)
+                    .padding(.vertical, 9)
                 }
-                .background(Color.settingsCardBackground(for: colorScheme))
-                .cornerRadius(8)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
-                )
+                .settingsCardStyle()
             }
- 
+
             // Finder Pane Font Size
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 10) {
                 SettingsSectionHeader(
                     title: NSLocalizedString("Finder Preview Font Size", comment: "Finder pane font size section title"),
                     description: NSLocalizedString("Font size when previewing in Finder's column view", comment: "Finder pane font size section description")
@@ -446,16 +518,16 @@ struct EditorSettingsView: View {
                             .font(.system(size: 13))
                         Spacer()
                         Text("\(Int(preference.finderPaneFontSize))px")
-                            .font(.system(size: 13, weight: .medium, design: .monospaced))
+                            .font(.system(size: 12, weight: .semibold, design: .monospaced))
                             .foregroundColor(.accentColor)
                     }
                     .padding(.horizontal, 12)
-                    .padding(.vertical, 10)
+                    .padding(.vertical, 9)
 
                     Divider()
 
                     HStack(spacing: 8) {
-                        Text("A").font(.system(size: 11)).foregroundColor(.secondary)
+                        Text("A").font(.system(size: 11, weight: .medium)).foregroundColor(.secondary)
                         Slider(
                             value: Binding(
                                 get: { preference.finderPaneFontSize },
@@ -465,21 +537,16 @@ struct EditorSettingsView: View {
                             step: 1
                         )
                         .accentColor(.accentColor)
-                        Text("A").font(.system(size: 20)).foregroundColor(.secondary)
+                        Text("A").font(.system(size: 18, weight: .medium)).foregroundColor(.secondary)
                     }
                     .padding(.horizontal, 12)
-                    .padding(.vertical, 10)
+                    .padding(.vertical, 9)
                 }
-                .background(Color.settingsCardBackground(for: colorScheme))
-                .cornerRadius(8)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
-                )
+                .settingsCardStyle()
             }
 
             // Code Theme
-            VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 10) {
                 SettingsSectionHeader(
                     title: NSLocalizedString("Code Highlighting", comment: "Code theme section title"),
                     description: NSLocalizedString("Syntax highlighting theme for code blocks", comment: "Code theme section description")
@@ -487,27 +554,41 @@ struct EditorSettingsView: View {
 
                 VStack(spacing: 0) {
                     CodeThemeRow(name: NSLocalizedString("Default", comment: "Default code theme"),
-                                 id: "default", color: .primary)
+                                 id: "default", color: .primary, isSelected: preference.codeHighlightTheme == "default") {
+                        preference.codeHighlightTheme = "default"
+                    }
                     Divider().padding(.horizontal, 12)
-                    CodeThemeRow(name: "GitHub", id: "github", color: Color(red: 0.141, green: 0.161, blue: 0.243))
+                    CodeThemeRow(name: "GitHub", id: "github", color: Color(red: 0.141, green: 0.161, blue: 0.243), isSelected: preference.codeHighlightTheme == "github") {
+                        preference.codeHighlightTheme = "github"
+                    }
                     Divider().padding(.horizontal, 12)
-                    CodeThemeRow(name: "Monokai", id: "monokai", color: Color(red: 0.153, green: 0.157, blue: 0.133))
+                    CodeThemeRow(name: "Monokai", id: "monokai", color: Color(red: 0.153, green: 0.157, blue: 0.133), isSelected: preference.codeHighlightTheme == "monokai") {
+                        preference.codeHighlightTheme = "monokai"
+                    }
                     Divider().padding(.horizontal, 12)
-                    CodeThemeRow(name: "Atom One Dark", id: "atom-one-dark", color: Color(red: 0.157, green: 0.173, blue: 0.204))
+                    CodeThemeRow(name: "Atom One Dark", id: "atom-one-dark", color: Color(red: 0.157, green: 0.173, blue: 0.204), isSelected: preference.codeHighlightTheme == "atom-one-dark") {
+                        preference.codeHighlightTheme = "atom-one-dark"
+                    }
                 }
-                .background(Color.settingsCardBackground(for: colorScheme))
-                .cornerRadius(8)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
-                )
+                .settingsCardStyle()
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
+}
 
-    private func CodeThemeRow(name: String, id: String, color: Color) -> some View {
-        Button(action: { preference.codeHighlightTheme = id }) {
+private struct CodeThemeRow: View {
+    let name: String
+    let id: String
+    let color: Color
+    let isSelected: Bool
+    let action: () -> Void
+    @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    var body: some View {
+        Button(action: action) {
             HStack(spacing: 10) {
                 Circle()
                     .fill(color)
@@ -515,22 +596,25 @@ struct EditorSettingsView: View {
                     .overlay(Circle().stroke(Color.settingsBorder(for: colorScheme), lineWidth: 0.5))
 
                 Text(name)
-                    .font(.system(size: 13))
+                    .font(.system(size: 13, weight: isSelected ? .medium : .regular))
                     .foregroundColor(.primary)
 
                 Spacer()
 
-                if preference.codeHighlightTheme == id {
+                if isSelected {
                     Image(systemName: "checkmark")
                         .foregroundColor(.accentColor)
                         .font(.system(size: 12, weight: .bold))
                 }
             }
             .padding(.horizontal, 12)
-            .padding(.vertical, 10)
+            .padding(.vertical, 9)
+            .background(isHovered ? Color.primary.opacity(0.04) : Color.clear)
             .contentShape(Rectangle())
         }
         .buttonStyle(PlainButtonStyle())
+        .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+        .onHover { isHovered = $0 }
     }
 }
 
@@ -541,36 +625,34 @@ struct SettingsSectionHeader: View {
     let description: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
+        VStack(alignment: .leading, spacing: 2) {
             Text(title)
-                .font(.headline)
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(.primary)
             Text(description)
-                .font(.caption)
+                .font(.system(size: 11.5))
                 .foregroundColor(.secondary)
         }
     }
 }
 
-extension AppearanceSettingsView {
-    fileprivate func readingThemeButton(_ preference: AppearancePreference, id: String, label: String) -> some View {
-        Button(action: { preference.readingTheme = id }) {
-            VStack(spacing: 6) {
-                RoundedRectangle(cornerRadius: 5, style: .continuous)
-                    .fill(ReadingThemePalette.swatch(for: id))
-                    .frame(width: 34, height: 22)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 5, style: .continuous)
-                            .stroke(Color.settingsBorder(for: colorScheme), lineWidth: 1)
-                    )
-                Text(label)
-                    .font(.system(size: 11))
-                    .foregroundColor(preference.readingTheme == id ? .accentColor : .primary)
-            }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(PlainButtonStyle())
+struct SettingsCardModifier: ViewModifier {
+    @Environment(\.colorScheme) private var colorScheme
+
+    func body(content: Content) -> some View {
+        content
+            .background(Color.settingsCardBackground(for: colorScheme))
+            .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 9, style: .continuous)
+                    .strokeBorder(Color.settingsBorder(for: colorScheme), lineWidth: 1)
+            )
+    }
+}
+
+extension View {
+    func settingsCardStyle() -> some View {
+        modifier(SettingsCardModifier())
     }
 }
 
@@ -594,6 +676,6 @@ extension Color {
         scheme == .dark ? Color(white: 0.11) : Color(white: 0.95)
     }
     static func settingsBorder(for scheme: ColorScheme) -> Color {
-        scheme == .dark ? Color(white: 1.0).opacity(0.12) : Color(white: 0.0).opacity(0.12)
+        scheme == .dark ? Color(white: 1.0).opacity(0.10) : Color(white: 0.0).opacity(0.12)
     }
 }
