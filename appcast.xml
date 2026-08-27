@@ -12,11 +12,11 @@
             <sparkle:version>2</sparkle:version>
             <sparkle:shortVersionString>1.0.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
-            <pubDate>Thu, 27 Aug 2026 13:40:31 +0000</pubDate>
+            <pubDate>Thu, 27 Aug 2026 13:51:58 +0000</pubDate>
             <enclosure
                 url="https://github.com/Zeyadistired/Osh/releases/download/v1.0.2-beta/Osh.dmg"
-                sparkle:edSignature="6d8qhYf5vdntaopeFbodH9FfVjy5K6J5kBZpApOduF+WsqCH9Srq+vGsU/asgUiKGIkcPt5l6+yGvrcpU8JZBw=="
-                length="9261455"
+                sparkle:edSignature="h+ggi+GBbFulRpSUzn3dIt58DvdVtdJkRp44Xb2CIQyH/WeLQk0dAE4eTzjQGLKdSeBjwY+T8tP5iov2xJXCBw=="
+                length="9261393"
                 type="application/octet-stream" />
             <description><![CDATA[
                 <h2>What's Changed in v1.0.2 Beta</h2>
@@ -34,5 +34,6 @@
                 <p><a href="https://github.com/Zeyadistired/Osh/releases/tag/v1.0.2-beta">View Full Release Notes</a></p>
             ]]></description>
         </item>
-            </channel>
+        
+        </channel>
 </rss>
