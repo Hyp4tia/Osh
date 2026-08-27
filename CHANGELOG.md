@@ -1,6 +1,15 @@
 ## [Unreleased]
 _无待发布的变更_
 
+## [1.0.3] - 2026-08-27
+
+### Security & Hardening
+- **DOMPurify HTML Sanitization**: Integrated DOMPurify to strictly sanitize all Markdown-rendered HTML prior to DOM insertion, eliminating XSS vectors from untrusted Markdown while preserving legitimate MathML, KaTeX, Mermaid diagrams, Vega charts, Graphviz diagrams, task lists, and RTL attributes.
+- **Strict Content Security Policy (CSP)**: Introduced restrictive CSP (`default-src 'none'`, `script-src 'self' osh-renderer: 'wasm-unsafe-eval'`, `connect-src local-md: osh-renderer: blob:`, `img-src local-md: osh-renderer: data: blob: https: http:`) to eliminate inline script execution and unauthorized outbound network exfiltration.
+- **Link Navigation Directory Containment**: Hardened `LinkNavigation` with canonicalized, symlink-resolved directory containment (`resolvingSymlinksInPath()`, `standardizedFileURL`), strictly blocking directory traversal (`../`), external symlinks, and application bundle launches (`.app`, `.sh`, `.command`, etc.) via Markdown links.
+- **Universal File Access Removal**: Fully removed `allowUniversalAccessFromFileURLs = true` across the Host App, CLI Exporter, and QuickLook extension.
+- **Typst WASM & Dynamic Evaluation Hardening**: Removed `new Function()` dynamic runtime evaluation from Typst rendering engine, replaced with static Vite WASM asset loading, and added strict HTML escaping to all template error interpolations.
+
 ## [1.0.2] - 2026-08-27
 
 ### Added

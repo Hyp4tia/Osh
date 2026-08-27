@@ -83,8 +83,6 @@ final class CLIExporter: NSObject {
             rendererBundleSchemeHandler = rendererHandler
         }
 
-        config.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
-
         // A4 width in points; height is a reasonable viewport for rendering
         let renderWidth: CGFloat  = 595.28
         let renderHeight: CGFloat = 1200

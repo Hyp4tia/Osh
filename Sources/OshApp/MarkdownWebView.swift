@@ -73,8 +73,6 @@ struct MarkdownWebView: NSViewRepresentable {
             os_log("Failed to find renderer index.html in bundle", log: coordinator.logger, type: .error)
         }
 
-        webConfiguration.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
-
 
         #if DEBUG
         webConfiguration.preferences.setValue(true, forKey: "developerExtrasEnabled")
@@ -1001,7 +999,10 @@ struct MarkdownWebView: NSViewRepresentable {
             
             let (targetURL, fragment) = LinkNavigation.resolveLocalURLWithFragment(href: href, relativeTo: fileURL)
             
-            guard let targetURL = targetURL else { return }
+            guard let targetURL = targetURL else {
+                os_log("🔴 Rejected unsafe or uncontained local link: %{public}@", log: logger, type: .error, href)
+                return
+            }
             
             os_log("🔵 Opening local file: %{public}@ anchor: %{public}@ (href: %{public}@)",
                    log: logger, type: .default, targetURL.path, fragment ?? "(none)", href)
@@ -1023,11 +1024,12 @@ struct MarkdownWebView: NSViewRepresentable {
             if url.scheme == "http" || url.scheme == "https" {
                 NSWorkspace.shared.open(url)
                 decisionHandler(.cancel)
-            } else if url.isFileURL && url.pathExtension == "md" {
-                 NSWorkspace.shared.open(url)
+            } else if url.isFileURL, let fileURL = currentFileURL,
+                      let resolved = LinkNavigation.resolveLocalURL(href: url.path, relativeTo: fileURL) {
+                 NSWorkspace.shared.open(resolved)
                  decisionHandler(.cancel)
             } else {
-                decisionHandler(.allow)
+                decisionHandler(.cancel)
             }
         }
     }

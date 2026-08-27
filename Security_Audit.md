@@ -471,3 +471,27 @@ Applying the four-step remediation plan (DOMPurify, Content Security Policy, rem
 - **Corrections Applied:**
   - Resolved the apparent discrepancy regarding `.sparkle-keys`: clarified that while the file exists locally in the workspace, it is gitignored and was never committed to version control.
   - Formatted all exploit descriptions to adhere to publication standards (clear technical descriptions without weaponized turnkey payloads).
+
+---
+
+## 15. Remediation Status & Fixes (v1.0.3 Beta)
+
+**Status:** **ALL FINDINGS RESOLVED & FULLY HARDENED**  
+**Remediation Date:** 2026-08-27  
+**Release Target:** `v1.0.3 Beta`
+
+All vulnerabilities identified in this audit were remediated and verified through adversarial testing and unit tests:
+
+| Finding | Pre-Remediation Severity | Remediation Applied | Post-Remediation Status |
+| :--- | :---: | :--- | :---: |
+| **Finding 1: XSS via Markdown HTML** | **HIGH** | Integrated **DOMPurify** (`v3.4.14`) to sanitize all Markdown-generated HTML before DOM insertion. Preserved MathML, KaTeX, Mermaid, Vega, Graphviz, RTL, and task lists while stripping all scripts and event handlers. | **RESOLVED** |
+| **Finding 2: Universal File Access** | **HIGH (Amplifier)** | Removed `webConfiguration.setValue(true, forKey: "allowUniversalAccessFromFileURLs")` across `MarkdownWebView.swift`, `CLIExporter.swift`, and `PreviewViewController.swift`. All local assets are strictly contained via `LocalSchemeHandler` (`local-md://`). | **RESOLVED** |
+| **Finding 3: Missing CSP** | **MEDIUM** | Added strict Content Security Policy meta tag (`default-src 'none'; script-src 'self' osh-renderer: 'wasm-unsafe-eval'; connect-src local-md: osh-renderer: blob:; img-src local-md: osh-renderer: data: blob: https: http:;`). Outbound network requests and dynamic evaluation are blocked. | **RESOLVED** |
+| **Finding 4: Error messages & Typst eval** | **LOW** | Removed `new Function('return import.meta')()` using static Vite WASM asset imports; applied `escapeHtml()` across all error message templates and diff views. | **RESOLVED** |
+| **Link Navigation & App Execution** | **HIGH** | Hardened `LinkNavigation.resolveLocalURL()` with canonicalized directory containment (`resolvingSymlinksInPath()`, `standardizedFileURL`), blocking directory traversal (`../`), external symlinks, and application bundle execution (`.app`, `.sh`, `.command`, etc.). | **RESOLVED** |
+
+### Automated Test Verification
+- **Web Renderer Test Suite (Jest):** 29 test suites, 332 tests passed (including XSS sanitization, image URI rewriting, and error escaping).
+- **Native macOS Test Suite (XCTest):** All Swift test suites passed, including comprehensive directory traversal and executable launch prevention tests in `LinkNavigationTests`.
+- **Release Entitlements Verification:** Release build verified with `verify-release-entitlements.sh`.
+

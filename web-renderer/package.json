@@ -16,6 +16,7 @@
     "@myriaddreamin/typst-ts-web-compiler": "^0.7.0-rc2",
     "@myriaddreamin/typst.ts": "^0.7.0-rc2",
     "diff": "^9.0.0",
+    "dompurify": "^3.4.14",
     "github-markdown-css": "^5.2.0",
     "highlight.js": "^11.7.0",
     "js-yaml": "^4.1.1",
@@ -35,6 +36,7 @@
     "vega-lite": "^6.4.2"
   },
   "devDependencies": {
+    "@types/dompurify": "^3.0.5",
     "@types/jest": "^30.0.0",
     "@types/js-yaml": "^4.0.9",
     "@types/markdown-it": "^14.1.2",

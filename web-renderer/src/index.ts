@@ -90,7 +90,7 @@ export function preprocessMermaidNewlines(code: string): string {
     return result;
 }
 
-function escapeHtml(text: string): string {
+export function escapeHtml(text: string): string {
     const map: Record<string, string> = {
         '&': '&amp;',
         '<': '&lt;',
@@ -269,6 +269,35 @@ import sup from 'markdown-it-sup';
 // @ts-ignore
 import anchor from 'markdown-it-anchor';
 import githubAlerts from 'markdown-it-github-alerts';
+import DOMPurify from 'dompurify';
+
+const DOMPURIFY_CONFIG: DOMPurify.Config = {
+    USE_PROFILES: { html: true, svg: true, mathMl: true },
+    ADD_TAGS: [
+        'details', 'summary', 'mark', 'kbd', 'var', 'samp', 'time',
+        'ruby', 'rt', 'rp', 'bdi', 'bdo', 'figure', 'figcaption',
+        'ins', 'del', 'abbr', 'wbr', 'input', 'section', 'article', 'aside',
+        'nav', 'header', 'footer', 'main', 'address', 'caption', 'col', 'colgroup', 'tfoot'
+    ],
+    ADD_ATTR: [
+        'data-source-line', 'data-source-line-end', 'data-typst-source',
+        'data-theme', 'data-line', 'data-line-numbers',
+        'dir', 'open', 'target', 'align', 'valign', 'type', 'checked', 'disabled',
+        'aria-label', 'aria-hidden', 'role'
+    ],
+    FORBID_TAGS: [
+        'script', 'iframe', 'object', 'embed', 'form', 'button', 'select', 'textarea', 'meta', 'link', 'base', 'applet'
+    ],
+    FORBID_ATTR: [
+        'onerror', 'onload', 'onclick', 'onmouseover', 'onmouseout',
+        'onfocus', 'onblur', 'onchange', 'onsubmit', 'onkeydown',
+        'onkeypress', 'onkeyup', 'onmouseenter', 'onmouseleave',
+        'onpointerdown', 'onpointerup', 'onpointermove',
+        'onanimationstart', 'onanimationend', 'ontouchstart', 'ontouchend'
+    ],
+    ALLOWED_URI_REGEXP: /^(?:(?:https?|data|blob|local-md|osh-renderer|mailto|tel):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+    ALLOW_DATA_ATTR: true,
+};
 
 import { extractOutline } from './outline';
 import { TableOfContents } from './table-of-contents';
@@ -354,7 +383,7 @@ function buildMd(): MarkdownIt {
 
     const originalValidateLink = instance.validateLink.bind(instance);
     instance.validateLink = function(url: string): boolean {
-        if (url.startsWith('data:') || url.startsWith('local-md://')) {
+        if (url.startsWith('data:') || url.startsWith('local-md://') || url.startsWith('file:')) {
             return true;
         }
         return originalValidateLink(url);
@@ -447,12 +476,24 @@ function resolveImageSource(source: string, options: RenderOptions): string {
     if (inlinedSource) return inlinedSource;
 
     const isRemoteOrEmbedded = /^(?:https?:|data:|blob:|local-md:)/i.test(source) || source.startsWith('//');
-    const hasUnsupportedScheme = /^[a-z][a-z0-9+.-]*:/i.test(source) && !source.startsWith('file:');
-    if (isRemoteOrEmbedded || hasUnsupportedScheme || !options.baseUrl) return source;
+    if (isRemoteOrEmbedded) return source;
+
+    if (source.startsWith('file:')) {
+        try {
+            const fileURL = new URL(source);
+            const cacheBust = options.renderVersion != null ? `?v=${options.renderVersion}` : '';
+            return `local-md://${fileURL.pathname}${cacheBust}`;
+        } catch {
+            return source;
+        }
+    }
+
+    const hasUnsupportedScheme = /^[a-z][a-z0-9+.-]*:/i.test(source);
+    if (hasUnsupportedScheme || !options.baseUrl) return source;
 
     try {
         const baseHref = `file://${options.baseUrl.replace(/\/$/, '')}/`;
-        const fileURL = source.startsWith('file:') ? new URL(source) : new URL(source, baseHref);
+        const fileURL = new URL(source, baseHref);
         const cacheBust = options.renderVersion != null ? `?v=${options.renderVersion}` : '';
         return `local-md://${fileURL.pathname}${cacheBust}`;
     } catch {
@@ -850,9 +891,10 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
         if (toc) toc.render(outline);
 
         let html = md.render(renderBody, { baseUrl: options.baseUrl, imageData: options.imageData, renderVersion: options.renderVersion });
+        const cleanHtml = DOMPurify.sanitize(html, DOMPURIFY_CONFIG) as string;
 
         const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = frontMatterHtml + html;
+        tempDiv.innerHTML = frontMatterHtml + cleanHtml;
 
         const enableMermaid = options.enableMermaid !== false;
         const mermaidBlocks = enableMermaid
@@ -956,6 +998,7 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
                             placeholder.innerHTML = `<div class="typst-math-block typst-error">
                                 <div class="typst-error-title">⚠️ Typst Render Error</div>
                                 <pre class="typst-error-source">${escapeHtml(decodedSource)}</pre>
+                                <pre class="typst-error-message">${escapeHtml(String(err))}</pre>
                             </div>`;
                         }
                     }
@@ -975,7 +1018,7 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
     } catch (e) {
         logToSwift(`[renderMarkdown:${callId}] ERROR: ` + e);
         if (outputDiv) {
-            outputDiv.innerHTML = `<div style="color:red;padding:20px;border:1px solid red;border-radius:5px;"><h3>Rendering Error</h3><pre>${e}</pre></div>`;
+            outputDiv.innerHTML = `<div style="color:red;padding:20px;border:1px solid red;border-radius:5px;"><h3>Rendering Error</h3><pre>${escapeHtml(String(e))}</pre></div>`;
         }
     }
 };
@@ -1038,7 +1081,7 @@ window.renderSource = function(text: string, theme: string, prevContent?: string
     } catch (e) {
         logToSwift("JS Error during source rendering: " + e);
         if (outputDiv) {
-            outputDiv.innerHTML = `<div style="color:red;padding:20px;border:1px solid red;border-radius:5px;"><h3>Source Rendering Error</h3><pre>${e}</pre></div>`;
+            outputDiv.innerHTML = `<div style="color:red;padding:20px;border:1px solid red;border-radius:5px;"><h3>Source Rendering Error</h3><pre>${escapeHtml(String(e))}</pre></div>`;
         }
     }
 };

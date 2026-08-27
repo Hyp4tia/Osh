@@ -2,7 +2,7 @@ import XCTest
 
 final class LinkNavigationTests: XCTestCase {
 
-    // MARK: - resolveLocalURL(href:relativeTo:) tests
+    // MARK: - Legitimate relative resolution tests
 
     func testResolvesPercentEncodedSpacesInRelativeHref() {
         let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
@@ -46,25 +46,37 @@ final class LinkNavigationTests: XCTestCase {
         XCTAssertEqual(result?.path, "/Users/me/docs/subdir/notes.md")
     }
 
-    func testResolvesRelativeHrefWithParentDir() {
-        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/subdir/index.md")
+    func testResolvesRelativeHrefWithParentDirStayingWithinBase() {
+        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/subdir/nested/index.md")
         let href = "../other.md"
 
         let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result?.path, "/Users/me/docs/other.md")
+        XCTAssertEqual(result?.path, "/Users/me/docs/subdir/other.md")
     }
 
-    func testResolvesAbsoluteHref() {
+    func testResolvesContainedAbsoluteHref() {
         let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
-        let href = "/tmp/absolute.md"
+        let href = "/Users/me/docs/contained.md"
 
         let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result?.path, "/tmp/absolute.md")
+        XCTAssertEqual(result?.path, "/Users/me/docs/contained.md")
     }
+
+    func testResolvesContainedFileURLScheme() {
+        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
+        let href = "file:///Users/me/docs/notes.md"
+
+        let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
+
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.path, "/Users/me/docs/notes.md")
+    }
+
+    // MARK: - Fragment and special cases
 
     func testReturnsNilForPureAnchorHref() {
         let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
@@ -82,16 +94,6 @@ final class LinkNavigationTests: XCTestCase {
         let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
 
         XCTAssertNil(result, "Empty href should return nil")
-    }
-
-    func testResolvesFileURLScheme() {
-        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
-        let href = "file:///Users/me/other/notes.md"
-
-        let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
-
-        XCTAssertNotNil(result)
-        XCTAssertEqual(result?.path, "/Users/me/other/notes.md")
     }
 
     func testExtractsFragmentFromPercentEncodedHref() {
@@ -128,8 +130,6 @@ final class LinkNavigationTests: XCTestCase {
         XCTAssertNil(fragment)
     }
 
-    // MARK: - Multiple encoded characters
-
     func testResolvesMultiplePercentEncodedCharacters() {
         let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
         let href = "file%20name%20%28version%201%29.md"
@@ -141,7 +141,7 @@ final class LinkNavigationTests: XCTestCase {
                        "All percent-encoded characters must be decoded")
     }
 
-    func testResolvesChineseChracterInPercentEncodedHref() {
+    func testResolvesChineseCharacterInPercentEncodedHref() {
         let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
         let href = "%E8%AE%BE%E8%AE%A1%E6%96%87%E6%A1%A3.md"
 
@@ -150,5 +150,104 @@ final class LinkNavigationTests: XCTestCase {
         XCTAssertNotNil(result)
         XCTAssertEqual(result?.path, "/Users/me/docs/设计文档.md",
                        "Percent-encoded non-ASCII characters must be decoded correctly")
+    }
+
+    // MARK: - Security & Containment Tests
+
+    func testRejectsDirectoryTraversalOutsideBaseDirectory() {
+        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
+        let href = "../../../some-file.md"
+
+        let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
+
+        XCTAssertNil(result, "Path traversal escaping base directory must be rejected")
+    }
+
+    func testRejectsDeepDirectoryTraversalToTerminalApp() {
+        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
+        let href = "../../../../Applications/Utilities/Terminal.app"
+
+        let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
+
+        XCTAssertNil(result, "Path traversal to Terminal.app must be rejected")
+    }
+
+    func testRejectsAbsoluteTerminalAppPath() {
+        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
+        let href = "/Applications/Utilities/Terminal.app"
+
+        let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
+
+        XCTAssertNil(result, "Absolute path outside base directory must be rejected")
+    }
+
+    func testRejectsPercentEncodedTraversal() {
+        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
+        let href = "%2e%2e/%2e%2e/%2e%2e/etc/passwd"
+
+        let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
+
+        XCTAssertNil(result, "Percent-encoded ../ path traversal must be rejected")
+    }
+
+    func testRejectsAppBundleEvenIfInsideBaseDirectory() {
+        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
+        let href = "subfolder/Payload.app"
+
+        let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
+
+        XCTAssertNil(result, ".app bundle targets must always be rejected")
+    }
+
+    func testRejectsDangerousScriptExtensions() {
+        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
+        let dangerousHrefs = ["script.sh", "run.command", "tool.tool", "installer.pkg", "payload.dmg"]
+
+        for href in dangerousHrefs {
+            let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
+            XCTAssertNil(result, "Dangerous extension \(href) must be rejected")
+        }
+    }
+
+    func testRejectsMalformedPercentEncoding() {
+        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
+        let href = "test%ZZfile.md"
+
+        let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
+
+        XCTAssertNil(result, "Malformed percent-encoding should return nil")
+    }
+
+    func testRejectsNullByteInjection() {
+        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
+        let href = "notes.md%00/../../etc/passwd"
+
+        let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
+
+        XCTAssertNil(result, "Null-byte injection must return nil")
+    }
+
+    func testRejectsSymlinkPointingOutsideBaseDirectory() throws {
+        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let docDir = tempDir.appendingPathComponent("docs")
+        let outsideDir = tempDir.appendingPathComponent("outside")
+
+        try FileManager.default.createDirectory(at: docDir, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: outsideDir, withIntermediateDirectories: true)
+
+        let secretFile = outsideDir.appendingPathComponent("secret.txt")
+        try "secret content".write(to: secretFile, atomically: true, encoding: .utf8)
+
+        let symlinkURL = docDir.appendingPathComponent("outside_symlink")
+        try FileManager.default.createSymbolicLink(at: symlinkURL, withDestinationURL: outsideDir)
+
+        let baseFileURL = docDir.appendingPathComponent("index.md")
+        let href = "outside_symlink/secret.txt"
+
+        let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
+
+        XCTAssertNil(result, "Symlink escaping base directory must be rejected")
+
+        try? FileManager.default.removeItem(at: tempDir)
     }
 }

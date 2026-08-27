@@ -327,8 +327,6 @@ public class PreviewViewController: NSViewController, QLPreviewingController, WK
             webConfiguration.defaultWebpagePreferences = pagePreferences
         }
         
-        webConfiguration.setValue(true, forKey: "allowUniversalAccessFromFileURLs")
-        
         let userContentController = WKUserContentController()
         userContentController.add(self, name: "logger")
         userContentController.add(self, name: "linkClicked")
@@ -1364,15 +1362,14 @@ public class PreviewViewController: NSViewController, QLPreviewingController, WK
         }
         
         if url.isFileURL {
-            os_log("🔵 Opening local file with default app: %{public}@ (extension: %{public}@)", 
-                   log: logger, type: .default, url.path, url.pathExtension)
-            NSWorkspace.shared.open(url)
+            os_log("🔵 Local file link in QuickLook: %{public}@", log: logger, type: .default, url.path)
+            showLinkUnsupportedToast()
             decisionHandler(.cancel)
             return
         }
         
-        os_log("🔵 Allowing navigation (unhandled scheme: %{public}@)", log: logger, type: .default, url.scheme ?? "nil")
-        decisionHandler(.allow)
+        os_log("🔴 Cancelling navigation (unhandled scheme: %{public}@)", log: logger, type: .default, url.scheme ?? "nil")
+        decisionHandler(.cancel)
     }
 
     public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {

@@ -7,6 +7,12 @@
  */
 
 import { typst2tex } from 'tex2typst';
+import { escapeHtml } from './index';
+
+// @ts-ignore
+import compilerWasmUrl from '@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm?url';
+// @ts-ignore
+import rendererWasmUrl from '@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm?url';
 
 // --- Transpilation path (QuickLook) ---
 
@@ -42,16 +48,6 @@ async function getTypstInstance(): Promise<any> {
             const { $typst } = await import(
                 '@myriaddreamin/typst.ts/dist/esm/contrib/snippet.mjs'
             );
-            // Vite resolves these URLs at build time; use eval to bypass ts-jest's es6 parser
-            const meta = new Function('return import.meta')() as { url: string };
-            const compilerWasmUrl = new URL(
-                '@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm',
-                meta.url
-            ).href;
-            const rendererWasmUrl = new URL(
-                '@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm',
-                meta.url
-            ).href;
             $typst.setCompilerInitOptions({ getModule: () => compilerWasmUrl });
             $typst.setRendererInitOptions({ getModule: () => rendererWasmUrl });
             return $typst;
@@ -100,8 +96,8 @@ export async function renderTypstBlock(
     } catch (err) {
         return `<div class="typst-math-block typst-error">
             <div class="typst-error-title">⚠️ Typst Render Error</div>
-            <pre class="typst-error-source">${typstCode}</pre>
-            <pre class="typst-error-message">${String(err)}</pre>
+            <pre class="typst-error-source">${escapeHtml(typstCode)}</pre>
+            <pre class="typst-error-message">${escapeHtml(String(err))}</pre>
         </div>`;
     }
 }

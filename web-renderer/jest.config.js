@@ -3,6 +3,7 @@ module.exports = {
   testEnvironment: 'jest-environment-jsdom',
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': '<rootDir>/test/styleMock.js',
+    '\\.wasm(\\?.*)?$': '<rootDir>/test/styleMock.js',
     '^markdown-it$': '<rootDir>/node_modules/markdown-it/dist/markdown-it.js',
     '^markdown-it-github-alerts$': '<rootDir>/test/__mocks__/markdown-it-github-alerts.js',
     '^vega$': '<rootDir>/test/__mocks__/vega.js',
@@ -14,7 +15,10 @@ module.exports = {
   ],
   transform: {
     '^.+\\.tsx?$': ['ts-jest', {
-      tsconfig: 'tsconfig.json'
+      tsconfig: 'tsconfig.json',
+      diagnostics: {
+        ignoreCodes: [1343]
+      }
     }],
     'node_modules/tex2typst/.+\\.js$': ['ts-jest', {
       tsconfig: 'tsconfig.json'
