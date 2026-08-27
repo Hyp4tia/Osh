@@ -39,7 +39,7 @@ struct WelcomeView: View {
         .frame(width: 560)
         .frame(maxHeight: .infinity)
         .padding(.vertical, 28)
-        .background(colorScheme == .dark ? Color(white: 0.12).ignoresSafeArea() : Color(white: 0.98).ignoresSafeArea())
+        .background(Color(NSColor.windowBackgroundColor).ignoresSafeArea())
         .background(WelcomeWindowAccessor { window in
             self.window = window
         })
@@ -58,22 +58,17 @@ struct WelcomeView: View {
                     .resizable()
                     .interpolation(.high)
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 72, height: 72)
-                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(colorScheme == .dark ? Color.white.opacity(0.12) : Color.black.opacity(0.12), lineWidth: 1)
-                    )
-                    .shadow(color: Color.black.opacity(0.10), radius: 8, x: 0, y: 4)
+                    .frame(width: 56, height: 56)
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                     .accessibilityLabel(Text(NSLocalizedString("Osh App Icon", comment: "App icon accessibility label")))
             }
 
             // Wordmark with the Coptic name as a quiet companion mark.
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
                 Text("Osh")
-                    .font(.system(size: 30, weight: .semibold))
+                    .font(.system(size: 26, weight: .semibold))
                 Text("ⲱϣ")
-                    .font(.system(size: 17, weight: .light))
+                    .font(.system(size: 15, weight: .light))
                     .foregroundColor(.secondary)
             }
             .foregroundColor(.primary)
@@ -82,47 +77,36 @@ struct WelcomeView: View {
                 .font(.system(size: 13))
                 .foregroundColor(.secondary)
         }
-        .padding(.bottom, 26)
+        .padding(.bottom, 20)
     }
 
     private var hero: some View {
         Button(action: openFilePicker) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .strokeBorder(
-                        isTargeted ? Color.accentColor.opacity(0.95) : (colorScheme == .dark ? Color.white.opacity(0.15) : Color.black.opacity(0.15)),
-                        style: StrokeStyle(lineWidth: 1.5, dash: isTargeted ? [] : [7, 5])
-                    )
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(isTargeted ? Color.accentColor.opacity(0.06) : (colorScheme == .dark ? Color(white: 0.16) : Color(white: 0.96)))
-                    )
+            VStack(spacing: 8) {
+                Image(systemName: "doc.badge.plus")
+                    .font(.system(size: 24, weight: .regular))
+                    .foregroundColor(isTargeted ? Color.accentColor : Color.secondary)
 
-                VStack(spacing: 8) {
-                    Image(systemName: "doc.badge.plus")
-                        .font(.system(size: 30, weight: .regular))
-                        .foregroundColor(isTargeted ? Color.accentColor : Color.secondary)
+                Text(NSLocalizedString("Open Markdown File…", comment: "Open file button"))
+                    .font(.system(size: 13.5, weight: .medium))
+                    .foregroundColor(.primary)
 
-                    Text(NSLocalizedString("Open Markdown File…", comment: "Open file button"))
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(.primary)
+                Text(NSLocalizedString("or drop files here", comment: "Drop hint"))
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
 
-                    Text(NSLocalizedString("or drop files here", comment: "Drop hint"))
-                        .font(.system(size: 12))
-                        .foregroundColor(.secondary)
-
-                    if isOpening {
-                        ProgressView()
-                            .padding(.top, 4)
-                    }
+                if isOpening {
+                    ProgressView()
+                        .padding(.top, 2)
                 }
-                .padding(.horizontal, 24)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .padding(.horizontal, 24)
         }
-        .buttonStyle(PlainButtonStyle())
-        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .buttonStyle(WelcomeDropZoneButtonStyle(isTargeted: isTargeted))
+        .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .disabled(isOpening)
-        .frame(height: 150)
+        .frame(height: 136)
         .padding(.horizontal, 44)
         .onDrop(of: [UTType.fileURL.identifier], isTargeted: $isTargeted) { providers in
             handleDrop(providers: providers)
@@ -132,43 +116,21 @@ struct WelcomeView: View {
 
     @ViewBuilder
     private var recentsList: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 2) {
             Text(NSLocalizedString("Recent", comment: "Recents section title"))
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundColor(.secondary)
                 .textCase(.uppercase)
-                .padding(.leading, 6)
+                .padding(.leading, 10)
+                .padding(.bottom, 2)
 
             ForEach(recents) { recent in
-                Button(action: { open(urls: [recent.url]) }) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "doc.text")
-                            .font(.system(size: 12))
-                            .foregroundColor(.secondary)
-                            .frame(width: 16)
-                        Text(recent.name)
-                            .font(.system(size: 13))
-                            .foregroundColor(.primary)
-                            .lineLimit(1)
-                        Spacer()
-                        Text(recent.folder)
-                            .font(.system(size: 11))
-                            .foregroundColor(.secondary)
-                            .lineLimit(1)
-                            .truncationMode(.head)
-                    }
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .contentShape(Rectangle())
+                RecentFileRowView(recent: recent) {
+                    open(urls: [recent.url])
                 }
-                .buttonStyle(PlainButtonStyle())
-                .background(
-                    RoundedRectangle(cornerRadius: 6, style: .continuous)
-                        .fill(Color.primary.opacity(0.001))
-                )
             }
         }
-        .padding(.top, 22)
+        .padding(.top, 20)
         .padding(.horizontal, 36)
     }
 
@@ -177,8 +139,7 @@ struct WelcomeView: View {
             Button(NSLocalizedString("Settings", comment: "Open settings button")) {
                 settingsWindowManager.show()
             }
-            .buttonStyle(BorderlessButtonStyle())
-            .foregroundColor(.accentColor)
+            .buttonStyle(WelcomeFooterLinkButtonStyle())
 
             separatorDot
 
@@ -186,8 +147,7 @@ struct WelcomeView: View {
                 let url = LocalizationManager.helpURL(for: AppearancePreference.shared.uiLanguage)
                 openURL(url)
             }
-            .buttonStyle(BorderlessButtonStyle())
-            .foregroundColor(.accentColor)
+            .buttonStyle(WelcomeFooterLinkButtonStyle())
 
             Spacer()
 
@@ -197,12 +157,12 @@ struct WelcomeView: View {
         }
         .padding(.top, 18)
         .padding(.horizontal, 44)
-        .font(.system(size: 12, weight: .medium))
+        .font(.system(size: 12, weight: .regular))
     }
 
     private var separatorDot: some View {
         Circle()
-            .fill(Color.secondary.opacity(0.5))
+            .fill(Color.secondary.opacity(0.4))
             .frame(width: 3, height: 3)
     }
 
@@ -299,6 +259,89 @@ struct WelcomeView: View {
             window?.close()
             window = nil
         }
+    }
+}
+
+// MARK: - Welcome View Supporting Styles & Components
+
+private struct WelcomeDropZoneButtonStyle: ButtonStyle {
+    let isTargeted: Bool
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(
+                        isTargeted
+                            ? Color.accentColor.opacity(0.08)
+                            : (isHovered ? Color.primary.opacity(0.03) : Color(NSColor.controlBackgroundColor).opacity(0.55))
+                    )
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .strokeBorder(
+                        isTargeted
+                            ? Color.accentColor.opacity(0.85)
+                            : (isHovered ? Color.secondary.opacity(0.35) : Color.secondary.opacity(0.18)),
+                        lineWidth: 1
+                    )
+            )
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.985 : 1.0)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isTargeted)
+            .onHover { isHovered = $0 }
+    }
+}
+
+private struct RecentFileRowView: View {
+    let recent: RecentFile
+    let action: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: "doc.text")
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
+                    .frame(width: 16)
+                Text(recent.name)
+                    .font(.system(size: 13, weight: .regular))
+                    .foregroundColor(.primary)
+                    .lineLimit(1)
+                Spacer()
+                Text(recent.folder)
+                    .font(.system(size: 11))
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+                    .truncationMode(.head)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .background(
+                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                    .fill(isHovered ? Color.primary.opacity(0.06) : Color.clear)
+            )
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(PlainButtonStyle())
+        .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+        .onHover { isHovered = $0 }
+    }
+}
+
+private struct WelcomeFooterLinkButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundColor(isHovered ? .primary : .secondary)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+            .onHover { isHovered = $0 }
     }
 }
 
