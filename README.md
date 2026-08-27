@@ -155,3 +155,18 @@ If pressing `Space` in Finder still shows plain text after installing:
 qlmanage -r
 qlmanage -r cache
 killall Finder
+```
+</details>
+
+---
+
+## 🙏 Attribution
+
+This project is based on [FluxMarkdown](https://github.com/xykong/flux-markdown) by [@xykong](https://github.com/xykong), licensed under GPL-3.0. All credit for the original design and implementation goes to the upstream author and its contributors ([@timokox](https://github.com/timokox), [@marko-cancar](https://github.com/marko-cancar), [@withsivram](https://github.com/withsivram), [@TeroRERO](https://github.com/TeroRERO)).
+
+---
+
+<p align="center">
+  <sub>Inspired by and partially based on <a href="https://github.com/shd101wyy/markdown-preview-enhanced">markdown-preview-enhanced</a></sub>
+</p>
+
