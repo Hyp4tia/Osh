@@ -34,7 +34,7 @@ A diferencia de los editores pesados o las extensiones de navegador recargadas, 
 Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disfrute de una vista previa instantánea con diagramas interactivos, fórmulas matemáticas y paletas de color cuidadosamente diseñadas.
 
 <p align="center">
-  <img src="docs/assets/demo.gif?v=2" alt="Demostración de Osh" width="85%">
+  <img src="docs/assets/osh-demo.gif" alt="Demostración de Osh" width="85%">
 </p>
 
 ---

@@ -34,7 +34,7 @@
 حدد أي ملف في Finder واضغط على **مسافة (Space)** للحصول على معاينة فورية ومصممة بأعلى جودة مع دعم المعادلات الرياضية، المخططات البيانية، وقوالب الألوان الهادئة.
 
 <p align="center">
-  <img src="docs/assets/demo.gif?v=2" alt="عرض Osh التوضيحي" width="85%">
+  <img src="docs/assets/osh-demo.gif" alt="عرض Osh التوضيحي" width="85%">
 </p>
 
 ---
