@@ -366,7 +366,7 @@ private struct WelcomeWindowAccessor: NSViewRepresentable {
     func updateNSView(_ nsView: NSView, context: Context) {}
 }
 
-private final class SettingsWindowManager: NSObject {
+final class SettingsWindowManager: NSObject {
     static let shared = SettingsWindowManager()
 
     private var settingsWindow: NSWindow?

@@ -1,6 +1,21 @@
 ## [Unreleased]
 _无待发布的变更_
 
+## [1.0.1] - 2026-08-27
+
+### Added
+- **Redesigned Document Toolbar**: Streamlined native macOS document toolbar with clear visual hierarchy:
+  - Document Source / Preview toggle button (leading).
+  - Primary Edit / Done button (trailing).
+  - Dedicated Undo and Redo toolbar buttons.
+  - Text Size ("Aa") popover control with real-time font scaling (12–24px) and reset button.
+  - Secondary More Actions menu ("...") consolidating Appearance (Light/Dark/System), Reload Document, Export (HTML, PDF, Word), Settings, and Feature Guide.
+
+### Fixed
+- **Edit button click responsiveness**: Added explicit content shape and z-index ordering for reliable click hit-testing over the web view.
+- **Undo / Redo reliability & safety**: Connected toolbar actions directly to the window's authoritative document `NSUndoManager` with `breakUndoCoalescing()` and `canUndo`/`canRedo` guards, eliminating intermittent `EXC_BAD_ACCESS` crashes from un-targeted responder chain queries.
+- **Real-time font size scaling**: Fixed web renderer fast-path to immediately update `#markdown-preview` font size when adjusting the Text Size slider.
+
 ## [1.34.475] - 2026-08-14
 
 ### Fixed

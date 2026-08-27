@@ -102,7 +102,8 @@ struct SourceEditorView: NSViewRepresentable {
     }
 }
 
-/// Text view that routes Cmd+S to the document save action instead of beeping.
+/// Text view that routes Cmd+S to the document save action instead of beeping,
+/// and provides native undo/redo routing for toolbar actions.
 final class EditorTextView: NSTextView {
     var onSave: (() -> Void)?
 
@@ -116,5 +117,28 @@ final class EditorTextView: NSTextView {
 
     @objc func save(_ sender: Any?) {
         onSave?()
+    }
+
+    @objc func undo(_ sender: Any?) {
+        breakUndoCoalescing()
+        if undoManager?.canUndo == true {
+            undoManager?.undo()
+        }
+    }
+
+    @objc func redo(_ sender: Any?) {
+        if undoManager?.canRedo == true {
+            undoManager?.redo()
+        }
+    }
+
+    override func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
+        if item.action == #selector(undo(_:)) {
+            return undoManager?.canUndo ?? false
+        }
+        if item.action == #selector(redo(_:)) {
+            return undoManager?.canRedo ?? false
+        }
+        return super.validateUserInterfaceItem(item)
     }
 }

@@ -270,100 +270,123 @@ private struct DocumentPreviewScene: View {
                 )
             }
 
-            // Top-right controls overlay: pinned to physical top-right so it never collides
-            // with macOS window traffic lights on the top-left in RTL mode.
-            VStack(alignment: .trailing, spacing: 4) {
-                HStack(spacing: 8) {
-                    CircularToolbarIconButton(
-                        systemName: "square.and.pencil",
-                        foregroundColor: isEditing ? .blue : Color(NSColor.labelColor),
-                        helpText: NSLocalizedString("Edit Markdown (⌘E)", comment: "Edit toggle tooltip"),
-                        appearance: preference.currentMode.nsAppearance
-                    ) {
-                        isEditing.toggle()
-                    }
-
-                    CircularToolbarIconButton(
-                        systemName: "arrow.clockwise",
-                        foregroundColor: Color(NSColor.labelColor),
-                        helpText: NSLocalizedString("Reload File (⌘R)", comment: "Reload file tooltip"),
-                        appearance: preference.currentMode.nsAppearance
-                    ) {
-                        reloadDocumentFromDisk()
-                    }
-
-                    CircularToolbarIconButton(
-                        systemName: "textformat.size.smaller",
-                        foregroundColor: Color(NSColor.labelColor),
-                        helpText: NSLocalizedString("Zoom Out", comment: "Zoom out tooltip"),
-                        appearance: preference.currentMode.nsAppearance
-                    ) {
-                        NotificationCenter.default.post(name: .zoomOut, object: nil)
-                    }
-
-                    CircularToolbarIconButton(
-                        systemName: "arrow.uturn.backward",
-                        foregroundColor: Color(NSColor.labelColor),
-                        helpText: NSLocalizedString("Reset Zoom (⌘0)", comment: "Reset zoom tooltip"),
-                        appearance: preference.currentMode.nsAppearance
-                    ) {
-                        showToolbarToast(resetZoomToastMessage)
-                        NotificationCenter.default.post(name: .resetZoom, object: nil)
-                    }
-
-                    CircularToolbarIconButton(
-                        systemName: "textformat.size.larger",
-                        foregroundColor: Color(NSColor.labelColor),
-                        helpText: NSLocalizedString("Zoom In", comment: "Zoom in tooltip"),
-                        appearance: preference.currentMode.nsAppearance
-                    ) {
-                        NotificationCenter.default.post(name: .zoomIn, object: nil)
-                    }
-
-                    CircularToolbarIconButton(
-                        systemName: "questionmark.circle",
-                        foregroundColor: Color(NSColor.labelColor),
-                        helpText: NSLocalizedString("Show Help", comment: "Show help tooltip"),
-                        appearance: preference.currentMode.nsAppearance
-                    ) {
-                        NotificationCenter.default.post(name: .toggleHelp, object: nil)
-                    }
-
-                    CircularToolbarIconButton(
-                        systemName: viewMode == .source ? "eye.fill" : "doc.text.fill",
-                        foregroundColor: viewMode == .source ? .blue : Color(NSColor.labelColor),
-                        helpText: viewMode == .source
-                            ? NSLocalizedString("Show Preview", comment: "Show preview tooltip")
-                            : NSLocalizedString("Show Source", comment: "Show source tooltip"),
-                        appearance: preference.currentMode.nsAppearance
-                    ) {
-                        viewMode = (viewMode == .preview) ? .source : .preview
-                    }
-
-                    CircularToolbarIconButton(
-                        systemName: preference.currentMode == .light ? "sun.max.fill" : preference.currentMode == .dark ? "moon.fill" : "circle.lefthalf.filled",
-                        foregroundColor: preference.currentMode == .light ? .yellow : Color(NSColor.labelColor),
-                        helpText: NSLocalizedString("Toggle Theme (System / Light / Dark)", comment: "Theme toggle tooltip"),
-                        appearance: preference.currentMode.nsAppearance
-                    ) {
-                        switch preference.currentMode {
-                        case .system: preference.currentMode = .light
-                        case .light:  preference.currentMode = .dark
-                        case .dark:   preference.currentMode = .system
-                        }
-                    }
+            // Document Toolbar
+            HStack(spacing: 0) {
+                // Leading: Document Source / Preview toggle
+                Button(action: {
+                    viewMode = (viewMode == .preview) ? .source : .preview
+                }) {
+                    Image(systemName: viewMode == .source ? "eye.fill" : "doc.plaintext")
+                        .font(.system(size: 13, weight: .medium))
+                        .frame(width: 28, height: 28)
+                        .contentShape(Rectangle())
                 }
-                .padding(.top, 10)
-                // Extra trailing inset keeps the icon row clear of the scrollbar.
-                .padding(.trailing, 26)
+                .buttonStyle(PlainButtonStyle())
+                .foregroundColor(Color(NSColor.labelColor))
+                .help(viewMode == .source
+                    ? NSLocalizedString("Show Preview", comment: "Show preview tooltip")
+                    : NSLocalizedString("Show Markdown Source", comment: "Show source tooltip"))
+                .accessibilityLabel(viewMode == .source
+                    ? NSLocalizedString("Show Preview", comment: "Show preview tooltip")
+                    : NSLocalizedString("Show Markdown Source", comment: "Show source tooltip"))
 
-                Text(DisplayVersion.formattedBetaText())
-                    .font(.system(size: 10, weight: .regular, design: .monospaced))
-                    .foregroundColor(Color.secondary.opacity(0.5))
-                    .padding(.trailing, 28)
+                Spacer()
+
+                // Trailing toolbar actions
+                HStack(spacing: 8) {
+                    // 1. Edit / Done (Primary Action)
+                    if isEditing {
+                        Button(action: { isEditing.toggle() }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 11, weight: .semibold))
+                                Text(NSLocalizedString("Done", comment: "Done editing button"))
+                                    .font(.system(size: 12, weight: .semibold))
+                            }
+                            .padding(.horizontal, 10)
+                            .frame(height: 28)
+                            .background(
+                                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                    .fill(Color.accentColor)
+                            )
+                            .foregroundColor(.white)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .help(NSLocalizedString("Done Editing (⌘E)", comment: "Done editing tooltip"))
+                        .accessibilityLabel(NSLocalizedString("Done Editing", comment: "Done editing accessibility label"))
+                    } else {
+                        Button(action: { isEditing.toggle() }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "square.and.pencil")
+                                    .font(.system(size: 11, weight: .semibold))
+                                Text(NSLocalizedString("Edit", comment: "Edit markdown button"))
+                                    .font(.system(size: 12, weight: .medium))
+                            }
+                            .padding(.horizontal, 10)
+                            .frame(height: 28)
+                            .background(
+                                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                    .stroke(Color.secondary.opacity(0.35), lineWidth: 1)
+                            )
+                            .foregroundColor(.primary)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(PlainButtonStyle())
+                        .help(NSLocalizedString("Edit Markdown (⌘E)", comment: "Edit markdown tooltip"))
+                        .accessibilityLabel(NSLocalizedString("Edit Markdown", comment: "Edit markdown accessibility label"))
+                    }
+
+                    // 2. Undo
+                    Button(action: {
+                        performUndo()
+                    }) {
+                        Image(systemName: "arrow.uturn.backward")
+                            .font(.system(size: 12, weight: .medium))
+                            .frame(width: 28, height: 28)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .foregroundColor(Color(NSColor.labelColor))
+                    .help(NSLocalizedString("Undo (⌘Z)", comment: "Undo tooltip"))
+                    .accessibilityLabel(NSLocalizedString("Undo", comment: "Undo accessibility label"))
+
+                    // 3. Redo
+                    Button(action: {
+                        performRedo()
+                    }) {
+                        Image(systemName: "arrow.uturn.forward")
+                            .font(.system(size: 12, weight: .medium))
+                            .frame(width: 28, height: 28)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .foregroundColor(Color(NSColor.labelColor))
+                    .help(NSLocalizedString("Redo (⇧⌘Z)", comment: "Redo tooltip"))
+                    .accessibilityLabel(NSLocalizedString("Redo", comment: "Redo accessibility label"))
+
+                    // 4. Aa Text Size Popover
+                    TextSizeToolbarButton(
+                        preference: preference,
+                        onReset: {
+                            showToolbarToast(resetZoomToastMessage)
+                        }
+                    )
+
+                    // 5. More Menu
+                    DocumentMoreMenu(
+                        preference: preference,
+                        onReload: { reloadDocumentFromDisk() },
+                        onHelp: { NotificationCenter.default.post(name: .toggleHelp, object: nil) }
+                    )
+                }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
+            .padding(.horizontal, 16)
+            .padding(.top, 10)
+            .padding(.trailing, 10)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .environment(\.layoutDirection, .leftToRight)
+            .zIndex(2)
 
             ToolbarFeedbackToastHost(toast: toolbarToast)
                 .allowsHitTesting(false)
@@ -421,6 +444,23 @@ private struct DocumentPreviewScene: View {
     }
 
     // MARK: - Document Actions
+
+    private func performUndo() {
+        if let textView = hostWindow?.firstResponder as? NSTextView {
+            textView.breakUndoCoalescing()
+        }
+        guard let undoManager = hostWindow?.undoManager ?? NSApp.keyWindow?.undoManager else { return }
+        if undoManager.canUndo {
+            undoManager.undo()
+        }
+    }
+
+    private func performRedo() {
+        guard let undoManager = hostWindow?.undoManager ?? NSApp.keyWindow?.undoManager else { return }
+        if undoManager.canRedo {
+            undoManager.redo()
+        }
+    }
 
     private func saveDocument() {
         NSApp.sendAction(#selector(NSDocument.save(_:)), to: nil, from: nil)
@@ -688,5 +728,154 @@ struct CheckForUpdatesView: View {
         }
         .keyboardShortcut("u", modifiers: [.command])
         Divider()
+    }
+}
+
+// MARK: - Toolbar Components
+
+struct TextSizeToolbarButton: View {
+    @ObservedObject var preference: AppearancePreference
+    let onReset: () -> Void
+    @State private var isShowingPopover: Bool = false
+
+    var body: some View {
+        Button(action: {
+            isShowingPopover.toggle()
+        }) {
+            Image(systemName: "textformat.size")
+                .font(.system(size: 13, weight: .medium))
+                .frame(width: 28, height: 28)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(PlainButtonStyle())
+        .foregroundColor(Color(NSColor.labelColor))
+        .help(NSLocalizedString("Text Size", comment: "Text size tooltip"))
+        .accessibilityLabel(NSLocalizedString("Text Size", comment: "Text size accessibility label"))
+        .popover(isPresented: $isShowingPopover, arrowEdge: .bottom) {
+            TextSizePopoverView(preference: preference, onReset: onReset)
+        }
+    }
+}
+
+struct TextSizePopoverView: View {
+    @ObservedObject var preference: AppearancePreference
+    let onReset: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            Text(NSLocalizedString("Text Size", comment: "Text size popover title"))
+                .font(.system(size: 13, weight: .semibold))
+                .foregroundColor(.primary)
+
+            VStack(spacing: 8) {
+                HStack(spacing: 10) {
+                    Text("A")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(.secondary)
+
+                    Slider(
+                        value: Binding(
+                            get: { preference.baseFontSize },
+                            set: { preference.baseFontSize = $0 }
+                        ),
+                        in: 12...24,
+                        step: 1
+                    )
+                    .accentColor(.accentColor)
+
+                    Text("A")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundColor(.secondary)
+                }
+
+                Text("\(Int(round((preference.baseFontSize / 14.0) * 100)))%")
+                    .font(.system(size: 12, weight: .medium, design: .monospaced))
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+            }
+
+            Divider()
+
+            Button(action: {
+                preference.baseFontSize = 14
+                onReset()
+            }) {
+                Text(NSLocalizedString("Reset to Default", comment: "Reset text size to default"))
+                    .font(.system(size: 12))
+                    .frame(maxWidth: .infinity)
+            }
+        }
+        .padding(16)
+        .frame(width: 220)
+    }
+}
+
+struct DocumentMoreMenu: View {
+    @ObservedObject var preference: AppearancePreference
+    let onReload: () -> Void
+    let onHelp: () -> Void
+
+    var body: some View {
+        Menu {
+            Menu(NSLocalizedString("Appearance", comment: "Appearance submenu")) {
+                ForEach(AppearanceMode.allCases) { mode in
+                    Button(action: {
+                        preference.currentMode = mode
+                    }) {
+                        HStack {
+                            Text(mode.displayName)
+                            if preference.currentMode == mode {
+                                Image(systemName: "checkmark")
+                            }
+                        }
+                    }
+                }
+            }
+
+            Button(action: onReload) {
+                Label(NSLocalizedString("Reload Document", comment: "Reload document menu item"), systemImage: "arrow.clockwise")
+            }
+
+            Menu(NSLocalizedString("Export", comment: "Export submenu")) {
+                Button(action: {
+                    NotificationCenter.default.post(name: .exportHTML, object: nil)
+                }) {
+                    Text(NSLocalizedString("Export as HTML…", comment: "Export HTML menu item"))
+                }
+
+                Button(action: {
+                    NotificationCenter.default.post(name: .exportPDF, object: nil)
+                }) {
+                    Text(NSLocalizedString("Export as PDF…", comment: "Export PDF menu item"))
+                }
+
+                Button(action: {
+                    NotificationCenter.default.post(name: .exportDOCX, object: nil)
+                }) {
+                    Text(NSLocalizedString("Export as Word…", comment: "Export DOCX menu item"))
+                }
+            }
+
+            Divider()
+
+            Button(action: {
+                SettingsWindowManager.shared.show()
+            }) {
+                Label(NSLocalizedString("Settings…", comment: "Settings menu item"), systemImage: "gearshape")
+            }
+
+            Button(action: onHelp) {
+                Label(NSLocalizedString("Help / Feature Guide", comment: "Help / feature guide menu item"), systemImage: "questionmark.circle")
+            }
+        } label: {
+            Image(systemName: "ellipsis.circle")
+                .font(.system(size: 14, weight: .medium))
+                .frame(width: 28, height: 28)
+                .contentShape(Rectangle())
+        }
+        .menuStyle(BorderlessButtonMenuStyle())
+        .foregroundColor(Color(NSColor.labelColor))
+        .help(NSLocalizedString("More Actions", comment: "More actions menu tooltip"))
+        .accessibilityLabel(NSLocalizedString("More Actions", comment: "More actions accessibility label"))
     }
 }

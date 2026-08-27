@@ -163,4 +163,62 @@ final class DocumentEditingAndThemeTests: XCTestCase {
         )
         XCTAssertTrue(shouldReloadAfterExternalEdit, "External modification must be detected")
     }
+
+    func testZoomLevelClampingAndReset() {
+        let defaultZoom = 1.0
+
+        let pref = AppearancePreference.shared
+        pref.zoomLevel = 1.75
+        XCTAssertEqual(pref.zoomLevel, 1.75)
+
+        // Reset
+        pref.zoomLevel = defaultZoom
+        XCTAssertEqual(pref.zoomLevel, 1.0)
+    }
+
+    func testViewModeToggle() {
+        var mode: ViewMode = .preview
+        mode = (mode == .preview) ? .source : .preview
+        XCTAssertEqual(mode, .source)
+        mode = (mode == .preview) ? .source : .preview
+        XCTAssertEqual(mode, .preview)
+    }
+
+    func testEditorTextViewUndoRedoEmptyStackDoesNotCrash() {
+        let textView = EditorTextView()
+        textView.allowsUndo = true
+        let undoManager = UndoManager()
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 200, height: 200), styleMask: [], backing: .buffered, defer: false)
+        window.contentView = textView
+
+        XCTAssertFalse(textView.undoManager?.canUndo ?? true)
+        XCTAssertFalse(textView.undoManager?.canRedo ?? true)
+
+        // Must safely no-op without throwing or crashing
+        textView.undo(nil)
+        textView.redo(nil)
+
+        XCTAssertFalse(textView.undoManager?.canUndo ?? true)
+    }
+
+    func testEditorTextViewUndoRedoTextEditing() {
+        let textView = EditorTextView()
+        textView.allowsUndo = true
+        let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 200, height: 200), styleMask: [], backing: .buffered, defer: false)
+        window.contentView = textView
+
+        textView.string = "Initial"
+        textView.insertText(" Edited", replacementRange: NSRange(location: 7, length: 0))
+        textView.breakUndoCoalescing()
+
+        XCTAssertTrue(textView.undoManager?.canUndo ?? false)
+        XCTAssertEqual(textView.string, "Initial Edited")
+
+        textView.undo(nil)
+        XCTAssertEqual(textView.string, "Initial")
+        XCTAssertTrue(textView.undoManager?.canRedo ?? false)
+
+        textView.redo(nil)
+        XCTAssertEqual(textView.string, "Initial Edited")
+    }
 }

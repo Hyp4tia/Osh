@@ -505,8 +505,6 @@ struct MarkdownWebView: NSViewRepresentable {
         }
         
         func render(webView: WKWebView, content: String, fileURL: URL?, viewMode: ViewMode, appearanceMode: AppearanceMode, baseFontSize: Double, enableMermaid: Bool, enableKatex: Bool, enableEmoji: Bool, enableTypst: Bool, codeHighlightTheme: String, collapseBlockquotesByDefault: Bool, showLineNumbers: Bool = false, readingTheme: String = "default") {
-            lastAppearanceMode = appearanceMode
-            lastBaseFontSize = baseFontSize
             lastEnableMermaid = enableMermaid
             lastEnableKatex = enableKatex
             lastEnableEmoji = enableEmoji
@@ -552,19 +550,30 @@ struct MarkdownWebView: NSViewRepresentable {
         }
 
         private func executeRender(webView: WKWebView, content: String, fileURL: URL?, viewMode: ViewMode, appearanceMode: AppearanceMode, baseFontSize: Double, enableMermaid: Bool, enableKatex: Bool, enableEmoji: Bool, enableTypst: Bool, codeHighlightTheme: String, collapseBlockquotesByDefault: Bool, showLineNumbers: Bool = false, readingTheme: String = "default") {
-            let onlyThemeChanged = (content == lastRenderedContent) && (viewMode == .preview) && (viewMode == lastViewMode) && (collapseBlockquotesByDefault == lastCollapseBlockquotesByDefault) && (showLineNumbers == lastShowLineNumbers) && (readingTheme == lastReadingTheme)
-            if onlyThemeChanged {
-                os_log("🔵 FAST PATH: only theme changed, viewMode=%{public}@ lastViewMode=%{public}@", log: logger, type: .debug, String(describing: viewMode), String(describing: lastViewMode))
-                let theme: String
-                switch appearanceMode {
-                case .dark:   theme = "dark"
-                case .light:  theme = "light"
-                case .system: theme = "system"
+            let onlyAppearanceOrFontChanged = (content == lastRenderedContent) && (viewMode == .preview) && (viewMode == lastViewMode) && (collapseBlockquotesByDefault == lastCollapseBlockquotesByDefault) && (showLineNumbers == lastShowLineNumbers)
+            if onlyAppearanceOrFontChanged {
+                if baseFontSize != lastBaseFontSize {
+                    lastBaseFontSize = baseFontSize
+                    webView.evaluateJavaScript("if (typeof window.setFontSize === 'function') { window.setFontSize(\(baseFontSize)); }") { [weak self] _, error in
+                        if let error = error {
+                            os_log("JS setFontSize error: %{public}@", log: self?.logger ?? .default, type: .error, error.localizedDescription)
+                        }
+                    }
                 }
-                lastAppearanceMode = appearanceMode
-                webView.evaluateJavaScript("window.updateTheme('\(theme)'); window.updateReadingTheme && window.updateReadingTheme('\(readingTheme)');") { [weak self] _, error in
-                    if let error = error {
-                        os_log("JS updateTheme error: %{public}@", log: self?.logger ?? .default, type: .error, error.localizedDescription)
+                if appearanceMode != lastAppearanceMode || readingTheme != lastReadingTheme {
+                    os_log("🔵 FAST PATH: only theme changed, viewMode=%{public}@ lastViewMode=%{public}@", log: logger, type: .debug, String(describing: viewMode), String(describing: lastViewMode))
+                    let theme: String
+                    switch appearanceMode {
+                    case .dark:   theme = "dark"
+                    case .light:  theme = "light"
+                    case .system: theme = "system"
+                    }
+                    lastAppearanceMode = appearanceMode
+                    lastReadingTheme = readingTheme
+                    webView.evaluateJavaScript("window.updateTheme('\(theme)'); window.updateReadingTheme && window.updateReadingTheme('\(readingTheme)');") { [weak self] _, error in
+                        if let error = error {
+                            os_log("JS updateTheme error: %{public}@", log: self?.logger ?? .default, type: .error, error.localizedDescription)
+                        }
                     }
                 }
                 return
@@ -575,6 +584,8 @@ struct MarkdownWebView: NSViewRepresentable {
             let previousContent = lastRenderedContent
             lastRenderedContent = content
             lastViewMode = viewMode
+            lastAppearanceMode = appearanceMode
+            lastBaseFontSize = baseFontSize
             lastCollapseBlockquotesByDefault = collapseBlockquotesByDefault
             lastShowLineNumbers = showLineNumbers
             lastReadingTheme = readingTheme

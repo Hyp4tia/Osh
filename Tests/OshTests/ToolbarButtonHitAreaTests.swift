@@ -3,7 +3,7 @@ import AppKit
 import SwiftUI
 
 final class ToolbarButtonHitAreaTests: XCTestCase {
-    func testMainAppAndQuickLookUseSharedNativeCircularToolbarButtons() throws {
+    func testMainAppAndQuickLookToolbarControls() throws {
         let root = try projectRoot()
         let sharedSourcePath = root.appendingPathComponent("Sources/Shared/CircularToolbarButton.swift").path
         let mainAppSourcePath = root.appendingPathComponent("Sources/OshApp/MarkdownApp.swift").path
@@ -17,7 +17,7 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
             sharedSource.contains("final class CircularToolbarButton: NSButton")
                 && sharedSource.contains("bezelStyle = .circular")
                 && sharedSource.contains("isBordered = true"),
-            "Toolbar controls should use a shared native AppKit circular NSButton instead of custom oval drawing."
+            "QuickLook toolbar controls should use a shared native AppKit circular NSButton instead of custom oval drawing."
         )
         XCTAssertTrue(
             sharedSource.contains("override func hitTest(_ point: NSPoint) -> NSView?")
@@ -33,14 +33,12 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
             "Native circular toolbar buttons should not depend on custom oval drawing or layer background hacks."
         )
 
-        XCTAssertEqual(
-            mainAppSource.components(separatedBy: "CircularToolbarIconButton(").count - 1,
-            8,
-            "Every main app floating toolbar control should use the SwiftUI wrapper for the shared native button."
-        )
-        XCTAssertFalse(
-            mainAppSource.contains("ToolbarIconNSButton") || mainAppSource.contains("NSBezierPath(ovalIn:"),
-            "The main app must not keep the old custom-drawn square-bezel toolbar button."
+        XCTAssertTrue(
+            mainAppSource.contains("TextSizeToolbarButton")
+                && mainAppSource.contains("DocumentMoreMenu")
+                && mainAppSource.contains("Show Markdown Source")
+                && mainAppSource.contains("Show Preview"),
+            "The main app toolbar must include the redesigned toolbar components."
         )
 
         XCTAssertEqual(
@@ -72,33 +70,14 @@ final class ToolbarButtonHitAreaTests: XCTestCase {
             "Small AppKit toolbar buttons should explicitly register a full-bounds tooltip rect so hover tips survive SwiftUI/QuickLook embedding."
         )
         XCTAssertTrue(
-            mainAppSource.contains("Reload File (⌘R)")
-                && mainAppSource.contains("Reset Zoom (⌘0)"),
-            "Main app refresh and reset zoom controls should keep their user-facing tooltip text."
+            mainAppSource.contains("Reload Document")
+                && mainAppSource.contains("Edit Markdown (⌘E)"),
+            "Main app refresh and edit controls should keep their user-facing tooltip text."
         )
         XCTAssertTrue(
             quickLookSource.contains("toolTip: \"Reload File (⌘R)\"")
                 && quickLookSource.contains("toolTip: \"Reset Zoom (⌘0)\""),
             "QuickLook refresh and reset zoom controls should keep explicit user-facing tooltip text."
-        )
-    }
-
-    func testMainAppToolbarButtonsReceiveTheSelectedPreviewAppearance() throws {
-        // GIVEN the selected preview appearance can differ from the host window.
-        let root = try projectRoot()
-        let mainAppSourcePath = root.appendingPathComponent("Sources/OshApp/MarkdownApp.swift").path
-        let mainAppSource = try String(contentsOfFile: mainAppSourcePath, encoding: .utf8)
-
-        // WHEN the eight floating toolbar buttons are constructed.
-        let appearanceBindings = mainAppSource
-            .components(separatedBy: "appearance: preference.currentMode.nsAppearance")
-            .count - 1
-
-        // THEN every button must receive the same explicit appearance as the preview.
-        XCTAssertEqual(
-            appearanceBindings,
-            8,
-            "Every main app toolbar button must resolve its native colors against the selected preview appearance, not an unrelated host appearance."
         )
     }
 
