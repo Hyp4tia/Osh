@@ -4,7 +4,7 @@
 **Date:** August 27, 2026  
 **Status:** Fixed & Verified  
 
-All security vulnerabilities and hardening items identified during our security audits have been remediated, verified, and regression-tested in the codebase:
+All security vulnerabilities and hardening items identified and **fixed** during our security audits have been remediated, verified, and regression-tested in the codebase:
 
 - **Local Link & Path Traversal Containment:** Hardened `LinkNavigation.resolveLocalURL()` with canonicalized, symlink-resolved directory containment (`resolvingSymlinksInPath()`, `standardizedFileURL`), strictly blocking directory traversal (`../`, `%2e%2e/`), root escapes, and out-of-scope filesystem access.
 - **Application (`.app`) & Dangerous Executable / Script Blocking:** Enforced strict blocking against application bundles (`.app`, `.app/Contents/...`), shell scripts (`.sh`, `.command`, `.tool`), package installers (`.pkg`, `.dmg`), and automation scripts (`.workflow`, `.scpt`, `.applescript`) when resolving Markdown links.
