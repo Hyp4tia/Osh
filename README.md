@@ -1,4 +1,5 @@
 <p align="center">
+  <img src="docs/assets/icon.png" alt="Osh Icon" width="128" height="128">
   <h1 align="center">Osh <samp>ⲱϣ</samp></h1>
   <p align="center"><strong>A quiet, beautiful Markdown reader & QuickLook extension for macOS.</strong></p>
   <p align="center">
