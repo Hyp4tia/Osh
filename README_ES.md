@@ -18,7 +18,7 @@
 </p>
 
 > [!NOTE]
-> **Osh se encuentra actualmente en fase Beta Pública (v1.0.0 Beta).** Las funciones se están optimizando continuamente. Si encuentra algún problema o tiene sugerencias, por favor [abra un issue](https://github.com/Zeyadistired/Osh/issues).
+> **Osh se encuentra actualmente en fase Beta Pública (v1.0.1 Beta).** Las funciones se están optimizando continuamente. Si encuentra algún problema o tiene sugerencias, por favor [abra un issue](https://github.com/Zeyadistired/Osh/issues).
 
 ---
 
@@ -26,7 +26,7 @@
 
 **Osh** (ⲱϣ) proviene de la antigua palabra copta que significa **“leer”**.
 
-A diferencia de los editores pesados o las extensiones de navegador recargadas, Osh fue diseñado específicamente para macOS con un único objetivo: ofrecer una experiencia de lectura de Markdown fluida, hermosa y libre de distracciones.
+A diferencia de los editores pesados o las extensiones de navegador recargadas, Osh fue diseñado específicamente para macOS con un único objetivo: ofrecer una experiencia de lectura y edición de Markdown fluida, hermosa y libre de distracciones.
 
 Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disfrute de una vista previa instantánea con diagramas interactivos, fórmulas matemáticas y paletas de color cuidadosamente diseñadas.
 
@@ -42,6 +42,7 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 - **Vista previa instantánea**: Previsualice archivos en Finder al instante con la barra espaciadora.
 - **Vista de columnas de Finder**: Formato adaptado a la columna de vista previa con ajuste de tamaño de fuente.
 - **Visor dedicado y archivos recientes**: Navegación completa, zoom, búsqueda y accesos rápidos.
+- **Editor de Markdown integrado**: Cambie al modo de edición en cualquier momento (`⌘E`) con soporte nativo de AppKit y escritura bidireccional.
 
 ### 🎨 5 Paletas de Lectura
 - **Modos Sistema, Claro y Oscuro**: Se adapta dinámicamente a la apariencia de macOS.
@@ -59,6 +60,7 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 - **Ayuda contextual**: El botón de ayuda en la aplicación abre guías en su idioma configurado.
 
 ### 🛠️ Comodidad para Desarrolladores y Escritores
+- **Barra de herramientas simplificada**: Acceso rápido para alternar entre vista previa y código fuente, modo edición, Deshacer/Rehacer, ajuste dinámico de tamaño de letra y exportación.
 - **Resaltado de código**: Formato limpio con temas seleccionables (GitHub, Monokai, Atom One Dark).
 - **Alertas y listas de GitHub**: Bloques de aviso estilizados (`[!NOTE]`, `[!TIP]`) y listas de tareas interactivas.
 - **Citas colapsables**: Opción de contraer citas largas automáticamente.
@@ -69,7 +71,7 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 ## 🚀 Instalación
 
 ### Descarga directa (DMG)
-1. Descargue el archivo **`Osh.dmg`** o **`Osh 1.0.0 Beta.dmg`** desde [GitHub Releases](https://github.com/Zeyadistired/Osh/releases).
+1. Descargue el archivo **`Osh.dmg`** desde [GitHub Releases](https://github.com/Zeyadistired/Osh/releases).
 2. Abra la imagen de disco y arrastre **Osh.app** a su carpeta de **Aplicaciones**.
 3. Inicie Osh una vez desde Aplicaciones para registrar la extensión de QuickLook en macOS.
 
@@ -97,13 +99,18 @@ Si al presionar la barra espaciadora todavía aparece texto plano:
 | Atajo | Acción |
 |:---|:---|
 | `Space` | Abrir vista previa QuickLook en Finder |
-| `⌘` + `+` | Aumentar zoom del documento |
-| `⌘` + `-` | Reducir zoom del documento |
+| `⌘` + `E` | Entrar / Salir del modo de edición Markdown |
+| `⇧` + `⌘` + `M` | Alternar entre Vista Previa y Código Fuente |
+| `⌘` + `Z` | Deshacer edición |
+| `⇧` + `⌘` + `Z` | Rehacer edición |
+| `⌘` + `+` / `⌘` + `-` | Aumentar / Reducir zoom del documento |
 | `⌘` + `0` | Restablecer zoom al predeterminado |
-| `⌘` + `,` | Abrir Ajustes |
+| `⌘` + `R` | Recargar documento desde el disco |
 | `⌘` + `F` | Buscar en el documento |
 | `⌘` + `⇧` + `P` | Exportar como PDF |
 | `⌘` + `⇧` + `E` | Exportar como HTML |
+| `⌘` + `⇧` + `D` | Exportar como Word (DOCX) |
+| `⌘` + `,` | Abrir Ajustes |
 | `⌘` + `?` | Abrir Guía de Usuario en su idioma |
 
 ---

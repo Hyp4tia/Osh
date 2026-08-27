@@ -18,7 +18,7 @@
 </p>
 
 > [!NOTE]
-> **Osh is currently in Public Beta (v1.0.0 Beta).** Features and polish are evolving rapidly. If you run into anything unexpected or have suggestions, please feel free to [open an issue](https://github.com/Zeyadistired/Osh/issues)!
+> **Osh is currently in Public Beta (v1.0.1 Beta).** Features and polish are evolving rapidly. If you run into anything unexpected or have suggestions, please feel free to [open an issue](https://github.com/Zeyadistired/Osh/issues)!
 
 ---
 
@@ -26,7 +26,7 @@
 
 **Osh** (ⲱϣ) takes its name from the Coptic word for **“to read”**. 
 
-Unlike heavy text editors or bloated browser plugins, Osh is built specifically for macOS to do one thing exceptionally well: provide an effortless, distraction-free reading experience for Markdown documents.
+Unlike heavy text editors or bloated browser plugins, Osh is built specifically for macOS to do one thing exceptionally well: provide an effortless, distraction-free reading and editing experience for Markdown documents.
 
 Select any file in Finder, press `Space`, and enjoy instant, beautifully rendered Markdown with rich diagrams, crisp mathematical equations, and tailored color palettes.
 
@@ -42,6 +42,7 @@ Select any file in Finder, press `Space`, and enjoy instant, beautifully rendere
 - **Instant Spacebar Preview**: Inspect documents directly in Finder without launching external tools.
 - **Finder Column View**: Automatically formats previews inside Finder's preview pane with custom font scaling.
 - **Recent Files & Standalone Viewer**: Open documents directly in Osh with full zoom, search, and navigation controls.
+- **In-App Source Editor**: Switch to editing mode anytime (`⌘E`) with native AppKit text handling and bidirectional writing support.
 
 ### 🎨 5 Refined Reading Themes
 - **System, Light & Dark**: Dynamically harmonizes with macOS appearance settings.
@@ -59,6 +60,7 @@ Select any file in Finder, press `Space`, and enjoy instant, beautifully rendere
 - **Context-Aware Help**: In-app Help documentation routes directly to beginner guides in your selected language.
 
 ### 🛠️ Developer & Writer Comfort
+- **Streamlined Document Toolbar**: Native macOS toolbar with quick access to Source/Preview toggle, Edit mode, Undo/Redo, dynamic Text Size popover, and export options.
 - **Code Syntax Highlighting**: Clean highlighting powered by highlight.js with selectable themes (Default, GitHub, Monokai, Atom One Dark).
 - **GitHub Alerts & Task Lists**: Native callout blocks (`[!NOTE]`, `[!TIP]`, `[!WARNING]`) and interactive checklists.
 - **Collapsible Blockquotes**: Keep long documents neat with automatic blockquote collapsing.
@@ -69,7 +71,7 @@ Select any file in Finder, press `Space`, and enjoy instant, beautifully rendere
 ## 🚀 Installation
 
 ### Download DMG
-1. Download the latest **`Osh.dmg`** or **`Osh 1.0.0 Beta.dmg`** from the [GitHub Releases](https://github.com/Zeyadistired/Osh/releases) page.
+1. Download the latest **`Osh.dmg`** from the [GitHub Releases](https://github.com/Zeyadistired/Osh/releases) page.
 2. Open the disk image and drag **Osh.app** into your **Applications** folder.
 3. Launch Osh once from Applications to register the QuickLook plugin with macOS.
 
@@ -97,13 +99,18 @@ If pressing `Space` in Finder still shows plain text after installing:
 | Shortcut | Action |
 |:---|:---|
 | `Space` | Toggle QuickLook preview in Finder |
-| `⌘` + `+` | Zoom in document |
-| `⌘` + `-` | Zoom out document |
+| `⌘` + `E` | Enter / Exit Markdown editing mode |
+| `⇧` + `⌘` + `M` | Toggle between Rendered Preview and Markdown Source |
+| `⌘` + `Z` | Undo edit |
+| `⇧` + `⌘` + `Z` | Redo edit |
+| `⌘` + `+` / `⌘` + `-` | Increase / Decrease document zoom |
 | `⌘` + `0` | Reset zoom to default |
-| `⌘` + `,` | Open Settings |
+| `⌘` + `R` | Reload document from disk |
 | `⌘` + `F` | Search document contents |
 | `⌘` + `⇧` + `P` | Export as PDF |
 | `⌘` + `⇧` + `E` | Export as HTML |
+| `⌘` + `⇧` + `D` | Export as Word (DOCX) |
+| `⌘` + `,` | Open Settings |
 | `⌘` + `?` | Open Language-Aware User Guide |
 
 ---
