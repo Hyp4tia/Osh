@@ -1,142 +1,209 @@
-# Osh Demo - "The Finder Markdown HUD"
+# Osh Demo — "The Finder Markdown HUD"
 
-> This is a *showcase* file for Osh.
+> **Osh** (<samp>ⲱϣ</samp>) is a quiet, beautiful Markdown & Typst reader, editor, and QuickLook extension for macOS.
 > 
-> Recording script (10-15s): select `demo.md` -> press Space -> click a TOC item -> pause at Mermaid -> pause at KaTeX -> show code highlight -> zoom once.
+> *Recording script (10–15s):* Select `demo.md` in Finder → Press `Space` → Click a TOC item → Pause at Mermaid & Typst/KaTeX → Switch theme / toggle In-App Editor (`⌘E`).
 
 ---
 
-## Table of contents
+## Table of Contents
 
-- [GFM Showcase](#gfm-showcase)
-- [Mermaid: Architecture](#mermaid-architecture)
-- [KaTeX: Math](#katex-math)
-- [Code: Multi-language](#code-multi-language)
-- [Links: External / Local / Anchor](#links-external--local--anchor)
-
----
-
-## GFM Showcase
-
-### Tables
-
-| Capability | Example | Why it looks good |
-| --- | --- | --- |
-| Tables | crisp alignment | fast scanning |
-| Task lists | done markers | status at a glance |
-| Emojis | :rocket: :sparkles: :tada: | visual anchor |
-| Blockquotes | callouts | highlight tips |
-
-### Task list
-
-- [x] Mermaid diagram renders
-- [x] KaTeX renders
-- [x] Code highlighting renders
-- [x] TOC highlights current section
-- [ ] Record the final GIF (10-15s)
-
-### Callout
-
-> Tip: Keep the demo GIF under ~8MB so GitHub renders quickly.
+- [✨ GFM & Rich Formatting](#-gfm--rich-formatting)
+- [🔔 GitHub Alerts & Callouts](#-github-alerts--callouts)
+- [📐 Diagrams: Mermaid Architecture](#-diagrams-mermaid-architecture)
+- [🔬 Scientific Math: Typst & KaTeX](#-scientific-math-typst--katex)
+- [🌐 Multilingual & Native RTL](#-multilingual--native-rtl)
+- [💻 Code: Multi-Language Highlighting](#-code-multi-language-highlighting)
+- [📑 Footnotes, Tasks & Collapsible Blocks](#-footnotes-tasks--collapsible-blocks)
+- [🔗 Navigation & Relative Links](#-navigation--relative-links)
 
 ---
 
-## Mermaid: Architecture
+## ✨ GFM & Rich Formatting
+
+### Feature Matrix
+
+| Capability | Supported Syntax | Visual Highlight |
+| :--- | :--- | :--- |
+| **Typst Math** | ```` ```typst ```` | High-fidelity WASM / KaTeX transpilation |
+| **Mermaid Charts** | ```` ```mermaid ```` | Flowcharts, Sequence, Class & Gantt diagrams |
+| **GitHub Alerts** | `> [!NOTE]` / `> [!TIP]` | Color-coded callouts with icons |
+| **Bidirectional RTL** | Native Arabic / Hebrew | Right-to-left layout with proper alignment |
+| **Reading Themes** | 5 built-in palettes | Default, Sepia, Paper, Midnight, Nord |
+| **In-App Editor** | `⌘E` hotkey | Live editing with split view & auto-save |
+
+### Inline Styles
+
+- **Highlighting**: Use ==highlighted markers== for key points.
+- **Subscript & Superscript**: Water is H~2~O, and Einstein wrote $E = mc^2^$.
+- **Strikethrough & Emphasis**: ~~Old text~~ replaced by *curated* **bold typography**.
+- **Emojis**: 🚀 ⚡ 🎨 📐 🌐 🔍
+
+---
+
+## 🔔 GitHub Alerts & Callouts
+
+> [!NOTE]
+> Osh is built natively with Swift, SwiftUI, AppKit, and a bundled WebKit renderer for instant zero-lag launches.
+
+> [!TIP]
+> Press `⌘E` in the standalone viewer to switch seamlessly between reader mode and the source editor.
+
+> [!IMPORTANT]
+> Finder previews adapt automatically to macOS system appearance (Light / Dark mode).
+
+> [!WARNING]
+> Ensure security-scoped bookmark permissions are granted when opening documents across external volumes.
+
+> [!CAUTION]
+> Avoid running untrusted script tags inside arbitrary markdown files.
+
+---
+
+## 📐 Diagrams: Mermaid Architecture
 
 ```mermaid
-flowchart LR
-  A[Finder selection] --> B[Space]
-  B --> C[QuickLook]
-  C --> D[Osh Preview]
+flowchart TD
+    subgraph macOS["macOS System"]
+        Finder["Finder Spacebar"]
+        App["Osh Standalone App"]
+    end
 
-  subgraph Preview[Preview pipeline]
-    D --> E[Markdown + GFM]
-    E --> F[Mermaid]
-    E --> G[KaTeX]
-    E --> H[Highlight]
-    E --> I[TOC]
-  end
+    subgraph Native["Native Swift Layer (AppKit / SwiftUI)"]
+        QL["QuickLook Controller"]
+        Doc["Document Controller (⌘E Editor)"]
+        LocalScheme["Custom Scheme Handlers (osh-bundle://, osh-local://)"]
+    end
 
-  I --> J[Readable docs]
+    subgraph WebEngine["Web Renderer Engine (Vite + TS)"]
+        Parser["markdown-it + Plugins"]
+        MermaidEngine["Mermaid.js"]
+        MathEngine["KaTeX & Typst WASM"]
+        RTLDetector["Bidirectional RTL Engine"]
+    end
+
+    Finder --> QL
+    App --> Doc
+    QL & Doc --> LocalScheme
+    LocalScheme --> WebEngine
+    WebEngine --> Parser
+    Parser --> MermaidEngine & MathEngine & RTLDetector
 ```
 
 ---
 
-## KaTeX: Math
+## 🔬 Scientific Math: Typst & KaTeX
 
-Inline:
+### Typst Math
 
-- $E = mc^2$
-- $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$
-- $\nabla \cdot \vec{E} = \frac{\rho}{\varepsilon_0}$
+```typst
+sum_(k=1)^n k = (n(n+1))/2 quad "and" quad integral_0^infinity e^(-x^2) dif x = sqrt(pi)/2
+```
 
-Block:
+```typst
+mat(
+  1, a, a^2;
+  1, b, b^2;
+  1, c, c^2;
+)
+```
+
+### KaTeX LaTeX Equations
+
+Inline: $\nabla \times \vec{\mathbf{B}} = \mu_0 \left( \vec{\mathbf{J}} + \varepsilon_0 \frac{\partial \vec{\mathbf{E}}}{\partial t} \right)$
+
+Display Block:
 
 $$
-\left(\frac{a+b}{2}\right)^2 + \left(\frac{a-b}{2}\right)^2 = \frac{a^2+b^2}{2}
+\mathcal{L} = \bar{\psi} (i \gamma^\mu D_\mu - m) \psi - \frac{1}{4} F_{\mu\nu} F^{\mu\nu}
 $$
 
 $$
-\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}
+\oint_C \mathbf{F} \cdot d\mathbf{r} = \iint_S (\nabla \times \mathbf{F}) \cdot d\mathbf{S}
 $$
 
 ---
 
-## Code: Multi-language
+## 🌐 Multilingual & Native RTL
 
-### Swift
+Osh provides full native support for Right-to-Left (RTL) scripts, automatically aligning paragraphs, blockquotes, and lists for Arabic and Hebrew documents:
+
+> **أوش (Osh)** هو قارئ ومحرر ماركداون خفيف وسريع لنظام ماك.
+> 
+> - يدعم معاينة ملفات Markdown و Typst فوراً عبر زر المسافة في فايندر (QuickLook).
+> - محاذاة تلقائية كاملة للنصوص والرموز الرياضية ثنائية الاتجاه.
+> - سمات قراءة متعددة مريحة للعين مع دعم الوضع الداكن والفاتح.
+
+---
+
+## 💻 Code: Multi-Language Highlighting
+
+### Swift (Native Bridge)
 
 ```swift
-import Foundation
+import SwiftUI
+import WebKit
 
-struct Osh {
-  let name = "Osh"
-  let features = ["GFM", "Mermaid", "KaTeX", "TOC", "Zoom"]
+struct OshPreviewView: NSViewRepresentable {
+    let documentURL: URL
+    
+    func makeNSView(context: Context) -> WKWebView {
+        let configuration = WKWebViewConfiguration()
+        configuration.setURLSchemeHandler(LocalSchemeHandler(), forURLScheme: "osh-local")
+        return WKWebView(frame: .zero, configuration: configuration)
+    }
+    
+    func updateNSView(_ nsView: WKWebView, context: Context) {}
 }
-
-print("\(Osh().name) - Ready in Finder")
 ```
 
-### Shell
+### Rust (WASM Tooling)
+
+```rust
+pub fn format_document(source: &str) -> Result<String, OshError> {
+    let parser = MarkdownParser::new(source);
+    let mut rendered = String::with_capacity(source.len() * 2);
+    parser.render_html(&mut rendered)?;
+    Ok(rendered)
+}
+```
+
+### Shell (Homebrew Quick Start)
 
 ```bash
+# Install Osh via Homebrew Tap
 brew install --cask Zeyadistired/tap/osh
 
-# Refresh QuickLook cache
+# Reload QuickLook daemon
 qlmanage -r
 ```
 
-### JSON
+---
 
-```json
-{
-  "app": "Osh",
-  "platform": "macOS",
-  "entry": "QuickLook",
-  "features": ["gfm", "mermaid", "katex", "toc", "zoom", "scroll-memory"]
-}
-```
+## 📑 Footnotes, Tasks & Collapsible Blocks
+
+### Checklist
+
+- [x] Zero configuration Markdown & Typst preview
+- [x] Instant Finder Spacebar QuickLook HUD
+- [x] 5 refined reading themes (Default, Sepia, Paper, Midnight, Nord)
+- [x] Full math rendering with KaTeX and Typst WASM[^1]
+- [x] Bidirectional text and RTL layout support[^2]
+- [ ] Export directly to PDF, HTML, and Word Docx (`⌘⇧E`)
+
+### Footnotes
+
+[^1]: Typst math renders natively via `@myriaddreamin/typst.ts` WASM compiler in the host app and transpiles to KaTeX in QuickLook.
+[^2]: Automatic direction detection per paragraph according to Unicode bidirectional character classification.
 
 ---
 
-## Links: External / Local / Anchor
+## 🔗 Navigation & Relative Links
 
-- External: https://github.com/Zeyadistired/Osh
-- Anchor: [Jump to Mermaid](#mermaid-architecture)
-- Local relative (main app): [demo.md](./demo.md)
+- **Repository**: [GitHub — Zeyadistired/Osh](https://github.com/Zeyadistired/Osh)
+- **Jump to Section**: [Back to Architecture Diagram](#-diagrams-mermaid-architecture)
+- **Local File Link**: [Security Audit](../../Security_Audit.md)
 
 ---
 
-## Smooth scroll section
-
-### Neon paragraphs
-
-Osh makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
-
-Osh makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
-
-Osh makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
-
-Osh makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
-
-Osh makes Finder previews feel like a mini markdown reader: fast, readable, and diagram-ready.
+<p align="center"><em>Osh (ⲱϣ) — Built with care for macOS.</em></p>
