@@ -5,5 +5,34 @@
         <link>https://raw.githubusercontent.com/Zeyadistired/Osh/main/appcast.xml</link>
         <description>Most recent updates to Osh</description>
         <language>en</language>
-    </channel>
+
+        <item>
+            <title>Version 1.0.2 Beta</title>
+            <link>https://github.com/Zeyadistired/Osh/releases/tag/v1.0.2-beta</link>
+            <sparkle:version>2</sparkle:version>
+            <sparkle:shortVersionString>1.0.2</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
+            <pubDate>Thu, 27 Aug 2026 13:40:31 +0000</pubDate>
+            <enclosure
+                url="https://github.com/Zeyadistired/Osh/releases/download/v1.0.2-beta/Osh.dmg"
+                sparkle:edSignature="6d8qhYf5vdntaopeFbodH9FfVjy5K6J5kBZpApOduF+WsqCH9Srq+vGsU/asgUiKGIkcPt5l6+yGvrcpU8JZBw=="
+                length="9261455"
+                type="application/octet-stream" />
+            <description><![CDATA[
+                <h2>What's Changed in v1.0.2 Beta</h2>
+                <h3>✨ Added</h3>
+                <ul>
+                    <li><strong>First-Launch Onboarding Experience</strong>: Brief, native macOS introduction showcasing Osh's core workflow with fluid entrance animations and smooth transition to the standard Welcome drop-zone.</li>
+                    <li><strong>Subtle Native Toolbar & UI Animations</strong>: Restrained macOS motion across document toolbar buttons, Settings sidebar navigation, and Welcome screen controls with complete <code>accessibilityReduceMotion</code> support.</li>
+                </ul>
+                <h3>🎨 Refined</h3>
+                <ul>
+                    <li><strong>Document Toolbar "More" Menu</strong>: Extended hover highlight across the full control (ellipsis icon + chevron indicator) matching secondary toolbar buttons.</li>
+                    <li><strong>Settings UI Polish</strong>: Refined sidebar selection, unified 9pt continuous corner card geometry, clean theme segments, language hover feedback, and monospaced font-size readout badges.</li>
+                    <li><strong>Welcome Empty-State Screen</strong>: Refined app icon presentation (56x56, 12pt corner radius), soft native drop zone card, and clean recent files hover feedback.</li>
+                </ul>
+                <p><a href="https://github.com/Zeyadistired/Osh/releases/tag/v1.0.2-beta">View Full Release Notes</a></p>
+            ]]></description>
+        </item>
+            </channel>
 </rss>
