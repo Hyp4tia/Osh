@@ -14,6 +14,7 @@
     <a href="README_AR.md">العربية</a> •
     <a href="#instalación">Instalación</a> •
     <a href="#características">Características</a> •
+    <a href="#-comparación-con-otros-visores-de-markdown-en-macos">Comparación</a> •
     <a href="#atajos-de-teclado">Atajos</a> •
     <a href="Security_Audit.md">Auditoría de Seguridad</a>
   </p>
@@ -67,6 +68,30 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 - **Alertas y listas de GitHub**: Bloques de aviso estilizados (`[!NOTE]`, `[!TIP]`) y listas de tareas interactivas.
 - **Citas colapsables**: Opción de contraer citas largas automáticamente.
 - **Exportación en un clic**: Exporte documentos a **PDF**, **HTML** y **DOCX** con estilos incrustados.
+
+---
+
+## 📊 Comparación con otros visores de Markdown en macOS
+
+| Característica / Métrica | Osh | FluxMarkdown | QLMarkdown | MacDown (3000) | Marked 2 | Typora |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Vista previa QuickLook (`Espacio`)** | 🟢 **Sí** | 🟢 Sí | 🟢 Sí | 🟡 Solo en fork | 🔴 No *(App separada)* | 🔴 No |
+| **Modo de vista de columnas en Finder** | 🟢 **Sí** | 🟢 Sí | 🟡 Limitado | 🔴 No | 🔴 No | 🔴 No |
+| **Visor de documentos independiente** | 🟢 **Sí** | 🟡 Básico | 🔴 No | 🟢 Sí | 🟢 Sí | 🟢 Sí |
+| **Editor de Markdown integrado (`⌘E`)** | 🟢 **Sí** | 🔴 No | 🔴 No | 🟢 Sí | 🔴 No *(Solo externo)* | 🟢 Sí *(WYSIWYG)* |
+| **Soporte para fórmulas y sintaxis Typst** | 🟢 **Sí (WASM/KaTeX)** | 🔴 No | 🔴 No | 🔴 No | 🔴 No | 🔴 No |
+| **Fórmulas LaTeX / KaTeX** | 🟢 **Sí** | 🟢 Sí | 🟢 Sí | 🟡 MathJax | 🟢 Sí | 🟢 Sí |
+| **Diagramas Mermaid y gráficos** | 🟢 **Sí** | 🟢 Sí | 🟡 Básico | 🔴 No | 🟢 Sí | 🟢 Sí |
+| **Diseño RTL nativo (Árabe / Hebreo)** | 🟢 **Sí (Motor BiDi)** | 🔴 No | 🔴 No | 🔴 No | 🟡 CSS básico | 🟡 Básico |
+| **Paletas de lectura** | 🟢 **5 Integradas** | 🟡 3 (Sistema/C/O) | 🟡 CSS personalizado | 🟡 Solo código | 🟢 CSS personalizado | 🟢 Extensas |
+| **Alertas de GitHub (`[!NOTE]`)** | 🟢 **Sí** | 🟢 Sí | 🟡 Básico | 🔴 No | 🟢 Sí | 🟡 Básico |
+| **Formatos de exportación** | **PDF, HTML, DOCX** | PDF, HTML | HTML | PDF, HTML | PDF, HTML, DOCX, RTF | PDF, HTML, DOCX, LaTeX |
+| **Herramienta CLI de exportación** | 🟢 **`osh export`** | 🔴 No | 🟡 Solo HTML | 🔴 No | 🟢 `marked` CLI | 🔴 No |
+| **Seguridad: CSP estricto y DOMPurify** | 🟢 **Sí (Auditado)** | 🟡 Básico | 🟡 Básico | 🔴 No | 🟢 Sí | 🟡 Chromium |
+| **Protección contra escapes y enlaces** | 🟢 **Sí (Auditado)** | 🔴 No | 🟡 Básico | 🔴 No | 🟢 Sí | 🟡 App Sandbox |
+| **Privacidad y telemetría (Offline)** | 🟢 **100% Offline** | 🟢 100% Offline | 🟢 100% Offline | 🟢 100% Offline | 🟢 100% Offline | 🟡 Cuenta/Auth |
+| **Arquitectura y tamaño** | **Nativo Swift (<25MB)** | Nativo Swift (<25MB) | Nativo Swift (<15MB) | Nativo Obj-C/Swift | Nativo Swift/Obj-C | Electron (~200MB+ RAM) |
+| **Licencia y precio** | **Gratis (GPL-3.0)** | Gratis (MIT) | Gratis (GPL-2.0) | Gratis (MIT) | De pago ($14.99–$19.99) | De pago ($14.99) |
 
 ---
 

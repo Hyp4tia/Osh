@@ -14,6 +14,7 @@
     <a href="README_AR.md">العربية</a> •
     <a href="#installation">Installation</a> •
     <a href="#features">Features</a> •
+    <a href="#-comparison-with-other-macos-markdown-viewers">Comparison</a> •
     <a href="#shortcuts">Shortcuts</a> •
     <a href="Security_Audit.md">Security Audit</a>
   </p>
@@ -67,6 +68,30 @@ Select any file in Finder, press `Space`, and enjoy instant, beautifully rendere
 - **GitHub Alerts & Task Lists**: Native callout blocks (`[!NOTE]`, `[!TIP]`, `[!WARNING]`) and interactive checklists.
 - **Collapsible Blockquotes**: Keep long documents neat with automatic blockquote collapsing.
 - **One-Click Export**: Export cleanly formatted **PDF**, **HTML**, and **DOCX** files with all styling embedded.
+
+---
+
+## 📊 Comparison with Other macOS Markdown Viewers
+
+| Feature / Metric | Osh | FluxMarkdown | QLMarkdown | MacDown (3000) | Marked 2 | Typora |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Native Finder QuickLook (`Space`)** | 🟢 **Yes** | 🟢 Yes | 🟢 Yes | 🟡 Fork only | 🔴 No *(Separate app)* | 🔴 No |
+| **Finder Column Preview Mode** | 🟢 **Yes** | 🟢 Yes | 🟡 Limited | 🔴 No | 🔴 No | 🔴 No |
+| **Standalone Document Reader** | 🟢 **Yes** | 🟡 Basic | 🔴 No | 🟢 Yes | 🟢 Yes | 🟢 Yes |
+| **In-App Source Editor (`⌘E`)** | 🟢 **Yes** | 🔴 No | 🔴 No | 🟢 Yes | 🔴 No *(External only)* | 🟢 Yes *(WYSIWYG)* |
+| **Typst Math & Document Support** | 🟢 **Yes (WASM/KaTeX)** | 🔴 No | 🔴 No | 🔴 No | 🔴 No | 🔴 No |
+| **LaTeX / KaTeX Math** | 🟢 **Yes** | 🟢 Yes | 🟢 Yes | 🟡 MathJax | 🟢 Yes | 🟢 Yes |
+| **Mermaid Diagrams & Charts** | 🟢 **Yes** | 🟢 Yes | 🟡 Basic | 🔴 No | 🟢 Yes | 🟢 Yes |
+| **Native Arabic / Hebrew RTL Layout** | 🟢 **Yes (BiDi Engine)** | 🔴 No | 🔴 No | 🔴 No | 🟡 Basic CSS | 🟡 Basic |
+| **Reading Themes** | 🟢 **5 Built-in** | 🟡 3 (System/L/D) | 🟡 Custom CSS | 🟡 Syntax only | 🟢 Custom CSS | 🟢 Extensive |
+| **GitHub Alerts (`[!NOTE]`, `[!TIP]`)** | 🟢 **Yes** | 🟢 Yes | 🟡 Basic | 🔴 No | 🟢 Yes | 🟡 Basic |
+| **Export Formats** | **PDF, HTML, DOCX** | PDF, HTML | HTML | PDF, HTML | PDF, HTML, DOCX, RTF | PDF, HTML, DOCX, LaTeX |
+| **CLI Batch Exporter** | 🟢 **`osh export`** | 🔴 No | 🟡 HTML only | 🔴 No | 🟢 `marked` CLI | 🔴 No |
+| **Security: Strict CSP & DOMPurify** | 🟢 **Yes (Audited)** | 🟡 Basic | 🟡 Basic | 🔴 No | 🟢 Yes | 🟡 Chromium |
+| **Path Traversal & Symlink Protection** | 🟢 **Yes (Audited)** | 🔴 No | 🟡 Basic | 🔴 No | 🟢 Yes | 🟡 App Sandbox |
+| **Telemetry & Privacy** | 🟢 **100% Offline** | 🟢 100% Offline | 🟢 100% Offline | 🟢 100% Offline | 🟢 100% Offline | 🟡 Account/Auth |
+| **Architecture / Footprint** | **Native Swift (<25MB)** | Native Swift (<25MB) | Native Swift (<15MB) | Native Obj-C/Swift | Native Swift/Obj-C | Electron (~200MB+ RAM) |
+| **License / Pricing** | **Free (GPL-3.0)** | Free (MIT) | Free (GPL-2.0) | Free (MIT) | Paid ($14.99–$19.99) | Paid ($14.99) |
 
 ---
 
