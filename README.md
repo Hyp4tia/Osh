@@ -76,6 +76,18 @@ Select any file in Finder, press `Space`, and enjoy instant, beautifully rendere
 2. Open the disk image and drag **Osh.app** into your **Applications** folder.
 3. Launch Osh once from Applications to register the QuickLook plugin with macOS.
 
+> [!TIP]
+> **Opening Osh on macOS for the first time:**
+> Because Osh is in public beta and not yet notarized with an Apple Developer ID, macOS Gatekeeper may show a prompt saying it cannot verify the developer. To open Osh:
+> 1. Click **Done** on the prompt.
+> 2. Open **System Settings** → **Privacy & Security**.
+> 3. Scroll down to the **Security** section.
+> 4. Look for *“Osh was blocked from use…”*.
+> 5. Click **Open Anyway**.
+> 6. Confirm **Open**.
+>
+> *(You only need to do this once on first launch).*
+
 <details>
 <summary><strong>Troubleshooting QuickLook after install</strong></summary>
 

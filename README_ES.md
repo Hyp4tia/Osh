@@ -76,6 +76,18 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 2. Abra la imagen de disco y arrastre **Osh.app** a su carpeta de **Aplicaciones**.
 3. Inicie Osh una vez desde Aplicaciones para registrar la extensión de QuickLook en macOS.
 
+> [!TIP]
+> **Abrir Osh por primera vez en macOS (aviso de Gatekeeper):**
+> Como Osh se encuentra en fase beta y aún no está firmado con un certificado de desarrollador de Apple, macOS Gatekeeper puede mostrar un aviso de verificación al abrirlo por primera vez. Para abrir Osh:
+> 1. Haga clic en **Aceptar / Listo (Done)** en el aviso.
+> 2. Abra **Ajustes del Sistema (System Settings)** → **Privacidad y seguridad (Privacy & Security)**.
+> 3. Desplácese hacia abajo hasta la sección **Seguridad (Security)**.
+> 4. Verá el mensaje *“Se bloqueó el uso de Osh…”*.
+> 5. Haga clic en **Abrir de todos modos (Open Anyway)**.
+> 6. Confirme haciendo clic en **Abrir (Open)**.
+>
+> *(Solo necesita realizar este paso una vez).*
+
 <details>
 <summary><strong>Solución de problemas con QuickLook</strong></summary>
 
