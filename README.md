@@ -35,7 +35,7 @@ A native macOS Markdown reader, editor, and QuickLook extension designed for fas
 Select any file in Finder, press `Space`, and get an instant, beautifully rendered preview with diagrams, mathematical notation, syntax highlighting, themes, and multilingual text support.
 
 <p align="center">
-  <img src="docs/assets/demo.gif" alt="Osh Preview Demo" width="85%">
+  <img src="docs/assets/demo.gif?v=2" alt="Osh Preview Demo" width="85%">
 </p>
 
 ---
