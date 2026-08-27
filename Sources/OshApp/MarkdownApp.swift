@@ -877,6 +877,8 @@ struct DocumentMoreMenu: View {
     @ObservedObject var preference: AppearancePreference
     let onReload: () -> Void
     let onHelp: () -> Void
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
 
     var body: some View {
         Menu {
@@ -937,7 +939,15 @@ struct DocumentMoreMenu: View {
                 .contentShape(Rectangle())
         }
         .menuStyle(BorderlessButtonMenuStyle())
-        .buttonStyle(NativeToolbarItemButtonStyle())
+        .padding(.horizontal, 2)
+        .frame(height: 28)
+        .background(
+            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                .fill(isHovered ? Color.primary.opacity(0.08) : Color.clear)
+        )
+        .contentShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
+        .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+        .onHover { isHovered = $0 }
         .foregroundColor(Color(NSColor.labelColor))
         .help(NSLocalizedString("More Actions", comment: "More actions menu tooltip"))
         .accessibilityLabel(NSLocalizedString("More Actions", comment: "More actions accessibility label"))
