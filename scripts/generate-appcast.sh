@@ -157,7 +157,7 @@ if in_list:
 
 print(''.join(html_lines))
 ")
-CHANGELOG_HTML="<h2>更新内容</h2>${CHANGELOG_HTML}<p><a href=\"$RELEASE_URL\">查看完整更新日志</a></p>"
+CHANGELOG_HTML="<h2>What's Changed in v$FULL_VERSION</h2>${CHANGELOG_HTML}<p><a href=\"$RELEASE_URL\">View Full Release Notes</a></p>"
 
 TEMP_ITEM=$(cat <<EOF
         <item>
