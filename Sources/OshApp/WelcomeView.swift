@@ -6,13 +6,16 @@ import AppKit
 /// Designed as a clean, quiet open/drop zone without unnecessary clutter.
 /// The document is the product; the window just gets out of the way.
 struct WelcomeView: View {
+    @AppStorage("oshHasCompletedOnboarding") private var hasCompletedOnboarding: Bool = false
     @State private var isTargeted = false
     @State private var window: NSWindow?
     @State private var openErrorMessage: String?
     @State private var isOpening = false
     @State private var recents: [RecentFile] = []
+    @State private var hasAppeared = false
 
     @Environment(\.openURL) private var openURL
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     private let settingsWindowManager = SettingsWindowManager.shared
 
@@ -29,9 +32,25 @@ struct WelcomeView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
-            hero
-            if !recents.isEmpty {
-                recentsList
+            if !hasCompletedOnboarding {
+                onboardingContent
+                    .opacity(hasAppeared || reduceMotion ? 1 : 0)
+                    .offset(y: hasAppeared || reduceMotion ? 0 : 6)
+                    .transition(.asymmetric(
+                        insertion: .opacity.combined(with: .offset(y: 4)),
+                        removal: .opacity.combined(with: .offset(y: -4))
+                    ))
+            } else {
+                VStack(spacing: 0) {
+                    hero
+                    if !recents.isEmpty {
+                        recentsList
+                    }
+                }
+                .transition(.asymmetric(
+                    insertion: .opacity.combined(with: .offset(y: 4)),
+                    removal: .opacity.combined(with: .offset(y: -4))
+                ))
             }
             Spacer(minLength: 0)
             footer
@@ -43,7 +62,12 @@ struct WelcomeView: View {
         .background(WelcomeWindowAccessor { window in
             self.window = window
         })
-        .onAppear(perform: loadRecents)
+        .onAppear {
+            loadRecents()
+            withAnimation(reduceMotion ? .none : .easeInOut(duration: 0.22)) {
+                hasAppeared = true
+            }
+        }
         .onReceive(Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()) { _ in
             closeIfAnyDocumentIsOpen()
         }
@@ -80,6 +104,91 @@ struct WelcomeView: View {
         .padding(.bottom, 20)
     }
 
+    private var onboardingContent: some View {
+        VStack(spacing: 16) {
+            // Grouped Feature Card
+            VStack(spacing: 12) {
+                OnboardingFeatureRow(
+                    icon: "doc.text.magnifyingglass",
+                    title: NSLocalizedString("Quiet Reading & Quick Look", comment: "Onboarding feature 1 title"),
+                    description: NSLocalizedString("Preview instantly with Spacebar in Finder or read distraction-free.", comment: "Onboarding feature 1 description")
+                )
+
+                Divider()
+
+                OnboardingFeatureRow(
+                    icon: "function",
+                    title: NSLocalizedString("Rich Markdown & Math", comment: "Onboarding feature 2 title"),
+                    description: NSLocalizedString("Render Mermaid diagrams, KaTeX & Typst equations, tables, and themes.", comment: "Onboarding feature 2 description")
+                )
+
+                Divider()
+
+                OnboardingFeatureRow(
+                    icon: "square.and.pencil",
+                    title: NSLocalizedString("Quick Editing & Export", comment: "Onboarding feature 3 title"),
+                    description: NSLocalizedString("Edit source with ⌘E, undo/redo changes, and export to HTML, PDF, or Word.", comment: "Onboarding feature 3 description")
+                )
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(Color(NSColor.controlBackgroundColor).opacity(0.55))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .strokeBorder(
+                        isTargeted ? Color.accentColor.opacity(0.85) : Color.secondary.opacity(0.18),
+                        lineWidth: 1
+                    )
+            )
+            .padding(.horizontal, 44)
+            .onDrop(of: [UTType.fileURL.identifier], isTargeted: $isTargeted) { providers in
+                hasCompletedOnboarding = true
+                return handleDrop(providers: providers)
+            }
+
+            // Primary & Secondary Actions
+            HStack(spacing: 12) {
+                Button(action: {
+                    withAnimation(reduceMotion ? .none : .easeInOut(duration: 0.20)) {
+                        hasCompletedOnboarding = true
+                    }
+                }) {
+                    Text(NSLocalizedString("Get Started", comment: "Onboarding get started button"))
+                        .font(.system(size: 13, weight: .semibold))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 32)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(Color.accentColor)
+                        )
+                        .foregroundColor(.white)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(OnboardingPrimaryButtonStyle())
+
+                Button(action: {
+                    withAnimation(reduceMotion ? .none : .easeInOut(duration: 0.20)) {
+                        hasCompletedOnboarding = true
+                    }
+                    openFilePicker()
+                }) {
+                    Text(NSLocalizedString("Open Markdown File…", comment: "Onboarding open file button"))
+                        .font(.system(size: 13, weight: .medium))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 32)
+                        .foregroundColor(.primary)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(OnboardingSecondaryButtonStyle())
+            }
+            .padding(.horizontal, 44)
+            .padding(.top, 4)
+        }
+    }
+
     private var hero: some View {
         Button(action: openFilePicker) {
             VStack(spacing: 8) {
@@ -109,7 +218,8 @@ struct WelcomeView: View {
         .frame(height: 136)
         .padding(.horizontal, 44)
         .onDrop(of: [UTType.fileURL.identifier], isTargeted: $isTargeted) { providers in
-            handleDrop(providers: providers)
+            hasCompletedOnboarding = true
+            return handleDrop(providers: providers)
         }
         .accessibilityHint(Text(NSLocalizedString("Drag & drop .md/.mdx/.txt here", comment: "Drop hint")))
     }
@@ -234,6 +344,7 @@ struct WelcomeView: View {
             return
         }
 
+        hasCompletedOnboarding = true
         var remaining = urls.count
         for url in urls {
             NSDocumentController.shared.openDocument(withContentsOf: url, display: true) { _, _, error in
@@ -256,6 +367,7 @@ struct WelcomeView: View {
     private func closeIfAnyDocumentIsOpen() {
         guard window != nil else { return }
         if !NSDocumentController.shared.documents.isEmpty {
+            hasCompletedOnboarding = true
             window?.close()
             window = nil
         }
@@ -263,6 +375,67 @@ struct WelcomeView: View {
 }
 
 // MARK: - Welcome View Supporting Styles & Components
+
+private struct OnboardingFeatureRow: View {
+    let icon: String
+    let title: String
+    let description: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundColor(.accentColor)
+                .frame(width: 24, height: 24)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(.primary)
+                Text(description)
+                    .font(.system(size: 11.5))
+                    .foregroundColor(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Spacer(minLength: 0)
+        }
+    }
+}
+
+private struct OnboardingPrimaryButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.85 : (isHovered ? 0.92 : 1.0))
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.985 : 1.0)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.08), value: configuration.isPressed)
+            .onHover { isHovered = $0 }
+    }
+}
+
+private struct OnboardingSecondaryButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(configuration.isPressed ? Color.primary.opacity(0.08) : (isHovered ? Color.primary.opacity(0.05) : Color.primary.opacity(0.02)))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .stroke(isHovered ? Color.secondary.opacity(0.40) : Color.secondary.opacity(0.22), lineWidth: 1)
+            )
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.985 : 1.0)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.08), value: configuration.isPressed)
+            .onHover { isHovered = $0 }
+    }
+}
 
 private struct WelcomeDropZoneButtonStyle: ButtonStyle {
     let isTargeted: Bool
