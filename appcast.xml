@@ -7,6 +7,23 @@
         <language>en</language>
 
         <item>
+            <title>Version 1.0.3</title>
+            <link>https://github.com/Zeyadistired/Osh/releases/tag/v1.0.3</link>
+            <sparkle:version>3</sparkle:version>
+            <sparkle:shortVersionString>1.0.3</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
+            <pubDate>Thu, 27 Aug 2026 16:09:26 +0000</pubDate>
+            <enclosure
+                url="https://github.com/Zeyadistired/Osh/releases/download/v1.0.3/Osh.dmg"
+                sparkle:edSignature="aR9szroTiZ+Sgy3THvfTh/vm4z7HByYvZ/dYOw+hTRMkOXH18+ABznsvPWCLklk70AN/EqorIpMlQle0dgksDQ=="
+                length="31478690"
+                type="application/octet-stream" />
+            <description><![CDATA[
+                <h2>更新内容</h2><p>Security & Hardening</p><ul><li><strong>DOMPurify HTML Sanitization</strong>: Integrated DOMPurify to strictly sanitize all Markdown-rendered HTML prior to DOM insertion, eliminating XSS vectors from untrusted Markdown while preserving legitimate MathML, KaTeX, Mermaid diagrams, Vega charts, Graphviz diagrams, task lists, and RTL attributes.</li><li><strong>Strict Content Security Policy (CSP)</strong>: Introduced restrictive CSP (<code>default-src 'none'</code>, <code>script-src 'self' osh-renderer: 'wasm-unsafe-eval'</code>, <code>connect-src local-md: osh-renderer: blob:</code>, <code>img-src local-md: osh-renderer: data: blob: https: http:</code>) to eliminate inline script execution and unauthorized outbound network exfiltration.</li><li><strong>Link Navigation Directory Containment</strong>: Hardened <code>LinkNavigation</code> with canonicalized, symlink-resolved directory containment (<code>resolvingSymlinksInPath()</code>, <code>standardizedFileURL</code>), strictly blocking directory traversal (<code>../</code>), external symlinks, and application bundle launches (<code>.app</code>, <code>.sh</code>, <code>.command</code>, etc.) via Markdown links.</li><li><strong>Universal File Access Removal</strong>: Fully removed <code>allowUniversalAccessFromFileURLs = true</code> across the Host App, CLI Exporter, and QuickLook extension.</li><li><strong>Typst WASM & Dynamic Evaluation Hardening</strong>: Removed <code>new Function()</code> dynamic runtime evaluation from Typst rendering engine, replaced with static Vite WASM asset loading, and added strict HTML escaping to all template error interpolations.</li></ul><p><a href="https://github.com/Zeyadistired/Osh/releases/tag/v1.0.3">查看完整更新日志</a></p>
+            ]]></description>
+        </item>
+        
+        <item>
             <title>Version 1.0.2 Beta</title>
             <link>https://github.com/Zeyadistired/Osh/releases/tag/v1.0.2-beta</link>
             <sparkle:version>2</sparkle:version>

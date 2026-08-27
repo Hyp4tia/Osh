@@ -46,14 +46,14 @@ final class LinkNavigationTests: XCTestCase {
         XCTAssertEqual(result?.path, "/Users/me/docs/subdir/notes.md")
     }
 
-    func testResolvesRelativeHrefWithParentDirStayingWithinBase() {
-        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/subdir/nested/index.md")
-        let href = "../other.md"
+    func testResolvesRelativeHrefWithSubdirParentTraversalStayingWithinBase() {
+        let baseFileURL = URL(fileURLWithPath: "/Users/me/docs/index.md")
+        let href = "subdir/../notes.md"
 
         let result = LinkNavigation.resolveLocalURL(href: href, relativeTo: baseFileURL)
 
         XCTAssertNotNil(result)
-        XCTAssertEqual(result?.path, "/Users/me/docs/subdir/other.md")
+        XCTAssertEqual(result?.path, "/Users/me/docs/notes.md")
     }
 
     func testResolvesContainedAbsoluteHref() {
