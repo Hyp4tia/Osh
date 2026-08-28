@@ -12,10 +12,10 @@
     <a href="README.md">English</a> •
     <a href="README_ES.md">Español</a> •
     <a href="README_AR.md">العربية</a> •
-    <a href="#instalación">Instalación</a> •
-    <a href="#características">Características</a> •
-    <a href="#-comparación-con-otros-visores-de-markdown-en-macos">Comparación</a> •
-    <a href="#atajos-de-teclado">Atajos</a> •
+    <a href="INSTALLATION.md">Instalación</a> •
+    <a href="FEATURES.md">Características</a> •
+    <a href="COMPARISON.md">Comparación</a> •
+    <a href="SHORTCUTS.md">Atajos</a> •
     <a href="Security_Audit.md">Auditoría de Seguridad</a>
   </p>
 </p>

@@ -12,10 +12,10 @@
     <a href="README.md">English</a> •
     <a href="README_ES.md">Español</a> •
     <a href="README_AR.md">العربية</a> •
-    <a href="#installation">Installation</a> •
-    <a href="#features">Features</a> •
-    <a href="#comparison-with-other-macos-markdown-viewers">Comparison</a> •
-    <a href="#shortcuts">Shortcuts</a> •
+    <a href="INSTALLATION.md">Installation</a> •
+    <a href="FEATURES.md">Features</a> •
+    <a href="COMPARISON.md">Comparison</a> •
+    <a href="SHORTCUTS.md">Shortcuts</a> •
     <a href="Security_Audit.md">Security Audit</a>
   </p>
 </p>

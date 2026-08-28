@@ -12,10 +12,10 @@
     <a href="README.md">English</a> •
     <a href="README_ES.md">Español</a> •
     <a href="README_AR.md">العربية</a> •
-    <a href="#التثبيت">التثبيت</a> •
-    <a href="#المميزات">المميزات</a> •
-    <a href="#-مقارنة-مع-تطبيقات-معاينة-markdown-الأخرى-على-macos">المقارنة</a> •
-    <a href="#اختصارات-لوحة-المفاتيح">الاختصارات</a> •
+    <a href="INSTALLATION.md">التثبيت</a> •
+    <a href="FEATURES.md">المميزات</a> •
+    <a href="COMPARISON.md">المقارنة</a> •
+    <a href="SHORTCUTS.md">الاختصارات</a> •
     <a href="Security_Audit.md">التدقيق الأمني</a>
   </p>
 </p>
