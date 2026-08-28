@@ -168,13 +168,16 @@ Si al presionar la barra espaciadora todavía aparece texto plano:
 
 ---
 
-## 📁 Extensiones Compatibles
+## 📁 Formatos y Extensiones Compatibles
 
-Osh reconoce y previsualiza de forma nativa múltiples formatos de Markdown y notas científicas:
-
-```
-.md  .markdown  .mdown  .mkdn  .mkd  .mdwn  .mdx  .rmd  .qmd  .mdoc  .mdc  .mmd  .livemd
-```
+| Categoría | Extensiones | Capacidades |
+|:---|:---|:---|
+| **Markdown Estándar** | `.md`, `.markdown`, `.mdown`, `.mkdn`, `.mkd`, `.mdwn`, `.mdx` | Vista QuickLook, editor integrado, diagramas, fórmulas, temas, exportación offline |
+| **Científico y Datos** | `.rmd`, `.qmd`, `.livemd` | Previsualización interactiva de R Markdown, Quarto y Livebook |
+| **Documentación y Diagramas** | `.mdoc`, `.mdc`, `.mmd` | Documentación modular, componentes Markdown y diagramas Mermaid |
+| **Documentos Typst** | `.typ` | Renderizado completo de documentos Typst y fórmulas matemáticas |
+| **Habilidades para Agentes IA (Skills)** | `.skill` | Paquetes y archivos `.skill` (`SKILL.md`) con preservación de activos |
+| **Conversión de Documentos** | `.pdf`, `.docx`, `.xlsx`, `.pptx`, `.csv` | Conversión local segura y offline a Markdown para agentes de IA |
 
 ---
 

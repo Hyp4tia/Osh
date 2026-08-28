@@ -128,6 +128,19 @@ Osh focuses on **fast, local Markdown reading on macOS**, while other apps prior
 
 ---
 
+## 📁 Supported Formats & File Extensions
+
+| Category | Extensions | Capabilities |
+|:---|:---|:---|
+| **Standard Markdown** | `.md`, `.markdown`, `.mdown`, `.mkdn`, `.mkd`, `.mdwn`, `.mdx` | QuickLook preview, source editor, diagrams, math, themes, offline export |
+| **Scientific & Notebooks** | `.rmd`, `.qmd`, `.livemd` | R Markdown, Quarto, and Livebook rendered previews |
+| **Documentation & Diagrams** | `.mdoc`, `.mdc`, `.mmd` | Modular docs, Markdown components, Mermaid diagrams |
+| **Typst Documents** | `.typ` | Full Typst document and mathematical formula rendering |
+| **AI Agent Skills** | `.skill` | Packaged & plain-text AI skills (`SKILL.md`) with asset preservation |
+| **Document Conversion** | `.pdf`, `.docx`, `.xlsx`, `.pptx`, `.csv` | Client-side, offline conversion to agent-ready Markdown |
+
+---
+
 ## 🚀 Installation
 
 > [!NOTE]
