@@ -26,9 +26,9 @@ long_description    Osh is a macOS QuickLook extension for Markdown files. \
 distname            Osh-1.0.6-macports-source
 extract.suffix      .tar.gz
 
-checksums           rmd160  260c4ffd2ff8d37fad891a8de8b79ec977b10f9f \
-                    sha256  ec0e2def3347b1d650d335753f227e7a3025310b7f009e04e3c8a72034aea271 \
-                    size    23962266
+checksums           rmd160  e993afc5d05cea8450fc3989aeb0597c41ecae10 \
+                    sha256  7caf05e35a80326b4761ab97e7cf95c8c6b848c4377cd1a6cca45d2d8439d065 \
+                    size    23962424
 
 use_configure       no
 use_xcode           yes
