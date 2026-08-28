@@ -119,13 +119,13 @@ if git ls-files --error-unmatch scripts/increment_version.sh >/dev/null 2>&1; th
     git rm scripts/increment_version.sh
 fi
 
-git commit -m "chore(release): bump version to $NEW_FULL_VERSION"
-git tag "v$NEW_FULL_VERSION"
+TAG_NAME="v${NEW_FULL_VERSION}-beta"
+git tag "$TAG_NAME"
 
 echo "☁️ Pushing to remote..."
 CURRENT_BRANCH=$(git branch --show-current || echo "main")
 git push origin "$CURRENT_BRANCH"
-git push origin "v$NEW_FULL_VERSION"
+git push origin "$TAG_NAME"
 
 echo "🔨 Building project and DMG..."
 make dmg
@@ -150,16 +150,16 @@ else
     MACPORTS_TARBALL=""
 fi
 
-echo "📦 Creating GitHub Release v$NEW_FULL_VERSION..."
+echo "📦 Creating GitHub Release $TAG_NAME..."
 RELEASE_ASSETS="$DMG_PATH"
 if [ -n "$MACPORTS_TARBALL" ] && [ -f "$MACPORTS_TARBALL" ]; then
     RELEASE_ASSETS="$RELEASE_ASSETS $MACPORTS_TARBALL"
 fi
-gh release create "v$NEW_FULL_VERSION" $RELEASE_ASSETS \
+gh release create "$TAG_NAME" $RELEASE_ASSETS \
     --title "v$NEW_FULL_VERSION Beta" \
     --notes-file "$RELEASE_NOTES_FILE" \
     --draft=false \
-    --prerelease=false
+    --prerelease
 
 rm "$RELEASE_NOTES_FILE"
 

@@ -84,8 +84,8 @@ echo "   Date:    $PUB_DATE"
 echo "   Signature: ${ED_SIGNATURE:0:50}..."
 echo ""
 
-DOWNLOAD_URL="https://github.com/Hyp4tia/Osh/releases/download/v$FULL_VERSION/Osh.dmg"
-RELEASE_URL="https://github.com/Hyp4tia/Osh/releases/tag/v$FULL_VERSION"
+DOWNLOAD_URL="https://github.com/Hyp4tia/Osh/releases/download/v${FULL_VERSION}-beta/Osh.dmg"
+RELEASE_URL="https://github.com/Hyp4tia/Osh/releases/tag/v${FULL_VERSION}-beta"
 
 # Extract changelog from CHANGELOG.md for this version
 CHANGELOG_FILE="$PROJECT_ROOT/CHANGELOG.md"
