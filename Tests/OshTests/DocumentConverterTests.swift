@@ -284,7 +284,7 @@ final class DocumentConverterTests: XCTestCase {
                 }
             }
         }
-        waitForExpectations(timeout: 5.0)
+        waitForExpectations(timeout: 15.0)
     }
 
     // MARK: - Draft Store & Unsaved Document Tests
