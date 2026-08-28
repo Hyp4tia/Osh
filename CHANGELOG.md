@@ -1,4 +1,7 @@
 ## [Unreleased]
+_无待发布的变更_
+
+## [1.0.75] - 2026-08-28
 
 ### Added
 - **Local Document-to-Markdown Converter**: Convert `.pdf`, `.docx`, `.xlsx`, `.pptx`, and `.csv` files into clean, readable GitHub-Flavored Markdown completely offline:
