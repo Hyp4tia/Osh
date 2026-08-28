@@ -8,7 +8,8 @@ export function preprocessMermaidGanttTaskColons(code: string): string {
     const directivePattern = /^(?:%%|---|title\b|dateFormat\b|inclusiveEndDates\b|topAxis\b|axisFormat\b|tickInterval\b|includes\b|excludes\b|todayMarker\b|weekday\b|weekend\b|section\b|click\b|accTitle\b|accDescr(?:iption)?\b)/i;
     const taskTags = new Set(['active', 'done', 'crit', 'milestone', 'vert']);
 
-    return code.replace(/[^\r\n]+/g, (line) => {
+    const lines = code.split('\n');
+    const processedLines = lines.map((line) => {
         const trimmedLine = line.trim();
         if (/^gantt$/i.test(trimmedLine)) {
             foundGanttHeader = true;
@@ -18,17 +19,17 @@ export function preprocessMermaidGanttTaskColons(code: string): string {
             return line;
         }
 
-        const delimiterPattern = /\s+:/g;
         let delimiterIndex = -1;
-        let match: RegExpExecArray | null;
-        while ((match = delimiterPattern.exec(line)) !== null) {
-            const candidateIndex = match.index + match[0].length - 1;
-            const fields = line.slice(candidateIndex + 1).split(',').map((field) => field.trim());
-            while (fields.length > 0 && taskTags.has(fields[0].toLowerCase())) {
-                fields.shift();
-            }
-            if (fields.length >= 1 && fields.length <= 3 && fields.every(Boolean)) {
-                delimiterIndex = candidateIndex;
+        for (let i = 1; i < line.length; i++) {
+            if (line[i] === ':' && (line[i - 1] === ' ' || line[i - 1] === '\t')) {
+                const candidateIndex = i;
+                const fields = line.slice(candidateIndex + 1).split(',').map((field) => field.trim());
+                while (fields.length > 0 && taskTags.has(fields[0].toLowerCase())) {
+                    fields.shift();
+                }
+                if (fields.length >= 1 && fields.length <= 3 && fields.every(Boolean)) {
+                    delimiterIndex = candidateIndex;
+                }
             }
         }
 
@@ -39,6 +40,8 @@ export function preprocessMermaidGanttTaskColons(code: string): string {
 
         return title.replace(/:/g, '#colon;') + line.slice(delimiterIndex);
     });
+
+    return processedLines.join('\n');
 }
 
 /**
