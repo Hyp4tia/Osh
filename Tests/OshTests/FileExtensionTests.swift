@@ -88,7 +88,26 @@ final class FileExtensionTests: XCTestCase {
                       "test.mkdown fixture must exist")
     }
 
+    func testFixtureExists_skill() {
+        let url = fixturesURL.appendingPathComponent("test.skill")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: url.path),
+                      "test.skill fixture must exist")
+    }
+
     // MARK: - Fixture Content Validity Tests
+
+    func testFixtureContent_skill_isNotEmptyAndValid() throws {
+        let url = fixturesURL.appendingPathComponent("test.skill")
+        let content = try String(contentsOf: url, encoding: .utf8)
+        XCTAssertFalse(content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                       ".skill fixture must not be empty")
+        XCTAssertTrue(content.contains("name: data-analyzer"),
+                      ".skill fixture must contain skill metadata frontmatter")
+        XCTAssertTrue(content.contains("محتوى عربي"),
+                      ".skill fixture must contain Arabic RTL text")
+        XCTAssertTrue(content.contains("תוכן בעברית"),
+                      ".skill fixture must contain Hebrew RTL text")
+    }
 
     func testFixtureContent_mmd_isNotEmpty() throws {
         let url = fixturesURL.appendingPathComponent("test-mermaid.mmd")
@@ -233,6 +252,12 @@ final class FileExtensionTests: XCTestCase {
         XCTAssertEqual(processed, raw, ".qmd content must not be wrapped")
     }
 
+    func testNoWrapping_skillExtension() {
+        let raw = "---\nname: my-skill\n---\n\n# Skill Heading\n\nContent"
+        let processed = applyContentPreprocessing(content: raw, fileExtension: "skill")
+        XCTAssertEqual(processed, raw, ".skill content must not be wrapped")
+    }
+
     // MARK: - UTI Declaration Tests (Info.plist)
 
     func testUTIDeclarations_appInfoPlistExists() {
@@ -292,6 +317,21 @@ final class FileExtensionTests: XCTestCase {
                       "App Info.plist must declare com.osh.mdc UTI")
         XCTAssertTrue(plistContent.contains("<string>mdc</string>"),
                       "App Info.plist must map .mdc extension to UTI")
+    }
+
+    func testUTIDeclarations_appPlistContainsSkillUTI() throws {
+        let plistURL = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Sources/OshApp/Info.plist")
+        let plistContent = try String(contentsOf: plistURL, encoding: .utf8)
+        XCTAssertTrue(plistContent.contains("com.osh.skill"),
+                      "App Info.plist must declare com.osh.skill UTI")
+        XCTAssertTrue(plistContent.contains("<string>skill</string>"),
+                      "App Info.plist must map .skill extension to UTI")
+        XCTAssertTrue(plistContent.contains("Skill Document"),
+                      "App Info.plist must contain Skill Document description")
     }
 
     func testUTIDeclarations_appPlistContainsMdwnExtension() throws {
@@ -354,6 +394,19 @@ final class FileExtensionTests: XCTestCase {
                       "Extension Info.plist QLSupportedContentTypes must include com.osh.mdc")
     }
 
+    func testUTIDeclarations_extensionPlistContainsSkillUTI() throws {
+        let plistURL = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .appendingPathComponent("Sources/OshQuickLook/Info.plist")
+        let plistContent = try String(contentsOf: plistURL, encoding: .utf8)
+        XCTAssertTrue(plistContent.contains("com.osh.skill"),
+                      "Extension Info.plist QLSupportedContentTypes must include com.osh.skill")
+        XCTAssertTrue(plistContent.contains("com.openai.codex.skill"),
+                      "Extension Info.plist QLSupportedContentTypes must include com.openai.codex.skill")
+    }
+
     func testUTIDeclarations_extensionPlistContainsIAWriterMarkdownUTI() throws {
         let plistURL = URL(fileURLWithPath: #file)
             .deletingLastPathComponent()
@@ -390,6 +443,8 @@ final class FileExtensionTests: XCTestCase {
             "com.osh.mkdn",
             "com.osh.mkdown",
             "com.osh.mdwn",
+            "com.osh.skill",
+            "com.openai.codex.skill",
         ]
         for uti in requiredUTIs {
             XCTAssertTrue(appPlist.contains(uti),
@@ -412,6 +467,7 @@ final class FileExtensionTests: XCTestCase {
             ("test.mkd",                  "mkd"),
             ("test.mkdn",                 "mkdn"),
             ("test.mkdown",               "mkdown"),
+            ("test.skill",                "skill"),
             ("feature-validation.md",     "md"),
         ]
 
@@ -446,5 +502,41 @@ final class FileExtensionTests: XCTestCase {
             XCTAssertGreaterThan(processed.count, raw.count,
                                  "\(filename): wrapped output must be longer than raw content")
         }
+    }
+
+    func testQuickLook_previewViewController_preparesSkillFile() {
+        let skillURL = fixturesURL.appendingPathComponent("test.skill")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: skillURL.path))
+
+        let controller = PreviewViewController()
+        _ = controller.view
+
+        let expectation = expectation(description: "preparePreviewOfFile completes")
+        controller.preparePreviewOfFile(at: skillURL) { error in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2.0)
+        XCTAssertEqual(controller.currentURL?.path, skillURL.path)
+    }
+
+    func testQuickLook_previewViewController_preparesZipSkillPackage() throws {
+        let mckinseyURL = URL(fileURLWithPath: "/Users/zeyadhussein/Downloads/Mckinsey-PDF-user.skill")
+        guard FileManager.default.fileExists(atPath: mckinseyURL.path) else { return }
+
+        let controller = PreviewViewController()
+        _ = controller.view
+
+        let expectation = expectation(description: "preparePreviewOfFile completes for zip package")
+        controller.preparePreviewOfFile(at: mckinseyURL) { error in
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 2.0)
+        XCTAssertEqual(controller.currentURL?.path, mckinseyURL.path)
+        XCTAssertNotNil(controller.pendingMarkdown)
+        XCTAssertTrue(controller.pendingMarkdown?.contains("user's PDF Presentation Skill") ?? false)
     }
 }

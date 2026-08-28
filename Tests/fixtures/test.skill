@@ -1,0 +1,71 @@
+---
+name: data-analyzer
+description: Analyzes multi-lingual datasets and generates reports with charts and statistics.
+version: 1.0.0
+tags:
+  - analysis
+  - statistics
+  - multi-lingual
+---
+
+# Data Analyzer Skill
+
+This skill provides data analysis, statistical summaries, and visual reports.
+
+## Overview
+
+The `data-analyzer` processes structured and unstructured documents.
+
+### Key Capabilities
+
+1. **Statistical Aggregation**: Mean, median, standard deviation.
+2. **Visualizations**: Mermaid charts and formatted tables.
+3. **Multi-language Support**: Full support for English, Arabic, Hebrew, and CJK text.
+
+## Multi-lingual Verification & Bidirectional Text
+
+### Arabic Content (محتوى عربي)
+مرحباً بكم في ملف المهارة. يدعم هذا الملف تنسيق ماركداون واللغة العربية بشكل كامل من اليمين إلى اليسار.
+- نقطة أولى: تحليل البيانات الإحصائية
+- نقطة ثانية: توليد التقارير التفاعلية
+
+### Hebrew Content (תוכן בעברית)
+זהו מסמך מיומנות הנכתב בפורמט מרקראון.
+- ניתוח נתונים
+- יצירת דוחות
+
+### Mixed Bidi Content
+Here is mixed content: The skill name is **محلل البيانات (Data Analyzer)** version `1.0.0`.
+
+## Example Code Block
+
+```swift
+import Foundation
+
+struct SkillRunner {
+    let name: String
+    func execute() -> String {
+        return "Skill executed: \(name)"
+    }
+}
+```
+
+## Data Table
+
+| Metric | Target | Result | Status |
+| :--- | :--- | :--- | :---: |
+| Accuracy | 99.5% | 99.8% | ✅ Pass |
+| Latency | < 50ms | 32ms | ✅ Pass |
+| Unicode Integrity | 100% | 100% | ✅ Pass |
+
+## Mermaid Diagram
+
+```mermaid
+graph TD
+    A[Input .skill File] --> B(Parse Frontmatter)
+    B --> C{Validate Markdown}
+    C -->|Valid| D[Render HTML & QuickLook]
+    C -->|Edit| E[Save Atomic UTF-8]
+```
+
+> **Note**: This file confirms that `.skill` documents render and edit accurately across Osh.

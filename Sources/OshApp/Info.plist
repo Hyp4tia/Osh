@@ -27,7 +27,7 @@
 			<key>CFBundleTypeName</key>
 			<string>Markdown Document</string>
 			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
+			<string>Editor</string>
 			<key>LSHandlerRank</key>
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
@@ -48,6 +48,8 @@
 				<string>com.osh.mkdn</string>
 				<string>com.osh.mkdown</string>
 				<string>com.osh.mdwn</string>
+				<string>com.osh.skill</string>
+				<string>com.openai.codex.skill</string>
 			</array>
 		</dict>
 	</array>
@@ -308,6 +310,40 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>livemd</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.plain-text</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Skill Document</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.osh.skill</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>skill</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.plain-text</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Codex Skill Document</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.openai.codex.skill</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>skill</string>
 				</array>
 			</dict>
 		</dict>

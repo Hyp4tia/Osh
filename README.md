@@ -21,7 +21,7 @@
 </p>
 
 > [!NOTE]
-> **Osh is currently in Public Beta (v1.0.4 Beta).**
+> **Osh is currently in Public Beta (v1.0.5 Beta).**
 > Features and polish are evolving rapidly. If you run into anything unexpected or have suggestions, please feel free to [open an issue](https://github.com/Zeyadistired/Osh/issues).
 
 ---
@@ -47,6 +47,7 @@ Select any file in Finder, press `Space`, and get an instant, beautifully render
 - **Standalone Reader** — Search, zoom, navigate, and read distraction-free.
 - **Source Editor** — Edit Markdown directly with `⌘E`.
 - **Rendered / Source Views** — Switch between preview and source.
+- **Packaged & Plain-Text `.skill` Support** — Full support for AI agent `.skill` packages (`SKILL.md`) and plain-text files with byte-for-byte asset preservation.
 
 ### 🎨 Reading Experience
 - **System, Light & Dark Modes**
