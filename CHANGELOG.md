@@ -1,6 +1,23 @@
 ## [Unreleased]
 _No pending unreleased changes._
 
+## [1.0.7] - 2026-08-29
+
+### Added
+- **Automatic Update Check Toggle**: Added user control for automatic background update checking in **Settings > Advanced**:
+  - Allows users to enable or disable automatic update checks via Sparkle.
+  - Fully localized in Arabic, German, English, Spanish, French, and Simplified Chinese.
+
+### Security & Hardening
+- **HTML Export Image Containment & MIME Validation**: Added `HTMLExportInliner` to safely inline local image assets during standalone HTML export with strict MIME-type allowlisting, directory boundary verification, and symlink escape prevention.
+- **SVG & Error Rendering Sanitization**: Hardened dynamic Mermaid diagram and Typst math block rendering with `DOMPurify` SVG profile sanitization and replaced raw `innerHTML` error injections with safe DOM element construction.
+- **CodeQL Polynomial ReDoS Remediation**: Replaced regular-expression backtracking in the Mermaid Gantt task preprocessor with a deterministic, linear-time index scanner, neutralizing potential catastrophic backtracking Denial-of-Service vectors.
+- **Dependency Vulnerability Hardening**: Audited and upgraded direct and transitive npm dependencies (`katex`, `markdown-it`, `mermaid`, `vite`, `js-yaml`, `rollup`, `ws`, `nanoid`, `postcss`, etc.) with strict dependency overrides resolving upstream advisory warnings.
+
+### Fixed
+- **Document Converter Robustness**: Improved error classification and recovery in the local WebAssembly document converter (`document-converter.ts`), properly isolating malformed document errors while preserving standard converter fallback handling.
+- **CI & Test Infrastructure**: Updated CodeQL workflow macOS runner destination parameters and extended cold-runner test timeouts for complex spreadsheet conversion test cases.
+
 ## [1.0.6] - 2026-08-28
 
 ### Added

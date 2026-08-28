@@ -1,7 +1,7 @@
 # FIXED
 
-**Release:** v1.0.4 Beta  
-**Date:** August 27, 2026  
+**Release:** v1.0.7 Beta  
+**Date:** August 29, 2026  
 **Status:** Fixed & Verified  
 
 All security vulnerabilities and hardening items identified and **fixed** during our security audits have been remediated, verified, and regression-tested in the codebase:
@@ -14,6 +14,10 @@ All security vulnerabilities and hardening items identified and **fixed** during
   - Integrated **DOMPurify** (`v3.4.14`) to sanitize all Markdown-rendered HTML before DOM insertion, neutralizing inline scripts, event handlers (`onerror`, `onload`, `onclick`), and `javascript:` URIs while preserving MathML, KaTeX, Mermaid, Vega, Graphviz, task lists, and RTL formatting.
   - Added strict Content Security Policy (`default-src 'none'; script-src 'self' osh-renderer: 'wasm-unsafe-eval'; connect-src local-md: osh-renderer: blob:; img-src local-md: osh-renderer: data: blob: https: http:;`).
   - Removed `new Function()` dynamic runtime evaluation from Typst rendering engine, replaced with static Vite WASM asset imports, and escaped all error template interpolations via `escapeHtml()`.
+- **HTML Export Image Containment (v1.0.7):** Added `HTMLExportInliner` enforcing canonical base-directory containment, symlink-resolution checks, and image MIME-type allowlisting during HTML export, preventing unauthorized file reads or path traversal in exported documents.
+- **SVG & Error View DOM Sanitization (v1.0.7):** Hardened Mermaid and Typst SVG outputs with `DOMPurify` SVG profiles and eliminated raw `innerHTML` string interpolation for error messages and status bars using standard DOM nodes and `textContent`.
+- **CodeQL Polynomial ReDoS Elimination (v1.0.7):** Replaced polynomial regular expressions in Mermaid Gantt preprocessor with single-pass deterministic substring searching, eliminating ReDoS denial-of-service risks.
+- **Dependency Supply Chain Hardening (v1.0.7):** Upgraded direct and transitive JavaScript dependencies (`katex`, `markdown-it`, `mermaid`, `vite`, `js-yaml`, `rollup`, `ws`, etc.) with strict package overrides to eliminate known advisory vulnerabilities.
 
 ---
 
@@ -493,11 +497,11 @@ Applying the four-step remediation plan (DOMPurify, Content Security Policy, rem
 
 ---
 
-## 15. Remediation Status & Fixes (v1.0.3 Beta)
+## 15. Remediation Status & Fixes (v1.0.7 Beta)
 
 **Status:** **ALL FINDINGS RESOLVED & FULLY HARDENED**  
-**Remediation Date:** 2026-08-27  
-**Release Target:** `v1.0.3 Beta`
+**Remediation Date:** 2026-08-29  
+**Release Target:** `v1.0.7 Beta`
 
 All vulnerabilities identified in this audit were remediated and verified through adversarial testing and unit tests:
 
@@ -508,9 +512,12 @@ All vulnerabilities identified in this audit were remediated and verified throug
 | **Finding 3: Missing CSP** | **MEDIUM** | Added strict Content Security Policy meta tag (`default-src 'none'; script-src 'self' osh-renderer: 'wasm-unsafe-eval'; connect-src local-md: osh-renderer: blob:; img-src local-md: osh-renderer: data: blob: https: http:;`). Outbound network requests and dynamic evaluation are blocked. | **RESOLVED** |
 | **Finding 4: Error messages & Typst eval** | **LOW** | Removed `new Function('return import.meta')()` using static Vite WASM asset imports; applied `escapeHtml()` across all error message templates and diff views. | **RESOLVED** |
 | **Link Navigation & App Execution** | **HIGH** | Hardened `LinkNavigation.resolveLocalURL()` with canonicalized directory containment (`resolvingSymlinksInPath()`, `standardizedFileURL`), blocking directory traversal (`../`), external symlinks, and application bundle execution (`.app`, `.sh`, `.command`, etc.). | **RESOLVED** |
+| **Finding 5: Polynomial ReDoS (CodeQL)** | **MEDIUM** | Replaced backtracking regex matching in Mermaid Gantt preprocessor (`preprocessMermaidGanttTaskColons`) with linear-time index traversal. | **RESOLVED** |
+| **Finding 6: Upstream Dependency CVEs** | **MEDIUM / LOW** | Upgraded and pinned secure versions/overrides for `katex`, `markdown-it`, `mermaid`, `vite`, `rollup`, `ws`, `nanoid`, `postcss`, and `js-yaml`. | **RESOLVED** |
+| **Finding 7: HTML Export Local Asset Traversal** | **MEDIUM** | Introduced `HTMLExportInliner` with MIME-type allowlists, canonical directory boundary checks, and symlink validation for inline asset encoding during HTML export. | **RESOLVED** |
 
 ### Automated Test Verification
-- **Web Renderer Test Suite (Jest):** 29 test suites, 332 tests passed (including XSS sanitization, image URI rewriting, and error escaping).
-- **Native macOS Test Suite (XCTest):** All Swift test suites passed, including comprehensive directory traversal and executable launch prevention tests in `LinkNavigationTests`.
+- **Web Renderer Test Suite (Jest):** 30 test suites, 351 tests passed (including XSS sanitization, image URI rewriting, ReDoS protection, and error escaping).
+- **Native macOS Test Suite (XCTest):** All Swift test suites passed, including comprehensive directory traversal, executable launch prevention, and display version / update check preference tests.
 - **Release Entitlements Verification:** Release build verified with `verify-release-entitlements.sh`.
 

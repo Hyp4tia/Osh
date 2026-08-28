@@ -21,7 +21,7 @@
 </p>
 
 > [!NOTE]
-> **Osh está actualmente en Beta Pública (v1.0.6 Beta).** Las funciones y el pulido visual evolucionan rápidamente. Si encuentras algún problema o tienes sugerencias, ¡no dudes en [abrir un issue](https://github.com/Hyp4tia/Osh/issues)!.
+> **Osh está actualmente en Beta Pública (v1.0.7 Beta).** Las funciones y el pulido visual evolucionan rápidamente. Si encuentras algún problema o tienes sugerencias, ¡no dudes en [abrir un issue](https://github.com/Hyp4tia/Osh/issues)!.
 
 ---
 
