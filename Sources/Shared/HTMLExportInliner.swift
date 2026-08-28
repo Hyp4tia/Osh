@@ -89,16 +89,16 @@ public enum HTMLExportInliner {
                 continue
             }
 
-            // 3. Regular file check & safe read
-            var isDirectory: ObjCBool = false
-            guard FileManager.default.fileExists(atPath: safeURL.path, isDirectory: &isDirectory), !isDirectory.boolValue else {
-                continue
-            }
-
+            // 3. Coordinated file check & safe read
             var fileData: Data?
             let coordinator = NSFileCoordinator()
             var coordError: NSError?
             coordinator.coordinate(readingItemAt: safeURL, options: [], error: &coordError) { coordinatedURL in
+                var isDirectory: ObjCBool = false
+                guard FileManager.default.fileExists(atPath: coordinatedURL.path, isDirectory: &isDirectory), !isDirectory.boolValue else {
+                    return
+                }
+
                 if let baseDir = baseDirectory {
                     let hasAccess = baseDir.startAccessingSecurityScopedResource()
                     defer {
@@ -110,10 +110,6 @@ public enum HTMLExportInliner {
                 } else {
                     fileData = try? Data(contentsOf: coordinatedURL)
                 }
-            }
-
-            if fileData == nil {
-                fileData = try? Data(contentsOf: safeURL)
             }
 
             if let data = fileData {
