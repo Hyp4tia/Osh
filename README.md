@@ -169,7 +169,14 @@ killall Finder
 ```
 </details>
 
----
+<p align="center">
+
+## Contact
+
+Built by Hyp4tia.  Reach out on <a href="https://x.com/Hypatox">X / Twitter</a>
+
+</p>
+
 
 <p align="center">
   <sub>Inspired by and partially based on <a href="https://github.com/xykong/flux-markdown">Flux-Markdown</a></sub><br>
