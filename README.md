@@ -181,6 +181,7 @@ Built by Hyp4tia.  Reach out on <a href="https://x.com/Hypatox">X / Twitter</a>
 
 <p align="center">
   <sub>Inspired by and partially based on <a href="https://github.com/xykong/flux-markdown">Flux-Markdown</a></sub><br>
-  <sub>All credit for the original design and implementation goes to the upstream author and its contributors.</sub>
+  <sub>Document conversion powered by <a href="https://github.com/firecrawl/anydoc">Firecrawl AnyDoc</a></sub><br>
+  <sub>All credit for original designs and upstream implementations goes to their respective authors and contributors.</sub>
 </p>
 

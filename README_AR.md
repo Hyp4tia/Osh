@@ -197,3 +197,4 @@ make install
 
 - برنامج Osh مفتوح المصدر ومرخص تحت رخصة **[GPL-3.0 License](LICENSE)**.
 - مبني ومطور استنادًا إلى مشروع [FluxMarkdown](https://github.com/xykong/flux-markdown) من قبل [@xykong](https://github.com/xykong) ومساهمي المجتمع.
+- محرك تحويل المستندات إلى Markdown مدعوم بواسطة [Firecrawl AnyDoc](https://github.com/firecrawl/anydoc).

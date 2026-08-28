@@ -197,3 +197,4 @@ make install
 
 - Osh es software de código abierto distribuido bajo la **[Licencia GPL-3.0](LICENSE)**.
 - Basado en [FluxMarkdown](https://github.com/xykong/flux-markdown) por [@xykong](https://github.com/xykong) y colaboradores comunitarios.
+- Motor de conversión de documentos a Markdown impulsado por [Firecrawl AnyDoc](https://github.com/firecrawl/anydoc).
