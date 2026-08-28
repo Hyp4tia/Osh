@@ -87,34 +87,45 @@ Select any file in Finder, press `Space`, and get an instant, beautifully render
 
 ## 📊 How Osh Compares
 
-Osh is designed primarily for **reading Markdown on macOS**, rather than replacing full-featured writing applications.
+Osh focuses on **fast, local Markdown reading on macOS**, while other apps prioritize editing, customization, or automation.
 
-| | **Osh** | FluxMarkdown | QLMarkdown | MacDown | Marked 2 | Typora |
+### 📖 Core Experience
+
+| Capability | **Osh** | FluxMarkdown | QLMarkdown | MacDown | Marked 2 | Typora |
 |:---|:---:|:---:|:---:|:---:|:---:|:---:|
 | Finder Quick Look | **✓** | ✓ | ✓ | — | — | — |
 | Standalone reader | **✓** | ✓ | — | ✓ | ✓ | ✓ |
 | Markdown editing | **✓** | ~ | — | **✓** | — | **✓** |
+| AI `.skill` files | **✓** | — | — | — | — | — |
 | Mermaid | **✓** | ✓ | ✓ | — | ✓ | ✓ |
 | Math rendering | **✓** | ✓ | ✓ | ✓ | ✓ | ✓ |
 | Typst math | **✓** | **✓** | — | — | — | — |
 | RTL / BiDi support | **✓** | — | — | — | ~ | ~ |
 | Charts & diagrams | **✓** | **✓** | ~ | — | ✓ | ✓ |
 | Reading themes | **5** | 3 | CSS | CSS | Custom | **Extensive** |
-| PDF / HTML export | **✓** | ✓ | ✓ | ✓ | **✓** | **✓** |
+
+### 🛠️ Export & Developer Features
+
+| Capability | **Osh** | FluxMarkdown | QLMarkdown | MacDown | Marked 2 | Typora |
+|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| PDF export | **✓** | ✓ | — | — | **✓** | **✓** |
+| HTML export | **✓** | ✓ | ✓ | ✓ | **✓** | **✓** |
 | DOCX export | **✓** | ~ | — | — | **✓** | **✓** |
 | CLI / automation | **✓** | — | ~ | — | **✓** | — |
+| Public security documentation | **✓** | — | — | — | — | — |
+| License | **GPL-3.0** | GPL-3.0* | GPL-2.0 | MIT | Proprietary | Proprietary |
 | Price | **Free** | Free* | Free | Free | Paid | Paid |
 
-### Where Osh Stands Out
+### Why Osh?
 
-- **Finder-first** — Markdown preview directly from `Space`.
-- **Reader-first** — Built around reading rather than being a full writing suite.
-- **RTL-first** — Arabic and Hebrew are treated as first-class layouts.
+- **Finder-first** — Preview Markdown instantly with `Space`.
+- **AI-native** — Open and edit `.skill` files alongside Markdown documents.
+- **Reader-first** — Built around reading, not just writing.
+- **RTL-first** — Arabic and Hebrew are first-class layouts.
 - **Scientific Markdown** — Mermaid, KaTeX, Typst, Vega-Lite, and Graphviz.
 - **Security-focused** — Sanitization, CSP, path containment, and executable blocking.
-- **Open source** — GPL-3.0 and fully inspectable code.
 
-> **Comparison notes:** Features are based on publicly documented capabilities and project releases available at the time of writing. `—` means the capability was not found in the project's public documentation; it does not necessarily mean the software cannot provide it. `~` indicates partial or limited support.
+> **Comparison notes:** Features are based on publicly documented capabilities and project releases available at the time of writing. `—` means the capability was not found in the project's public documentation; it does not necessarily mean the software cannot provide it. `~` indicates partial or limited support. AI `.skill` support refers specifically to opening and editing `.skill` files as structured AI agent skill documents.
 ---
 
 ## 🚀 Installation
