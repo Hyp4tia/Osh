@@ -73,12 +73,15 @@ jobs:
 
       - name: Build Osh for CodeQL Tracing (Swift)
         if: matrix.build-mode == 'manual'
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+          HOMEBREW_NO_INSTALL_CLEANUP: 1
         run: |
           xcodebuild build \
             -project Osh.xcodeproj \
             -scheme Osh \
             -configuration Debug \
-            -destination 'platform=macOS,arch=arm64' \
+            -destination 'platform=macOS' \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO
