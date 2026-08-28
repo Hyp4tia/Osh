@@ -302,6 +302,12 @@ const DOMPURIFY_CONFIG: DOMPurify.Config = {
     ALLOW_DATA_ATTR: true,
 };
 
+const SVG_DOMPURIFY_CONFIG: DOMPurify.Config = {
+    USE_PROFILES: { svg: true, svgFilters: true },
+    ADD_TAGS: ['foreignObject', 'style'],
+    ADD_ATTR: ['dominant-baseline', 'text-anchor', 'marker-end', 'target']
+};
+
 import { extractOutline } from './outline';
 import { TableOfContents } from './table-of-contents';
 import { SearchEngine } from './search';
@@ -623,7 +629,7 @@ async function renderVegaDiagrams(container: HTMLElement, theme: string): Promis
             const svgStr = await view.toSVG();
             const wrapper = document.createElement('div');
             wrapper.className = 'vega-diagram';
-            wrapper.innerHTML = svgStr;
+            wrapper.innerHTML = DOMPurify.sanitize(svgStr, SVG_DOMPURIFY_CONFIG) as string;
             pre.replaceWith(wrapper);
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : String(err);
@@ -631,7 +637,7 @@ async function renderVegaDiagrams(container: HTMLElement, theme: string): Promis
             const errDiv = document.createElement('div');
             errDiv.className = 'vega-error';
             errDiv.textContent = `Vega error: ${msg}`;
-            pre.insertAdjacentElement('afterend', errDiv);
+            pre.replaceWith(errDiv);
         }
     }
 }
@@ -659,7 +665,7 @@ async function renderGraphvizDiagrams(container: HTMLElement): Promise<void> {
             const errDiv = document.createElement('div');
             errDiv.className = 'graphviz-error';
             errDiv.textContent = 'GraphViz error: empty diagram source';
-            pre.insertAdjacentElement('afterend', errDiv);
+            pre.replaceWith(errDiv);
             continue;
         }
 
@@ -667,7 +673,7 @@ async function renderGraphvizDiagrams(container: HTMLElement): Promise<void> {
             const svgStr = graphvizInstance!.dot(src);
             const wrapper = document.createElement('div');
             wrapper.className = 'graphviz-diagram';
-            wrapper.innerHTML = svgStr;
+            wrapper.innerHTML = DOMPurify.sanitize(svgStr, SVG_DOMPURIFY_CONFIG) as string;
             pre.replaceWith(wrapper);
         } catch (err: unknown) {
             const msg = err instanceof Error ? err.message : String(err);
@@ -675,7 +681,7 @@ async function renderGraphvizDiagrams(container: HTMLElement): Promise<void> {
             const errDiv = document.createElement('div');
             errDiv.className = 'graphviz-error';
             errDiv.textContent = `GraphViz error: ${msg}`;
-            pre.insertAdjacentElement('afterend', errDiv);
+            pre.replaceWith(errDiv);
         }
     }
 }
@@ -947,7 +953,7 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
                 }
                 const mermaid = mermaidInstance;
                 if (mermaidCurrentTheme !== mermaidTheme) {
-                    mermaid.initialize({ startOnLoad: false, theme: mermaidTheme as any, suppressErrorRendering: true });
+                    mermaid.initialize({ startOnLoad: false, theme: mermaidTheme as any, suppressErrorRendering: true, securityLevel: 'strict' });
                     mermaidCurrentTheme = mermaidTheme;
                 }
 
@@ -960,16 +966,39 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
                     const id = div.id || `mermaid-${Date.now()}`;
                     try {
                         const { svg } = await mermaid.render(id + '-svg', processedCode);
-                        div.innerHTML = svg;
+                        div.innerHTML = DOMPurify.sanitize(svg, SVG_DOMPURIFY_CONFIG) as string;
                     } catch (renderErr: any) {
                         const errorMessage = renderErr?.message || String(renderErr);
                         logToSwift(`JS Mermaid render error for ${id}: ${errorMessage}`);
-                        div.innerHTML = `<div class="mermaid-error" style="background-color:#fff5f5;border:1px solid #feb2b2;border-radius:6px;padding:16px;">
-                            <div style="color:#c53030;font-weight:600;margin-bottom:8px;">⚠️ Mermaid Syntax Error</div>
-                            <pre style="background-color:#fed7d7;color:#742a2a;padding:12px;border-radius:4px;overflow-x:auto;font-size:13px;margin:0 0 12px 0;white-space:pre-wrap;">${escapeHtml(errorMessage)}</pre>
-                            <details><summary style="cursor:pointer;color:#718096;font-size:12px;">Show source code</summary>
-                            <pre style="background-color:#f7fafc;color:#2d3748;padding:12px;border-radius:4px;margin-top:8px;overflow-x:auto;font-size:12px;white-space:pre-wrap;">${escapeHtml(code)}</pre></details>
-                        </div>`;
+                        const errContainer = document.createElement('div');
+                        errContainer.className = 'mermaid-error';
+                        errContainer.style.cssText = 'background-color:#fff5f5;border:1px solid #feb2b2;border-radius:6px;padding:16px;';
+
+                        const titleEl = document.createElement('div');
+                        titleEl.style.cssText = 'color:#c53030;font-weight:600;margin-bottom:8px;';
+                        titleEl.textContent = '⚠️ Mermaid Syntax Error';
+
+                        const msgPre = document.createElement('pre');
+                        msgPre.style.cssText = 'background-color:#fed7d7;color:#742a2a;padding:12px;border-radius:4px;overflow-x:auto;font-size:13px;margin:0 0 12px 0;white-space:pre-wrap;';
+                        msgPre.textContent = errorMessage;
+
+                        const details = document.createElement('details');
+                        const summary = document.createElement('summary');
+                        summary.style.cssText = 'cursor:pointer;color:#718096;font-size:12px;';
+                        summary.textContent = 'Show source code';
+
+                        const srcPre = document.createElement('pre');
+                        srcPre.style.cssText = 'background-color:#f7fafc;color:#2d3748;padding:12px;border-radius:4px;margin-top:8px;overflow-x:auto;font-size:12px;white-space:pre-wrap;';
+                        srcPre.textContent = code;
+
+                        details.appendChild(summary);
+                        details.appendChild(srcPre);
+
+                        errContainer.appendChild(titleEl);
+                        errContainer.appendChild(msgPre);
+                        errContainer.appendChild(details);
+
+                        div.replaceChildren(errContainer);
                     }
                 }
             } catch (err) {
@@ -995,14 +1024,29 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
                             .replace(/&amp;/g, '&');
                         try {
                             const rendered = await renderTypstBlock(decodedSource, context);
-                            placeholder.innerHTML = rendered;
+                            placeholder.innerHTML = DOMPurify.sanitize(rendered, SVG_DOMPURIFY_CONFIG) as string;
                         } catch (err) {
                             logToSwift(`JS Typst render error: ${err}`);
-                            placeholder.innerHTML = `<div class="typst-math-block typst-error">
-                                <div class="typst-error-title">⚠️ Typst Render Error</div>
-                                <pre class="typst-error-source">${escapeHtml(decodedSource)}</pre>
-                                <pre class="typst-error-message">${escapeHtml(String(err))}</pre>
-                            </div>`;
+                            const errContainer = document.createElement('div');
+                            errContainer.className = 'typst-math-block typst-error';
+
+                            const titleEl = document.createElement('div');
+                            titleEl.className = 'typst-error-title';
+                            titleEl.textContent = '⚠️ Typst Render Error';
+
+                            const srcPre = document.createElement('pre');
+                            srcPre.className = 'typst-error-source';
+                            srcPre.textContent = decodedSource;
+
+                            const msgPre = document.createElement('pre');
+                            msgPre.className = 'typst-error-message';
+                            msgPre.textContent = String(err);
+
+                            errContainer.appendChild(titleEl);
+                            errContainer.appendChild(srcPre);
+                            errContainer.appendChild(msgPre);
+
+                            placeholder.replaceChildren(errContainer);
                         }
                     }
                 } catch (err) {
@@ -1021,7 +1065,15 @@ window.renderMarkdown = async function (text: string, options: RenderOptions = {
     } catch (e) {
         logToSwift(`[renderMarkdown:${callId}] ERROR: ` + e);
         if (outputDiv) {
-            outputDiv.innerHTML = `<div style="color:red;padding:20px;border:1px solid red;border-radius:5px;"><h3>Rendering Error</h3><pre>${escapeHtml(String(e))}</pre></div>`;
+            const errContainer = document.createElement('div');
+            errContainer.style.cssText = 'color:red;padding:20px;border:1px solid red;border-radius:5px;';
+            const titleEl = document.createElement('h3');
+            titleEl.textContent = 'Rendering Error';
+            const preEl = document.createElement('pre');
+            preEl.textContent = String(e);
+            errContainer.appendChild(titleEl);
+            errContainer.appendChild(preEl);
+            outputDiv.replaceChildren(errContainer);
         }
     }
 };
@@ -1084,7 +1136,15 @@ window.renderSource = function(text: string, theme: string, prevContent?: string
     } catch (e) {
         logToSwift("JS Error during source rendering: " + e);
         if (outputDiv) {
-            outputDiv.innerHTML = `<div style="color:red;padding:20px;border:1px solid red;border-radius:5px;"><h3>Source Rendering Error</h3><pre>${escapeHtml(String(e))}</pre></div>`;
+            const errContainer = document.createElement('div');
+            errContainer.style.cssText = 'color:red;padding:20px;border:1px solid red;border-radius:5px;';
+            const titleEl = document.createElement('h3');
+            titleEl.textContent = 'Source Rendering Error';
+            const preEl = document.createElement('pre');
+            preEl.textContent = String(e);
+            errContainer.appendChild(titleEl);
+            errContainer.appendChild(preEl);
+            outputDiv.replaceChildren(errContainer);
         }
     }
 };
@@ -1240,7 +1300,11 @@ function handleAnchorMouseOver(e: MouseEvent) {
     const linkTarget = getLinkStatusText(anchor);
     if (linkTarget) {
         const icon = getStatusIcon(linkTarget);
-        bar.innerHTML = `<span class="status-icon">${icon}</span>${escapeHtml(linkTarget)}`;
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'status-icon';
+        iconSpan.textContent = icon;
+        const textNode = document.createTextNode(linkTarget);
+        bar.replaceChildren(iconSpan, textNode);
         bar.classList.add('visible');
     }
 }
