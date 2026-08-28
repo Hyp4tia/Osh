@@ -62,18 +62,20 @@ struct SettingsView: View {
 
             // Content Detail Pane
             ScrollView(.vertical, showsIndicators: true) {
-                VStack(alignment: .leading, spacing: 20) {
-                    switch selectedTab {
-                    case .appearance:
-                        AppearanceSettingsView(preference: preference)
-                    case .rendering:
-                        RenderingSettingsView(preference: preference)
-                    case .editor:
-                        EditorSettingsView(preference: preference)
+                ScrollViewReader { proxy in
+                    VStack(alignment: .leading, spacing: 20) {
+                        switch selectedTab {
+                        case .appearance:
+                            AppearanceSettingsView(preference: preference, scrollProxy: proxy)
+                        case .rendering:
+                            RenderingSettingsView(preference: preference)
+                        case .editor:
+                            EditorSettingsView(preference: preference)
+                        }
                     }
+                    .padding(24)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .padding(24)
-                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
@@ -126,6 +128,7 @@ private struct SettingsSidebarRow: View {
 
 struct AppearanceSettingsView: View {
     @ObservedObject var preference: AppearancePreference
+    var scrollProxy: ScrollViewProxy? = nil
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -232,6 +235,12 @@ struct AppearanceSettingsView: View {
                 }
                 .padding(.top, 4)
             }
+
+            AdvancedSettingsDisclosureSection(preference: preference, scrollProxy: scrollProxy)
+
+            Color.clear
+                .frame(height: 8)
+                .id("appearance_bottom_anchor")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -246,6 +255,101 @@ struct AppearanceSettingsView: View {
         task.arguments = ["-n", "-a", bundleURL.path]
         try? task.run()
         NSApp.terminate(nil)
+    }
+}
+
+// MARK: - Advanced Settings Disclosure Section
+
+private struct AdvancedSettingsDisclosureSection: View {
+    @ObservedObject var preference: AppearancePreference
+    var scrollProxy: ScrollViewProxy? = nil
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHeaderHovered = false
+
+    private var isRTL: Bool {
+        LocalizationManager.isRTL(preference.uiLanguage)
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Button(action: {
+                withAnimation(reduceMotion ? .none : .easeInOut(duration: 0.22)) {
+                    preference.isAdvancedSettingsExpanded.toggle()
+                }
+                if preference.isAdvancedSettingsExpanded {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.18) {
+                        withAnimation(reduceMotion ? .none : .easeInOut(duration: 0.32)) {
+                            scrollProxy?.scrollTo("appearance_bottom_anchor", anchor: .bottom)
+                        }
+                    }
+                }
+            }) {
+                HStack(spacing: 6) {
+                    Text(NSLocalizedString("Advanced Settings", comment: "Advanced settings section title"))
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundColor(isHeaderHovered ? .primary : .secondary)
+
+                    Image(systemName: preference.isAdvancedSettingsExpanded ? "chevron.down" : (isRTL ? "chevron.left" : "chevron.right"))
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundColor(.secondary)
+                }
+                .padding(.vertical, 4)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(PlainButtonStyle())
+            .onHover { isHeaderHovered = $0 }
+
+            if preference.isAdvancedSettingsExpanded {
+                VStack(spacing: 0) {
+                    UpdateCheckToggleRow(
+                        title: NSLocalizedString("Automatic Check for Updates", comment: "Automatic updates toggle title"),
+                        subtitle: NSLocalizedString("Automatically prompt you to restart the app when a new update is available. When disabled, you can check for updates manually from the app menu.", comment: "Automatic updates toggle subtitle"),
+                        isOn: Binding(
+                            get: { preference.automaticallyChecksForUpdates },
+                            set: { preference.automaticallyChecksForUpdates = $0 }
+                        )
+                    )
+                }
+                .settingsCardStyle()
+                .transition(.opacity)
+                .id("advanced_settings_section_bottom")
+            }
+        }
+        .padding(.top, 4)
+        .clipped()
+    }
+}
+
+private struct UpdateCheckToggleRow: View {
+    let title: String
+    let subtitle: String
+    let isOn: Binding<Bool>
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 16) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundColor(.primary)
+                Text(subtitle)
+                    .font(.system(size: 11.5))
+                    .foregroundColor(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 16)
+
+            Toggle("", isOn: isOn)
+                .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+                .labelsHidden()
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(isHovered ? Color.primary.opacity(0.03) : Color.clear)
+        .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+        .onHover { isHovered = $0 }
     }
 }
 

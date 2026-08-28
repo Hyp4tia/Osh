@@ -127,3 +127,9 @@
 "Paper" = "纸张";
 "Midnight" = "午夜";
 "Nord" = "Nord";
+
+/* === Settings: Advanced Settings === */
+"Advanced Settings" = "高级设置";
+"Automatic Check for Updates" = "自动检查更新";
+"Automatically prompt you to restart the app when a new update is available. When disabled, you can check for updates manually from the app menu." = "当有新版本可用时自动提示重启应用。禁用后，您仍可在应用菜单中手动检查更新。";
+

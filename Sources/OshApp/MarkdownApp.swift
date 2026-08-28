@@ -24,6 +24,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
         UpdateRestorationManager.shared.restoreLastOpenedFile()
         AppearancePreference.shared.applyAppAppearance(AppearancePreference.shared.currentMode)
+        updaterController.updater.automaticallyChecksForUpdates = AppearancePreference.shared.automaticallyChecksForUpdates
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("OshAutomaticUpdateCheckingChanged"), object: nil, queue: .main) { [weak self] note in
+            if let enabled = note.object as? Bool {
+                self?.updaterController.updater.automaticallyChecksForUpdates = enabled
+            }
+        }
     }
 
     @objc func handleURLEvent(_ event: NSAppleEventDescriptor, withReplyEvent replyEvent: NSAppleEventDescriptor) {

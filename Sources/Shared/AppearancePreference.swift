@@ -160,6 +160,33 @@ public class AppearancePreference: ObservableObject {
     private let readingThemeKey = "readingTheme"
     private let showLineNumbersKey = "showLineNumbers"
     private let finderPaneFontSizeKey = "finderPaneFontSize"
+    private let automaticallyChecksForUpdatesKey = "SUEnableAutomaticChecks"
+    private let isAdvancedSettingsExpandedKey = "isAdvancedSettingsExpanded"
+
+    public var automaticallyChecksForUpdates: Bool {
+        get {
+            guard UserDefaults.standard.object(forKey: automaticallyChecksForUpdatesKey) != nil else { return true }
+            return UserDefaults.standard.bool(forKey: automaticallyChecksForUpdatesKey)
+        }
+        set {
+            objectWillChange.send()
+            UserDefaults.standard.set(newValue, forKey: automaticallyChecksForUpdatesKey)
+            UserDefaults.standard.synchronize()
+            NotificationCenter.default.post(name: NSNotification.Name("OshAutomaticUpdateCheckingChanged"), object: newValue)
+        }
+    }
+
+    public var isAdvancedSettingsExpanded: Bool {
+        get {
+            guard localStore.object(forKey: isAdvancedSettingsExpandedKey) != nil else { return false }
+            return localStore.bool(forKey: isAdvancedSettingsExpandedKey)
+        }
+        set {
+            objectWillChange.send()
+            localStore.set(newValue, forKey: isAdvancedSettingsExpandedKey)
+            localStore.synchronize()
+        }
+    }
 
     public var baseFontSize: Double {
         get {

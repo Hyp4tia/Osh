@@ -127,3 +127,9 @@
 "Paper" = "Papel";
 "Midnight" = "Medianoche";
 "Nord" = "Nord";
+
+/* === Settings: Advanced Settings === */
+"Advanced Settings" = "Ajustes avanzados";
+"Automatic Check for Updates" = "Buscar actualizaciones automáticamente";
+"Automatically prompt you to restart the app when a new update is available. When disabled, you can check for updates manually from the app menu." = "Te avisa automáticamente para reiniciar la app cuando hay una nueva actualización disponible. Cuando está desactivado, puedes buscar actualizaciones manualmente desde el menú.";
+

@@ -131,3 +131,9 @@
 "Paper" = "ورق";
 "Midnight" = "منتصف الليل";
 "Nord" = "نورد";
+
+/* === Settings: Advanced Settings === */
+"Advanced Settings" = "الإعدادات المتقدمة";
+"Automatic Check for Updates" = "التحقق التلقائي من التحديثات";
+"Automatically prompt you to restart the app when a new update is available. When disabled, you can check for updates manually from the app menu." = "تنبيهك تلقائيًا لإعادة تشغيل التطبيق عند توفر تحديث جديد. عند التعطيل، يمكنك التحقق من التحديثات يدويًا من قائمة التطبيق.";
+

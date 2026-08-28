@@ -38,4 +38,47 @@ final class DisplayVersionTests: XCTestCase {
     func testFormattedBetaTextUsesVersion() {
         XCTAssertTrue(DisplayVersion.formattedBetaText().contains("Beta"))
     }
+
+    func testAutomaticallyChecksForUpdates_defaultsToTrue() {
+        let pref = AppearancePreference.shared
+        XCTAssertTrue(pref.automaticallyChecksForUpdates)
+    }
+
+    func testAutomaticallyChecksForUpdates_persistsAndPostsNotification() {
+        let pref = AppearancePreference.shared
+        let expectation = expectation(description: "Notification posted on update toggle")
+
+        let observer = NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("OshAutomaticUpdateCheckingChanged"),
+            object: nil,
+            queue: .main
+        ) { note in
+            if let enabled = note.object as? Bool, !enabled {
+                expectation.fulfill()
+            }
+        }
+
+        pref.automaticallyChecksForUpdates = false
+        XCTAssertFalse(pref.automaticallyChecksForUpdates)
+
+        waitForExpectations(timeout: 2.0)
+        NotificationCenter.default.removeObserver(observer)
+
+        // Restore to true
+        pref.automaticallyChecksForUpdates = true
+        XCTAssertTrue(pref.automaticallyChecksForUpdates)
+    }
+
+    func testIsAdvancedSettingsExpanded_defaultsToFalseAndToggles() {
+        let pref = AppearancePreference.shared
+        let original = pref.isAdvancedSettingsExpanded
+
+        pref.isAdvancedSettingsExpanded = true
+        XCTAssertTrue(pref.isAdvancedSettingsExpanded)
+
+        pref.isAdvancedSettingsExpanded = false
+        XCTAssertFalse(pref.isAdvancedSettingsExpanded)
+
+        pref.isAdvancedSettingsExpanded = original
+    }
 }
