@@ -79,6 +79,7 @@ Osh focuses on **fast, local Markdown reading on macOS**, while other apps prior
 - **RTL-first** — Arabic and Hebrew are first-class layouts.
 - **Scientific Markdown** — Mermaid, KaTeX, Typst, Vega-Lite, and Graphviz.
 - **Security-focused** — Sanitization, CSP, path containment, and executable blocking.
+- **Native-file-conversion** — Convert PDF, Excel, CSV, and DOCX files into agent-ready .md files, saving tokens and preserving context.
 
 > **Comparison notes:** Features are based on publicly documented capabilities and project releases available at the time of writing. `—` means the capability was not found in the project's public documentation; it does not necessarily mean the software cannot provide it. `~` indicates partial or limited support. AI `.skill` support refers specifically to opening and editing `.skill` files as structured AI agent skill documents.
 ---
