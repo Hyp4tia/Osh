@@ -1,6 +1,17 @@
 ## [Unreleased]
 _无待发布的变更_
 
+## [1.0.5] - 2026-08-27
+
+### Added
+- **Packaged & Plain-Text `.skill` Document Support**: Full native support for AI agent `.skill` files across the macOS host app, Markdown editor, QuickLook extension, and export pipelines:
+  - **ZIP-Based Skill Packages**: Automatic content-based detection and transparent handling of packaged `.skill` archives (such as OpenAI Codex / AI Agent skill bundles containing `SKILL.md` or `<skill-name>/SKILL.md`).
+  - **Deterministic `SKILL.md` Discovery**: Robust discovery prioritizing root `SKILL.md` or direct subfolder skill files with explicit ambiguity handling and safety validation.
+  - **Byte-for-Byte Archive Preservation**: When editing and saving a packaged `.skill` file, only the modified `SKILL.md` entry is rewritten. All other archive entries (binary files, images, PDFs, JSON configs, scripts, folder structures, and metadata) are preserved byte-for-byte with original compression and checksums.
+  - **Plain-Text `.skill` Compatibility**: Seamless support for plain UTF-8 `.skill` files preserving the `.skill` file extension upon save without conversion or renaming.
+  - **QuickLook Extension Integration**: Spacebar preview in Finder automatically inspects `.skill` packages, decompresses the primary `SKILL.md`, and renders it with KaTeX/Mermaid/RTL support.
+  - **Security Protections**: Built-in archive validation rejecting path traversals (`../`), absolute paths, and excessive entry sizes.
+
 ## [1.0.4] - 2026-08-27
 
 ### Security & Hardening

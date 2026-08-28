@@ -42,6 +42,8 @@
 				<string>com.osh.mkdn</string>
 				<string>com.osh.mkdown</string>
 				<string>com.osh.mdwn</string>
+				<string>com.osh.skill</string>
+				<string>com.openai.codex.skill</string>
 			</array>
 			<key>QLSupportsSearchableItems</key>
 			<false/>

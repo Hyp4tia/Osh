@@ -21,7 +21,7 @@
 </p>
 
 > [!NOTE]
-> **Osh está actualmente en Beta Pública (v1.0.4 Beta).** Las funciones y el pulido visual evolucionan rápidamente. Si encuentras algún problema o tienes sugerencias, ¡no dudes en [abrir un issue](https://github.com/Zeyadistired/Osh/issues)!.
+> **Osh está actualmente en Beta Pública (v1.0.5 Beta).** Las funciones y el pulido visual evolucionan rápidamente. Si encuentras algún problema o tienes sugerencias, ¡no dudes en [abrir un issue](https://github.com/Zeyadistired/Osh/issues)!.
 
 ---
 
@@ -46,6 +46,7 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 - **Vista de columnas de Finder**: Formato adaptado a la columna de vista previa con ajuste de tamaño de fuente.
 - **Visor dedicado y archivos recientes**: Navegación completa, zoom, búsqueda y accesos rápidos.
 - **Editor de Markdown integrado**: Cambie al modo de edición en cualquier momento (`⌘E`) con soporte nativo de AppKit y escritura bidireccional.
+- **Soporte de paquetes y archivos `.skill` para IA**: Visualización, edición y QuickLook de paquetes ZIP de habilidades de agentes (`SKILL.md`) y archivos de texto plano preservando todos los binarios y recursos.
 
 ### 🎨 5 Paletas de Lectura
 - **Modos Sistema, Claro y Oscuro**: Se adapta dinámicamente a la apariencia de macOS.

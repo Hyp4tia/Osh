@@ -25,6 +25,21 @@ struct WelcomeView: View {
         if let md = UTType(filenameExtension: "md") {
             types.append(md)
         }
+        let skillTypes = UTType.types(tag: "skill", tagClass: .filenameExtension, conformingTo: nil)
+        for st in skillTypes {
+            if !types.contains(st) {
+                types.append(st)
+            }
+        }
+        if let skill = UTType(filenameExtension: "skill"), !types.contains(skill) {
+            types.append(skill)
+        }
+        if let oshSkill = UTType("com.osh.skill"), !types.contains(oshSkill) {
+            types.append(oshSkill)
+        }
+        if let codexSkill = UTType("com.openai.codex.skill"), !types.contains(codexSkill) {
+            types.append(codexSkill)
+        }
         types.append(.plainText)
         return types
     }()
@@ -221,7 +236,7 @@ struct WelcomeView: View {
             hasCompletedOnboarding = true
             return handleDrop(providers: providers)
         }
-        .accessibilityHint(Text(NSLocalizedString("Drag & drop .md/.mdx/.txt here", comment: "Drop hint")))
+        .accessibilityHint(Text(NSLocalizedString("Drag & drop .md/.skill/.mdx/.txt here", comment: "Drop hint")))
     }
 
     @ViewBuilder

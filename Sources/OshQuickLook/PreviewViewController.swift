@@ -1150,7 +1150,12 @@ public class PreviewViewController: NSViewController, QLPreviewingController, WK
                 let fileMtime = attributes[.modificationDate] as? Date
                 
                 var content: String
-                if fileSize > self.maxPreviewSizeBytes {
+                let fileData = try Data(contentsOf: url)
+                if SkillPackage.isZipPackage(data: fileData) {
+                    let extracted = try SkillPackage.extractPrimaryMarkdown(from: fileData)
+                    content = extracted.text
+                    os_log("🔵 Extracted primary SKILL.md from package: %{public}@", log: self.logger, type: .debug, extracted.internalPath)
+                } else if fileSize > self.maxPreviewSizeBytes {
                     let fileHandle = try FileHandle(forReadingFrom: url)
                     defer { try? fileHandle.close() }
                     let data = fileHandle.readData(ofLength: Int(self.maxPreviewSizeBytes))
@@ -1180,11 +1185,12 @@ public class PreviewViewController: NSViewController, QLPreviewingController, WK
                 }
                 
                 self.startFileMonitoring()
+                handler(nil)
             } catch {
                 os_log("🔴 Failed to read file: %{public}@", log: self.logger, type: .error, error.localizedDescription)
+                handler(error)
             }
         }
-        handler(nil)
     }
     
     private func renderPendingMarkdown() {
