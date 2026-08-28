@@ -119,7 +119,7 @@ if git ls-files --error-unmatch scripts/increment_version.sh >/dev/null 2>&1; th
     git rm scripts/increment_version.sh
 fi
 
-TAG_NAME="v${NEW_FULL_VERSION}-beta"
+TAG_NAME="v${NEW_FULL_VERSION}"
 git tag "$TAG_NAME"
 
 echo "☁️ Pushing to remote..."
@@ -156,10 +156,9 @@ if [ -n "$MACPORTS_TARBALL" ] && [ -f "$MACPORTS_TARBALL" ]; then
     RELEASE_ASSETS="$RELEASE_ASSETS $MACPORTS_TARBALL"
 fi
 gh release create "$TAG_NAME" $RELEASE_ASSETS \
-    --title "v$NEW_FULL_VERSION Beta" \
+    --title "v$NEW_FULL_VERSION" \
     --notes-file "$RELEASE_NOTES_FILE" \
-    --draft=false \
-    --prerelease
+    --draft=false
 
 rm "$RELEASE_NOTES_FILE"
 

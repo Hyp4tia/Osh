@@ -1,6 +1,6 @@
 # FIXED
 
-**Release:** v1.0.7 Beta  
+**Release:** v1.0.7  
 **Date:** August 29, 2026  
 **Status:** Fixed & Verified  
 
@@ -497,11 +497,11 @@ Applying the four-step remediation plan (DOMPurify, Content Security Policy, rem
 
 ---
 
-## 15. Remediation Status & Fixes (v1.0.7 Beta)
+## 15. Remediation Status & Fixes (v1.0.7)
 
 **Status:** **ALL FINDINGS RESOLVED & FULLY HARDENED**  
 **Remediation Date:** 2026-08-29  
-**Release Target:** `v1.0.7 Beta`
+**Release Target:** `v1.0.7`
 
 All vulnerabilities identified in this audit were remediated and verified through adversarial testing and unit tests:
 

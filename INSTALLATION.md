@@ -15,7 +15,7 @@ Osh is distributed as a standalone macOS application with an integrated QuickLoo
 
 ## 🛡️ Opening Osh for the First Time (macOS Gatekeeper)
 
-Osh is currently in public beta and distributed independently outside the Mac App Store. When opening the app for the first time, macOS Gatekeeper may display a dialog stating that the developer cannot be verified.
+Osh is distributed independently outside the Mac App Store. When opening the app for the first time, macOS Gatekeeper may display a dialog stating that the developer cannot be verified.
 
 ### Standard macOS Permission Flow:
 1. Click **Done** or **Cancel** on the Gatekeeper alert.

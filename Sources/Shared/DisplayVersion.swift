@@ -18,9 +18,13 @@ enum DisplayVersion {
         text(from: bundle.infoDictionary)
     }
 
-    static func formattedBetaText(in bundle: Bundle = .main) -> String {
+    static func formattedDisplayVersion(in bundle: Bundle = .main) -> String {
         let base = text(in: bundle) ?? "1.0.0"
-        return "v\(base) Beta"
+        return "v\(base)"
+    }
+
+    static func formattedBetaText(in bundle: Bundle = .main) -> String {
+        formattedDisplayVersion(in: bundle)
     }
 
     private static func trimmedString(for key: String, in infoDictionary: [String: Any]) -> String? {

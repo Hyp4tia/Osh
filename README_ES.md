@@ -21,7 +21,7 @@
 </p>
 
 > [!NOTE]
-> **Osh está actualmente en Beta Pública (v1.0.7 Beta).** Las funciones y el pulido visual evolucionan rápidamente. Si encuentras algún problema o tienes sugerencias, ¡no dudes en [abrir un issue](https://github.com/Hyp4tia/Osh/issues)!.
+> **Osh (v1.0.7)** — Si encuentras algún problema o tienes sugerencias, ¡no dudes en [abrir un issue](https://github.com/Hyp4tia/Osh/issues)!
 
 ---
 
@@ -118,7 +118,7 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 
 > [!TIP]
 > **Abrir Osh por primera vez en macOS (aviso de Gatekeeper):**
-> Como Osh se encuentra en fase beta y aún no está firmado con un certificado de desarrollador de Apple, macOS Gatekeeper puede mostrar un aviso de verificación al abrirlo por primera vez. Para abrir Osh:
+> Al distribuirse de forma independiente fuera de la Mac App Store, macOS Gatekeeper puede mostrar un aviso de verificación al abrirlo por primera vez. Para abrir Osh:
 > 1. Haga clic en **Aceptar / Listo (Done)** en el aviso.
 > 2. Abra **Ajustes del Sistema (System Settings)** → **Privacidad y seguridad (Privacy & Security)**.
 > 3. Desplácese hacia abajo hasta la sección **Seguridad (Security)**.

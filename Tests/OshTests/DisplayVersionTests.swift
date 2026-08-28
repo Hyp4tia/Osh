@@ -35,8 +35,10 @@ final class DisplayVersionTests: XCTestCase {
         XCTAssertNil(DisplayVersion.text(from: [:]))
     }
 
-    func testFormattedBetaTextUsesVersion() {
-        XCTAssertTrue(DisplayVersion.formattedBetaText().contains("Beta"))
+    func testFormattedDisplayVersionUsesVersion() {
+        let versionText = DisplayVersion.formattedDisplayVersion()
+        XCTAssertTrue(versionText.hasPrefix("v"))
+        XCTAssertFalse(versionText.contains("Beta"))
     }
 
     func testAutomaticallyChecksForUpdates_defaultsToTrue() {

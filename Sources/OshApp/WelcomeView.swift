@@ -328,7 +328,7 @@ struct WelcomeView: View {
 
             Spacer()
 
-            Text(DisplayVersion.formattedBetaText())
+            Text(DisplayVersion.formattedDisplayVersion())
                 .font(.system(size: 10, weight: .regular, design: .monospaced))
                 .foregroundColor(Color.secondary.opacity(0.55))
         }
