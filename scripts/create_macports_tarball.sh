@@ -164,7 +164,7 @@ if [ -f "$PORTFILE" ]; then
     echo ""
     echo "📝 Updating macports/Portfile checksums and version..."
     sed -i '' \
-        -e "s|github.setup Zeyadistired osh [^ ]* v|github.setup Zeyadistired osh ${VERSION} v|" \
+        -e "s|github.setup Hyp4tia osh [^ ]* v|github.setup Hyp4tia osh ${VERSION} v|" \
         -e "s|distname            Osh-[^ ]*-macports-source|distname            Osh-${VERSION}-macports-source|" \
         -e "s|rmd160  [0-9a-f]*|rmd160  ${RMD160}|" \
         -e "s|sha256  [0-9a-f]*|sha256  ${SHA256}|" \

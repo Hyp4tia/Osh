@@ -119,4 +119,4 @@ Bloque:
 
 1. Lea la guía avanzada de solución de problemas: [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
 2. Informar de un problema:
-   - Problemas en GitHub: <https://github.com/Zeyadistired/Osh/issues>
+   - Problemas en GitHub: <https://github.com/Hyp4tia/Osh/issues>

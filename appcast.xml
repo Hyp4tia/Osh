@@ -2,36 +2,36 @@
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
     <channel>
         <title>Osh</title>
-        <link>https://raw.githubusercontent.com/Zeyadistired/Osh/main/appcast.xml</link>
+        <link>https://raw.githubusercontent.com/Hyp4tia/Osh/main/appcast.xml</link>
         <description>Most recent updates to Osh</description>
         <language>en</language>
 
         <item>
             <title>Version 1.0.5 Beta</title>
-            <link>https://github.com/Zeyadistired/Osh/releases/tag/v1.0.5-beta</link>
+            <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.5-beta</link>
             <sparkle:version>5</sparkle:version>
             <sparkle:shortVersionString>1.0.5</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
             <pubDate>Fri, 28 Aug 2026 00:37:30 +0000</pubDate>
             <enclosure
-                url="https://github.com/Zeyadistired/Osh/releases/download/v1.0.5-beta/Osh.dmg"
+                url="https://github.com/Hyp4tia/Osh/releases/download/v1.0.5-beta/Osh.dmg"
                 sparkle:edSignature="IpOa7lF+iB120mOmVrEiUwAUYMM2Knvlj0uH85eCxX298dKG6la2cd3dU2gdKpLVEl3w0FqvHLMXN8dUzmKtDQ=="
                 length="31581824"
                 type="application/octet-stream" />
             <description><![CDATA[
-                <h2>What's Changed in v1.0.5 Beta</h2><h3>Added</h3><ul><li><strong>Packaged & Plain-Text <code>.skill</code> Document Support</strong>: Full native support for AI agent <code>.skill</code> files across the macOS host app, Markdown editor, QuickLook extension, and export pipelines:</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>ZIP-Based Skill Packages</strong>: Automatic content-based detection and transparent handling of packaged <code>.skill</code> archives (such as OpenAI Codex / AI Agent skill bundles containing <code>SKILL.md</code> or <code><skill-name>/SKILL.md</code>).</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Deterministic <code>SKILL.md</code> Discovery</strong>: Robust discovery prioritizing root <code>SKILL.md</code> or direct subfolder skill files with explicit ambiguity handling and safety validation.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Byte-for-Byte Archive Preservation</strong>: When editing and saving a packaged <code>.skill</code> file, only the modified <code>SKILL.md</code> entry is rewritten. All other archive entries (binary files, images, PDFs, JSON configs, scripts, folder structures, and metadata) are preserved byte-for-byte with original compression and checksums.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Plain-Text <code>.skill</code> Compatibility</strong>: Seamless support for plain UTF-8 <code>.skill</code> files preserving the <code>.skill</code> file extension upon save without conversion or renaming.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>QuickLook Extension Integration</strong>: Spacebar preview in Finder automatically inspects <code>.skill</code> packages, decompresses the primary <code>SKILL.md</code>, and renders it with KaTeX/Mermaid/RTL support.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Security Protections</strong>: Built-in archive validation rejecting path traversals (<code>../</code>), absolute paths, and excessive entry sizes.</li></ul><p><a href="https://github.com/Zeyadistired/Osh/releases/tag/v1.0.5-beta">View Full Release Notes</a></p>
+                <h2>What's Changed in v1.0.5 Beta</h2><h3>Added</h3><ul><li><strong>Packaged & Plain-Text <code>.skill</code> Document Support</strong>: Full native support for AI agent <code>.skill</code> files across the macOS host app, Markdown editor, QuickLook extension, and export pipelines:</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>ZIP-Based Skill Packages</strong>: Automatic content-based detection and transparent handling of packaged <code>.skill</code> archives (such as OpenAI Codex / AI Agent skill bundles containing <code>SKILL.md</code> or <code><skill-name>/SKILL.md</code>).</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Deterministic <code>SKILL.md</code> Discovery</strong>: Robust discovery prioritizing root <code>SKILL.md</code> or direct subfolder skill files with explicit ambiguity handling and safety validation.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Byte-for-Byte Archive Preservation</strong>: When editing and saving a packaged <code>.skill</code> file, only the modified <code>SKILL.md</code> entry is rewritten. All other archive entries (binary files, images, PDFs, JSON configs, scripts, folder structures, and metadata) are preserved byte-for-byte with original compression and checksums.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Plain-Text <code>.skill</code> Compatibility</strong>: Seamless support for plain UTF-8 <code>.skill</code> files preserving the <code>.skill</code> file extension upon save without conversion or renaming.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>QuickLook Extension Integration</strong>: Spacebar preview in Finder automatically inspects <code>.skill</code> packages, decompresses the primary <code>SKILL.md</code>, and renders it with KaTeX/Mermaid/RTL support.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Security Protections</strong>: Built-in archive validation rejecting path traversals (<code>../</code>), absolute paths, and excessive entry sizes.</li></ul><p><a href="https://github.com/Hyp4tia/Osh/releases/tag/v1.0.5-beta">View Full Release Notes</a></p>
             ]]></description>
         </item>
         
         <item>
             <title>Version 1.0.4 Beta</title>
-            <link>https://github.com/Zeyadistired/Osh/releases/tag/v1.0.4-beta</link>
+            <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.4-beta</link>
             <sparkle:version>4</sparkle:version>
             <sparkle:shortVersionString>1.0.4</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
             <pubDate>Thu, 27 Aug 2026 16:36:11 +0000</pubDate>
             <enclosure
-                url="https://github.com/Zeyadistired/Osh/releases/download/v1.0.4-beta/Osh.dmg"
+                url="https://github.com/Hyp4tia/Osh/releases/download/v1.0.4-beta/Osh.dmg"
                 sparkle:edSignature="S3Ql1t/fLJuwXTg+lB7dC9mDZzMXR9o541mIRCMrzfQBsDEyXTmHsqT6GtqbV0HiC2SHAiGpKVl9tdV0/ssCCg=="
                 length="31478650"
                 type="application/octet-stream" />
@@ -49,19 +49,19 @@
                         </ul>
                     </li>
                 </ul>
-                <p><a href="https://github.com/Zeyadistired/Osh/releases/tag/v1.0.4-beta">View Full Release Notes</a></p>
+                <p><a href="https://github.com/Hyp4tia/Osh/releases/tag/v1.0.4-beta">View Full Release Notes</a></p>
             ]]></description>
         </item>
         
         <item>
             <title>Version 1.0.3 Beta</title>
-            <link>https://github.com/Zeyadistired/Osh/releases/tag/v1.0.3-beta</link>
+            <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.3-beta</link>
             <sparkle:version>3</sparkle:version>
             <sparkle:shortVersionString>1.0.3</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
             <pubDate>Thu, 27 Aug 2026 16:09:26 +0000</pubDate>
             <enclosure
-                url="https://github.com/Zeyadistired/Osh/releases/download/v1.0.3-beta/Osh.dmg"
+                url="https://github.com/Hyp4tia/Osh/releases/download/v1.0.3-beta/Osh.dmg"
                 sparkle:edSignature="aR9szroTiZ+Sgy3THvfTh/vm4z7HByYvZ/dYOw+hTRMkOXH18+ABznsvPWCLklk70AN/EqorIpMlQle0dgksDQ=="
                 length="31478690"
                 type="application/octet-stream" />
@@ -75,19 +75,19 @@
                     <li><strong>Universal File Access Removal</strong>: Fully removed <code>allowUniversalAccessFromFileURLs = true</code> across the Host App, CLI Exporter, and QuickLook extension.</li>
                     <li><strong>Typst WASM &amp; Dynamic Evaluation Hardening</strong>: Removed <code>new Function()</code> dynamic runtime evaluation from Typst rendering engine, replaced with static Vite WASM asset loading, and added strict HTML escaping to all template error interpolations.</li>
                 </ul>
-                <p><a href="https://github.com/Zeyadistired/Osh/releases/tag/v1.0.3-beta">View Full Release Notes</a></p>
+                <p><a href="https://github.com/Hyp4tia/Osh/releases/tag/v1.0.3-beta">View Full Release Notes</a></p>
             ]]></description>
         </item>
         
         <item>
             <title>Version 1.0.2 Beta</title>
-            <link>https://github.com/Zeyadistired/Osh/releases/tag/v1.0.2-beta</link>
+            <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.2-beta</link>
             <sparkle:version>2</sparkle:version>
             <sparkle:shortVersionString>1.0.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
             <pubDate>Thu, 27 Aug 2026 13:51:58 +0000</pubDate>
             <enclosure
-                url="https://github.com/Zeyadistired/Osh/releases/download/v1.0.2-beta/Osh.dmg"
+                url="https://github.com/Hyp4tia/Osh/releases/download/v1.0.2-beta/Osh.dmg"
                 sparkle:edSignature="h+ggi+GBbFulRpSUzn3dIt58DvdVtdJkRp44Xb2CIQyH/WeLQk0dAE4eTzjQGLKdSeBjwY+T8tP5iov2xJXCBw=="
                 length="9261393"
                 type="application/octet-stream" />
@@ -104,7 +104,7 @@
                     <li><strong>Settings UI Polish</strong>: Refined sidebar selection, unified 9pt continuous corner card geometry, clean theme segments, language hover feedback, and monospaced font-size readout badges.</li>
                     <li><strong>Welcome Empty-State Screen</strong>: Refined app icon presentation (56x56, 12pt corner radius), soft native drop zone card, and clean recent files hover feedback.</li>
                 </ul>
-                <p><a href="https://github.com/Zeyadistired/Osh/releases/tag/v1.0.2-beta">View Full Release Notes</a></p>
+                <p><a href="https://github.com/Hyp4tia/Osh/releases/tag/v1.0.2-beta">View Full Release Notes</a></p>
             ]]></description>
         </item>
         

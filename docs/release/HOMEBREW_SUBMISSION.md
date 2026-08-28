@@ -4,7 +4,7 @@
 
 | 版本 | 文件 | 安装方式 | 特性 |
 |------|------|----------|------|
-| **功能版（tap）** | `../homebrew-tap/Casks/osh.rb` | `brew install --cask Zeyadistired/tap/osh` | duti 默认关联、auto_updates、Sparkle livecheck |
+| **功能版（tap）** | `../homebrew-tap/Casks/osh.rb` | `brew install --cask Hyp4tia/tap/osh` | duti 默认关联、auto_updates、Sparkle livecheck |
 | **官方版草稿** | `../homebrew-tap/Drafts/osh-official.rb` | 提交到 homebrew/homebrew-cask 后：`brew install --cask osh` | 符合官方规范，无 formula 依赖 |
 
 ---
@@ -90,10 +90,10 @@ gh pr create --repo Homebrew/homebrew-cask --title "osh ${VERSION}" --body "Vers
 
 完全兼容。用户可以选择：
 - `brew install --cask osh` — 官方版（精简）
-- `brew install --cask Zeyadistired/tap/osh` — tap 版（完整功能）
+- `brew install --cask Hyp4tia/tap/osh` — tap 版（完整功能）
 
 从官方版切换到 tap 版：
 ```bash
 brew uninstall --cask osh
-brew install --cask Zeyadistired/tap/osh
+brew install --cask Hyp4tia/tap/osh
 ```

@@ -16,7 +16,7 @@ Set it in `Sources/OshApp/Info.plist`:
 
 ```xml
 <key>SUFeedURL</key>
-<string>https://raw.githubusercontent.com/Zeyadistired/Osh/main/appcast.xml</string>
+<string>https://raw.githubusercontent.com/Hyp4tia/Osh/main/appcast.xml</string>
 ```
 
 Pros:
@@ -98,7 +98,7 @@ Cause: `SUFeedURL` points at GitHub's `blob` page.
 
 Fix: use the raw URL:
 
-`https://raw.githubusercontent.com/Zeyadistired/Osh/main/appcast.xml`
+`https://raw.githubusercontent.com/Hyp4tia/Osh/main/appcast.xml`
 
 ### 4.2 Signature verification fails
 

@@ -119,4 +119,4 @@ Block:
 
 1. Read the advanced troubleshooting guide (more detailed checks and explanations): [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
 2. If you'd like to report a problem:
-   - GitHub Issues: <https://github.com/Zeyadistired/Osh/issues>
+   - GitHub Issues: <https://github.com/Hyp4tia/Osh/issues>

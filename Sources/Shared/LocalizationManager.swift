@@ -61,17 +61,17 @@ public enum LocalizationManager {
 
         switch code {
         case "fr":
-            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP_FR.md")!
+            return URL(string: "https://github.com/Hyp4tia/Osh/blob/main/docs/user/HELP_FR.md")!
         case "ar":
-            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP_AR.md")!
+            return URL(string: "https://github.com/Hyp4tia/Osh/blob/main/docs/user/HELP_AR.md")!
         case "de":
-            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP_DE.md")!
+            return URL(string: "https://github.com/Hyp4tia/Osh/blob/main/docs/user/HELP_DE.md")!
         case "zh", "zh-hans", "zh-hant":
-            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP_ZH.md")!
+            return URL(string: "https://github.com/Hyp4tia/Osh/blob/main/docs/user/HELP_ZH.md")!
         case "es":
-            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP_ES.md")!
+            return URL(string: "https://github.com/Hyp4tia/Osh/blob/main/docs/user/HELP_ES.md")!
         default:
-            return URL(string: "https://github.com/Zeyadistired/Osh/blob/main/docs/user/HELP.md")!
+            return URL(string: "https://github.com/Hyp4tia/Osh/blob/main/docs/user/HELP.md")!
         }
     }
 

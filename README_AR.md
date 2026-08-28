@@ -3,9 +3,9 @@
   <h1 align="center">Osh <samp>ⲱϣ</samp></h1>
   <p align="center"><strong>قارئ Markdown ومعاينة QuickLook أنيق وهادئ لنظام macOS.</strong></p>
   <p align="center">
-    <a href="https://github.com/Zeyadistired/Osh/releases"><img src="https://img.shields.io/github/v/release/Zeyadistired/Osh?include_prereleases&style=flat-square&color=blue" alt="الإصدار"></a>
-    <a href="https://github.com/Zeyadistired/Osh/stargazers"><img src="https://img.shields.io/github/stars/Zeyadistired/Osh?style=flat-square&color=gold" alt="النجوم"></a>
-    <a href="https://github.com/Zeyadistired/Osh/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Zeyadistired/Osh?style=flat-square" alt="الترخيص"></a>
+    <a href="https://github.com/Hyp4tia/Osh/releases"><img src="https://img.shields.io/github/v/release/Hyp4tia/Osh?include_prereleases&style=flat-square&color=blue" alt="الإصدار"></a>
+    <a href="https://github.com/Hyp4tia/Osh/stargazers"><img src="https://img.shields.io/github/stars/Hyp4tia/Osh?style=flat-square&color=gold" alt="النجوم"></a>
+    <a href="https://github.com/Hyp4tia/Osh/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Hyp4tia/Osh?style=flat-square" alt="الترخيص"></a>
     <img src="https://img.shields.io/badge/platform-macOS%2011%2B-lightgrey?style=flat-square" alt="macOS">
   </p>
   <p align="center">
@@ -21,7 +21,7 @@
 </p>
 
 > [!NOTE]
-> **تطبيق Osh حاليًا في مرحلة البيتا العامة (v1.0.5 Beta).** يجري العمل على صقل الميزات وتحسين الأداء باستمرار. إذا واجهتك أي مشكلة أو كان لديك اقتراح، يُرجى [فتح تذكرة على GitHub](https://github.com/Zeyadistired/Osh/issues)!
+> **تطبيق Osh حاليًا في مرحلة البيتا العامة (v1.0.5 Beta).** يجري العمل على صقل الميزات وتحسين الأداء باستمرار. إذا واجهتك أي مشكلة أو كان لديك اقتراح، يُرجى [فتح تذكرة على GitHub](https://github.com/Hyp4tia/Osh/issues)!
 
 ---
 
@@ -112,7 +112,7 @@
 > 🛡️ **الأمان والخصوصية:** يمكنك الاطّلاع على تقرير التدقيق الأمني الشامل للشفرة المصدرية في [Security_Audit.md](Security_Audit.md).
 
 ### تحميل ملف DMG
-1. حمّل أحدث ملف **`Osh.dmg`** من صفحة [الإصدارات على GitHub](https://github.com/Zeyadistired/Osh/releases).
+1. حمّل أحدث ملف **`Osh.dmg`** من صفحة [الإصدارات على GitHub](https://github.com/Hyp4tia/Osh/releases).
 2. افتح ملف DMG واسحب **Osh.app** إلى مجلد **التطبيقات (Applications)**.
 3. شغّل تطبيق Osh مرة واحدة من التطبيقات لتسجيل إضافة QuickLook مع النظام.
 
@@ -184,7 +184,7 @@
 
 ```bash
 # استنساخ المستودع
-git clone https://github.com/Zeyadistired/Osh.git
+git clone https://github.com/Hyp4tia/Osh.git
 cd Osh
 
 # البناء والتثبيت محليًا

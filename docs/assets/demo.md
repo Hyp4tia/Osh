@@ -172,7 +172,7 @@ pub fn format_document(source: &str) -> Result<String, OshError> {
 
 ```bash
 # Install Osh via Homebrew Tap
-brew install --cask Zeyadistired/tap/osh
+brew install --cask Hyp4tia/tap/osh
 
 # Reload QuickLook daemon
 qlmanage -r
@@ -200,7 +200,7 @@ qlmanage -r
 
 ## 🔗 Navigation & Relative Links
 
-- **Repository**: [GitHub — Zeyadistired/Osh](https://github.com/Zeyadistired/Osh)
+- **Repository**: [GitHub — Hyp4tia/Osh](https://github.com/Hyp4tia/Osh)
 - **Jump to Section**: [Back to Architecture Diagram](#-diagrams-mermaid-architecture)
 - **Local File Link**: [Security Audit](../../Security_Audit.md)
 

@@ -74,7 +74,7 @@ PR_URL=$(gh pr create \
     --body "## osh
 
 - **Name:** Osh
-- **Homepage:** https://github.com/Zeyadistired/Osh
+- **Homepage:** https://github.com/Hyp4tia/Osh
 - **Desc:** Markdown previews in Finder QuickLook with diagrams and math
 - **Stars:** 600+
 - **License:** GPL-3.0

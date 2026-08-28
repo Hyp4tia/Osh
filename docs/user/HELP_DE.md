@@ -119,4 +119,4 @@ Block:
 
 1. Lesen Sie das Handbuch zur erweiterten Fehlerbehebung: [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
 2. Problem melden:
-   - GitHub Issues: <https://github.com/Zeyadistired/Osh/issues>
+   - GitHub Issues: <https://github.com/Hyp4tia/Osh/issues>

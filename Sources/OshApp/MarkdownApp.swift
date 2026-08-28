@@ -152,13 +152,13 @@ struct MarkdownApp: App {
                 Divider()
                 
                 Button(NSLocalizedString("README", comment: "README menu item")) {
-                    if let url = URL(string: "https://github.com/Zeyadistired/Osh#readme") {
+                    if let url = URL(string: "https://github.com/Hyp4tia/Osh#readme") {
                         NSWorkspace.shared.open(url)
                     }
                 }
                 
                 Button(NSLocalizedString("Report an Issue", comment: "Report issue menu item")) {
-                    if let url = URL(string: "https://github.com/Zeyadistired/Osh/issues") {
+                    if let url = URL(string: "https://github.com/Hyp4tia/Osh/issues") {
                         NSWorkspace.shared.open(url)
                     }
                 }
@@ -166,7 +166,7 @@ struct MarkdownApp: App {
                 Divider()
                 
                 Button(NSLocalizedString("Release Notes", comment: "Release notes menu item")) {
-                    if let url = URL(string: "https://github.com/Zeyadistired/Osh/releases") {
+                    if let url = URL(string: "https://github.com/Hyp4tia/Osh/releases") {
                         NSWorkspace.shared.open(url)
                     }
                 }

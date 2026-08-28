@@ -3,14 +3,14 @@
 PortSystem          1.0
 PortGroup           github 1.0
 
-github.setup Zeyadistired osh 1.34.475 v
+github.setup Hyp4tia osh 1.34.475 v
 github.tarball_from releases
 
 categories          aqua sysutils
 platforms           {darwin >= 21}
 supported_archs     x86_64 arm64
 license             GPL-3
-maintainers         {@Zeyadistired gmail.com:ziadm4772} openmaintainer
+maintainers         {@Hyp4tia gmail.com:ziadm4772} openmaintainer
 
 description         Markdown previews in Finder QuickLook with diagrams and math
 long_description    Osh is a macOS QuickLook extension for Markdown files. \

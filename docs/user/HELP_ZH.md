@@ -119,4 +119,4 @@ flowchart TD
 
 1. 查阅高级故障排除指南：[`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
 2. 提交反馈与问题：
-   - GitHub Issues: <https://github.com/Zeyadistired/Osh/issues>
+   - GitHub Issues: <https://github.com/Hyp4tia/Osh/issues>

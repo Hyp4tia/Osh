@@ -22,7 +22,7 @@ All security vulnerabilities and hardening items identified and **fixed** during
 **Date:** 2026-08-27  
 **Auditor:** Automated Static Analysis & Deep Data-Flow Security Audit  
 **Scope:** Complete Osh Repository — Swift Host App, QuickLook Extension, TypeScript/Vite Web Renderer, Build Configurations, Entitlements, CI/CD Workflows, Dependencies, and Shell Scripts  
-**Target Repository:** `Zeyadistired/Osh`
+**Target Repository:** `Hyp4tia/Osh`
 
 ---
 
@@ -279,10 +279,10 @@ A complete inventory of all network endpoints and communication channels across 
 
 | # | Endpoint / Destination | Protocol | Trigger Condition | Data Sent | Data Received | Purpose | Transmits Document Content? |
 | :- | :--- | :--- | :--- | :--- | :--- | :--- | :---: |
-| **1** | `raw.githubusercontent.com/Zeyadistired/Osh/main/appcast.xml` | HTTPS | Periodic or user-initiated update check | App Version, macOS Version | XML Appcast metadata | Sparkle Auto-Update | **NO** |
-| **2** | `github.com/Zeyadistired/Osh/releases/download/*` | HTTPS | User clicks "Install Update" | Standard HTTP GET | Signed DMG archive | Update Download | **NO** |
+| **1** | `raw.githubusercontent.com/Hyp4tia/Osh/main/appcast.xml` | HTTPS | Periodic or user-initiated update check | App Version, macOS Version | XML Appcast metadata | Sparkle Auto-Update | **NO** |
+| **2** | `github.com/Hyp4tia/Osh/releases/download/*` | HTTPS | User clicks "Install Update" | Standard HTTP GET | Signed DMG archive | Update Download | **NO** |
 | **3** | Arbitrary Remote Image URLs (`http://`, `https://`) | HTTP / HTTPS | Rendering Markdown containing `![alt](https://...)` | Standard HTTP GET headers (client IP exposed) | Image binary data | Remote Image Rendering | **NO** (Only image URL requested) |
-| **4** | `github.com/Zeyadistired/Osh/*` | HTTPS | User clicks Help / Feedback menu items | None (Opens in system browser) | Webpage content | Documentation & Issues | **NO** |
+| **4** | `github.com/Hyp4tia/Osh/*` | HTTPS | User clicks Help / Feedback menu items | None (Opens in system browser) | Webpage content | Documentation & Issues | **NO** |
 | **5** | `*.services.ai.azure.com` | HTTPS | Issue opened on GitHub (CI Workflow only) | Issue Title & Body | Label Classification JSON | Automated Issue Triage | **N/A** (CI Server only; not in client app) |
 
 > [!IMPORTANT]

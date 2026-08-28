@@ -119,4 +119,4 @@ flowchart TD
 
 1. اقرأ دليل استكشاف الأخطاء المتقدم: [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)
 2. للإبلاغ عن مشكلة:
-   - مشكلات GitHub: <https://github.com/Zeyadistired/Osh/issues>
+   - مشكلات GitHub: <https://github.com/Hyp4tia/Osh/issues>

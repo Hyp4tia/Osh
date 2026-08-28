@@ -48,7 +48,7 @@
 **格式模板**:
 ```markdown
 ### [Added|Fixed|Changed|Removed]
-- **[Scope]**: [简短描述]。（感谢 [@username](https://github.com/username) 的贡献 [#PR_NUMBER](https://github.com/Zeyadistired/Osh/pull/PR_NUMBER)）
+- **[Scope]**: [简短描述]。（感谢 [@username](https://github.com/username) 的贡献 [#PR_NUMBER](https://github.com/Hyp4tia/Osh/pull/PR_NUMBER)）
   - [技术实现细节 1]
   - [技术实现细节 2]
   - [技术实现细节 3]
@@ -57,7 +57,7 @@
 **示例**:
 ```markdown
 ### Fixed
-- **QuickLook**: 修复双击 Markdown 文件时意外触发"使用默认应用打开"的问题。（感谢 [@sxmad](https://github.com/sxmad) 的贡献 [#2](https://github.com/Zeyadistired/Osh/pull/2)）
+- **QuickLook**: 修复双击 Markdown 文件时意外触发"使用默认应用打开"的问题。（感谢 [@sxmad](https://github.com/sxmad) 的贡献 [#2](https://github.com/Hyp4tia/Osh/pull/2)）
   - 通过自定义 `InteractiveWebView` 子类拦截鼠标事件，防止事件冒泡到 QuickLook 宿主。
   - 添加 `NSClickGestureRecognizer` 拦截双击手势，确保 WebView 内的交互（如文本选择）不受影响。
   - 实现 `acceptsFirstMouse(for:)` 方法，允许 WebView 直接响应首次点击事件。
@@ -140,7 +140,7 @@ gh release create "v<VERSION>" build/artifacts/Osh.dmg \
 
 检查以下内容：
 
-- [ ] GitHub Release 已创建: https://github.com/Zeyadistired/Osh/releases/tag/v<VERSION>
+- [ ] GitHub Release 已创建: https://github.com/Hyp4tia/Osh/releases/tag/v<VERSION>
 - [ ] DMG 文件已上传
 - [ ] Release Notes 包含所有 PR 的感谢信息
 - [ ] Git tag 已推送
@@ -347,7 +347,7 @@ echo "📝 Suggested CHANGELOG Entry:"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "### [TODO: Category]"
-echo "- **[TODO: Scope]**: $PR_TITLE。（感谢 [@$PR_AUTHOR](https://github.com/$PR_AUTHOR) 的贡献 [#$PR_NUMBER](https://github.com/Zeyadistired/Osh/pull/$PR_NUMBER)）"
+echo "- **[TODO: Scope]**: $PR_TITLE。（感谢 [@$PR_AUTHOR](https://github.com/$PR_AUTHOR) 的贡献 [#$PR_NUMBER](https://github.com/Hyp4tia/Osh/pull/$PR_NUMBER)）"
 echo "  - [TODO: 技术实现细节 1]"
 echo "  - [TODO: 技术实现细节 2]"
 echo ""
@@ -450,7 +450,7 @@ gh issue comment <NUMBER> --body "..."
 
 **英文 issue**:
 ```
-Fixed in [vX.Y.Z](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
+Fixed in [vX.Y.Z](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z).
 
 **What changed:**
 - [specific fix relevant to this issue]
@@ -459,12 +459,12 @@ Fixed in [vX.Y.Z](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
 \`\`\`bash
 brew update && brew upgrade --cask osh
 \`\`\`
-Or download the DMG from the [Releases page](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
+Or download the DMG from the [Releases page](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z).
 ```
 
 **中文 issue**:
 ```
-已在 [vX.Y.Z](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z) 中修复。
+已在 [vX.Y.Z](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z) 中修复。
 
 **修复内容：**
 - [与此 issue 相关的具体修复]
@@ -473,7 +473,7 @@ Or download the DMG from the [Releases page](https://github.com/Zeyadistired/Osh
 \`\`\`bash
 brew update && brew upgrade --cask osh
 \`\`\`
-或从 [Releases 页面](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z) 直接下载 DMG。
+或从 [Releases 页面](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z) 直接下载 DMG。
 ```
 
 ---

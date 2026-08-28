@@ -3,9 +3,9 @@
   <h1 align="center">Osh <samp>ⲱϣ</samp></h1>
   <p align="center"><strong>Un lector de Markdown y extensión QuickLook elegante y ligero para macOS.</strong></p>
   <p align="center">
-    <a href="https://github.com/Zeyadistired/Osh/releases"><img src="https://img.shields.io/github/v/release/Zeyadistired/Osh?include_prereleases&style=flat-square&color=blue" alt="Versión"></a>
-    <a href="https://github.com/Zeyadistired/Osh/stargazers"><img src="https://img.shields.io/github/stars/Zeyadistired/Osh?style=flat-square&color=gold" alt="Estrellas"></a>
-    <a href="https://github.com/Zeyadistired/Osh/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Zeyadistired/Osh?style=flat-square" alt="Licencia"></a>
+    <a href="https://github.com/Hyp4tia/Osh/releases"><img src="https://img.shields.io/github/v/release/Hyp4tia/Osh?include_prereleases&style=flat-square&color=blue" alt="Versión"></a>
+    <a href="https://github.com/Hyp4tia/Osh/stargazers"><img src="https://img.shields.io/github/stars/Hyp4tia/Osh?style=flat-square&color=gold" alt="Estrellas"></a>
+    <a href="https://github.com/Hyp4tia/Osh/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Hyp4tia/Osh?style=flat-square" alt="Licencia"></a>
     <img src="https://img.shields.io/badge/platform-macOS%2011%2B-lightgrey?style=flat-square" alt="macOS">
   </p>
   <p align="center">
@@ -21,7 +21,7 @@
 </p>
 
 > [!NOTE]
-> **Osh está actualmente en Beta Pública (v1.0.5 Beta).** Las funciones y el pulido visual evolucionan rápidamente. Si encuentras algún problema o tienes sugerencias, ¡no dudes en [abrir un issue](https://github.com/Zeyadistired/Osh/issues)!.
+> **Osh está actualmente en Beta Pública (v1.0.5 Beta).** Las funciones y el pulido visual evolucionan rápidamente. Si encuentras algún problema o tienes sugerencias, ¡no dudes en [abrir un issue](https://github.com/Hyp4tia/Osh/issues)!.
 
 ---
 
@@ -112,7 +112,7 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 > 🛡️ **Seguridad y privacidad:** Consulte el informe completo de auditoría de seguridad en [Security_Audit.md](Security_Audit.md).
 
 ### Descarga directa (DMG)
-1. Descargue el archivo **`Osh.dmg`** desde [GitHub Releases](https://github.com/Zeyadistired/Osh/releases).
+1. Descargue el archivo **`Osh.dmg`** desde [GitHub Releases](https://github.com/Hyp4tia/Osh/releases).
 2. Abra la imagen de disco y arrastre **Osh.app** a su carpeta de **Aplicaciones**.
 3. Inicie Osh una vez desde Aplicaciones para registrar la extensión de QuickLook en macOS.
 
@@ -184,7 +184,7 @@ Requisitos: macOS 11+, Xcode, Node.js 18+, y `xcodegen` (`brew install xcodegen`
 
 ```bash
 # Clonar el repositorio
-git clone https://github.com/Zeyadistired/Osh.git
+git clone https://github.com/Hyp4tia/Osh.git
 cd Osh
 
 # Compilar e instalar localmente

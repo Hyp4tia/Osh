@@ -126,7 +126,7 @@ gh issue comment <NUMBER> --body "..."
 
 ### Issue Reply Template (English)
 ```
-Fixed in [vX.Y.Z](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
+Fixed in [vX.Y.Z](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z).
 
 **What changed:**
 - [specific fix relevant to this issue]
@@ -135,12 +135,12 @@ Fixed in [vX.Y.Z](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
 \`\`\`bash
 brew update && brew upgrade --cask osh
 \`\`\`
-Or download the DMG from the [Releases page](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z).
+Or download the DMG from the [Releases page](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z).
 ```
 
 ### Issue Reply Template (Chinese)
 ```
-已在 [vX.Y.Z](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z) 中修复。
+已在 [vX.Y.Z](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z) 中修复。
 
 **修复内容：**
 - [与此 issue 相关的具体修复]
@@ -149,7 +149,7 @@ Or download the DMG from the [Releases page](https://github.com/Zeyadistired/Osh
 \`\`\`bash
 brew update && brew upgrade --cask osh
 \`\`\`
-或从 [Releases 页面](https://github.com/Zeyadistired/Osh/releases/tag/vX.Y.Z) 直接下载 DMG。
+或从 [Releases 页面](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z) 直接下载 DMG。
 ```
 
 ## ANTI-PATTERNS
