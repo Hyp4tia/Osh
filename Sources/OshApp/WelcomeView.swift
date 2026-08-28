@@ -277,7 +277,7 @@ struct WelcomeView: View {
                 DocumentImportController.shared.importAndConvertDocument()
             }) {
                 HStack(spacing: 6) {
-                    Image(systemName: "arrow.triangle.2.circlepath.doc")
+                    Image(systemName: "arrow.triangle.2.circlepath")
                         .font(.system(size: 12, weight: .medium))
                     Text(NSLocalizedString("Convert Document to Markdown… (PDF, Office, CSV)", comment: "Convert document action button"))
                         .font(.system(size: 12, weight: .medium))
