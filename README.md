@@ -1,7 +1,7 @@
 <p align="center">
   <img src="docs/assets/icon.png" alt="Osh Icon" width="128" height="128">
   <h1 align="center">Osh <samp>ⲱϣ</samp></h1>
-  <p align="center"><strong>A quiet, beautiful Markdown reader & QuickLook extension for macOS.</strong></p>
+  <p align="center"><strong>A quiet, simple Markdown, AI .Skill files reader & QuickLook extension for macOS.</strong></p>
   <p align="center">
     <a href="https://github.com/Zeyadistired/Osh/releases"><img src="https://img.shields.io/github/v/release/Zeyadistired/Osh?include_prereleases&style=flat-square&color=blue" alt="Release"></a>
     <a href="https://github.com/Zeyadistired/Osh/stargazers"><img src="https://img.shields.io/github/stars/Zeyadistired/Osh?style=flat-square&color=gold" alt="Stars"></a>
