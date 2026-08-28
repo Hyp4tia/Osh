@@ -105,7 +105,7 @@ fi
 DATE_STR=$(date "+%Y-%m-%d")
 TEMP_CHANGELOG=$(mktemp)
 sed "s/^## \[Unreleased\]$/## [Unreleased]\\
-_无待发布的变更_\\
+_No pending unreleased changes._\\
 \\
 ## [$NEW_FULL_VERSION] - $DATE_STR/" "$CHANGELOG_FILE" > "$TEMP_CHANGELOG"
 mv "$TEMP_CHANGELOG" "$CHANGELOG_FILE"
