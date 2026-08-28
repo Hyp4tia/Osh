@@ -12,40 +12,38 @@ fi
 
 BUMP_TYPE=${1:-patch}
 
-if [[ "$BUMP_TYPE" == "minus" ]]; then
-    BUMP_TYPE="minor"
-fi
-
-if [[ "$BUMP_TYPE" != "major" && "$BUMP_TYPE" != "minor" && "$BUMP_TYPE" != "patch" ]]; then
-    echo "❌ Error: Invalid bump type '$BUMP_TYPE'. Use major, minor, or patch."
-    exit 1
-fi
-
 if [ ! -f "$VERSION_FILE" ]; then
     echo "1.0.0" > "$VERSION_FILE"
 fi
 
 CURRENT_FULL_VERSION=$(cat "$VERSION_FILE")
-IFS='.' read -r major minor build <<< "$CURRENT_FULL_VERSION"
+IFS='.' read -r major minor patch <<< "$CURRENT_FULL_VERSION"
+major=${major:-1}
+minor=${minor:-0}
+patch=${patch:-0}
 
-# Get current git commit count for build number alignment
-COMMIT_COUNT=$(git rev-list --count HEAD)
-
-if [[ "$BUMP_TYPE" == "major" ]]; then
+if [[ "$BUMP_TYPE" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    NEW_FULL_VERSION="$BUMP_TYPE"
+    echo "🚀 Setting explicit version: $CURRENT_FULL_VERSION -> $NEW_FULL_VERSION"
+elif [[ "$BUMP_TYPE" == "major" ]]; then
     major=$((major + 1))
     minor=0
-    build=$COMMIT_COUNT
-    echo "🚀 Bumping Major Version: $CURRENT_FULL_VERSION -> $major.$minor.$build (aligned with commit #$COMMIT_COUNT)"
-elif [[ "$BUMP_TYPE" == "minor" ]]; then
+    patch=0
+    NEW_FULL_VERSION="$major.$minor.$patch"
+    echo "🚀 Bumping Major Version: $CURRENT_FULL_VERSION -> $NEW_FULL_VERSION"
+elif [[ "$BUMP_TYPE" == "minor" || "$BUMP_TYPE" == "minus" ]]; then
     minor=$((minor + 1))
-    build=$COMMIT_COUNT
-    echo "🚀 Bumping Minor Version: $CURRENT_FULL_VERSION -> $major.$minor.$build (aligned with commit #$COMMIT_COUNT)"
+    patch=0
+    NEW_FULL_VERSION="$major.$minor.$patch"
+    echo "🚀 Bumping Minor Version: $CURRENT_FULL_VERSION -> $NEW_FULL_VERSION"
 elif [[ "$BUMP_TYPE" == "patch" ]]; then
-    build=$COMMIT_COUNT
-    echo "🚀 Patch Version: $CURRENT_FULL_VERSION -> $major.$minor.$build (aligned with commit #$COMMIT_COUNT)"
+    patch=$((patch + 1))
+    NEW_FULL_VERSION="$major.$minor.$patch"
+    echo "🚀 Bumping Patch Version: $CURRENT_FULL_VERSION -> $NEW_FULL_VERSION"
+else
+    echo "❌ Error: Invalid bump type '$BUMP_TYPE'. Use major, minor, patch, or X.Y.Z."
+    exit 1
 fi
-
-NEW_FULL_VERSION="$major.$minor.$build"
 
 echo "🎯 Target Version: $NEW_FULL_VERSION"
 
@@ -158,7 +156,7 @@ if [ -n "$MACPORTS_TARBALL" ] && [ -f "$MACPORTS_TARBALL" ]; then
     RELEASE_ASSETS="$RELEASE_ASSETS $MACPORTS_TARBALL"
 fi
 gh release create "v$NEW_FULL_VERSION" $RELEASE_ASSETS \
-    --title "v$NEW_FULL_VERSION" \
+    --title "v$NEW_FULL_VERSION Beta" \
     --notes-file "$RELEASE_NOTES_FILE" \
     --draft=false \
     --prerelease=false

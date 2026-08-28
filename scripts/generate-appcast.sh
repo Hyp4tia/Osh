@@ -157,11 +157,11 @@ if in_list:
 
 print(''.join(html_lines))
 ")
-CHANGELOG_HTML="<h2>What's Changed in v$FULL_VERSION</h2>${CHANGELOG_HTML}<p><a href=\"$RELEASE_URL\">View Full Release Notes</a></p>"
+CHANGELOG_HTML="<h2>What's Changed in v$FULL_VERSION Beta</h2>${CHANGELOG_HTML}<p><a href=\"$RELEASE_URL\">View Full Release Notes</a></p>"
 
 TEMP_ITEM=$(cat <<EOF
         <item>
-            <title>Version $FULL_VERSION</title>
+            <title>Version $FULL_VERSION Beta</title>
             <link>$RELEASE_URL</link>
             <sparkle:version>$BUILD_NUMBER</sparkle:version>
             <sparkle:shortVersionString>$FULL_VERSION</sparkle:shortVersionString>

@@ -12,12 +12,10 @@ generate: build_renderer
 	fi
 	@if [ ! -f .version ]; then echo "1.0.0" > .version; fi
 	@full_v=$$(cat .version); \
-	major=$$(echo $$full_v | cut -d'.' -f1); \
-	minor=$$(echo $$full_v | cut -d'.' -f2); \
-	build=$$(echo $$full_v | cut -d'.' -f3); \
-	echo "Generating Project with Version: $$full_v (Major: $$major, Minor: $$minor, Build: $$build)"; \
+	commit_count=$$(git rev-list --count HEAD 2>/dev/null || echo "1"); \
+	echo "Generating Project with Version: $$full_v (Build: $$commit_count)"; \
 	rm -rf Osh.xcodeproj; \
-	MARKETING_VERSION=$$full_v CURRENT_PROJECT_VERSION=$$build xcodegen generate --quiet
+	MARKETING_VERSION=$$full_v CURRENT_PROJECT_VERSION=$$commit_count xcodegen generate --quiet
 
 app: generate
 	@echo "🔨 Building application in $(or $(CONFIGURATION),Release) configuration..."
