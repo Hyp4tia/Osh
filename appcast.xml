@@ -7,6 +7,23 @@
         <language>en</language>
 
         <item>
+            <title>Version 1.0.7</title>
+            <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.7</link>
+            <sparkle:version>7</sparkle:version>
+            <sparkle:shortVersionString>1.0.7</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
+            <pubDate>Fri, 28 Aug 2026 23:04:10 +0000</pubDate>
+            <enclosure
+                url="https://github.com/Hyp4tia/Osh/releases/download/v1.0.7/Osh.dmg"
+                sparkle:edSignature="+5hUpvs32ZFOXgx5pkQoE+/8CqlmGtJcWb1uJ9gLh8N+Yh4XlEWTd70XkigsuVCGRncWzwtTfp1Jk3O2Az9iBQ=="
+                length="38075964"
+                type="application/octet-stream" />
+            <description><![CDATA[
+                <h2>What's Changed in v1.0.7</h2><h3>Added</h3><ul><li><strong>Automatic Update Check Toggle</strong>: Added user control for automatic background update checking in <strong>Settings > Advanced</strong>:</li><li>&nbsp;&nbsp;&nbsp;&nbsp;Allows users to enable or disable automatic update checks via Sparkle.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;Fully localized in Arabic, German, English, Spanish, French, and Simplified Chinese.</li></ul><p>Security & Hardening</p><ul><li><strong>HTML Export Image Containment & MIME Validation</strong>: Added <code>HTMLExportInliner</code> to safely inline local image assets during standalone HTML export with strict MIME-type allowlisting, directory boundary verification, and symlink escape prevention.</li><li><strong>SVG & Error Rendering Sanitization</strong>: Hardened dynamic Mermaid diagram and Typst math block rendering with <code>DOMPurify</code> SVG profile sanitization and replaced raw <code>innerHTML</code> error injections with safe DOM element construction.</li><li><strong>CodeQL Polynomial ReDoS Remediation</strong>: Replaced regular-expression backtracking in the Mermaid Gantt task preprocessor with a deterministic, linear-time index scanner, neutralizing potential catastrophic backtracking Denial-of-Service vectors.</li><li><strong>Dependency Vulnerability Hardening</strong>: Audited and upgraded direct and transitive npm dependencies (<code>katex</code>, <code>markdown-it</code>, <code>mermaid</code>, <code>vite</code>, <code>js-yaml</code>, <code>rollup</code>, <code>ws</code>, <code>nanoid</code>, <code>postcss</code>, etc.) with strict dependency overrides resolving upstream advisory warnings.</li></ul><h3>Fixed</h3><ul><li><strong>Document Converter Robustness</strong>: Improved error classification and recovery in the local WebAssembly document converter (<code>document-converter.ts</code>), properly isolating malformed document errors while preserving standard converter fallback handling.</li><li><strong>CI & Test Infrastructure</strong>: Updated CodeQL workflow macOS runner destination parameters and extended cold-runner test timeouts for complex spreadsheet conversion test cases.</li></ul><p><a href="https://github.com/Hyp4tia/Osh/releases/tag/v1.0.7">View Full Release Notes</a></p>
+            ]]></description>
+        </item>
+        
+        <item>
             <title>Version 1.0.6 Beta</title>
             <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.6-beta</link>
             <sparkle:version>6</sparkle:version>
