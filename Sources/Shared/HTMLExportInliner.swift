@@ -46,53 +46,74 @@ public enum HTMLExportInliner {
                 continue
             }
 
-            let cleanedPath = decodedPath.hasPrefix("/") ? decodedPath : "/" + decodedPath
-            let candidateURL = URL(fileURLWithPath: cleanedPath)
-            let canonicalURL = candidateURL.resolvingSymlinksInPath().standardizedFileURL
-            let ext = canonicalURL.pathExtension.lowercased()
+            // 1. Strict traversal protection
+            if decodedPath.contains("..") || decodedPath.contains("\0") {
+                os_log("HTMLExportInliner: Rejected path traversal sequence: %{public}@", log: logger, type: .error, rawPath)
+                continue
+            }
 
-            // 1. Whitelist MIME/extension validation
+            let ext = (decodedPath as NSString).pathExtension.lowercased()
             guard let mimeType = allowedMIMETypes[ext] else {
                 os_log("HTMLExportInliner: Rejected non-whitelisted image extension: %{public}@", log: logger, type: .error, ext)
                 continue
             }
 
-            // 2. Canonicalization & containment check
-            var isAllowed = false
+            // 2. Resolve target URL strictly against canonical base directory or explicitly allowed URLs
+            var targetURL: URL?
+
+            let cleanedPath = decodedPath.hasPrefix("/") ? decodedPath : "/" + decodedPath
+            let candidateURL = URL(fileURLWithPath: cleanedPath).resolvingSymlinksInPath().standardizedFileURL
+            let candidatePath = candidateURL.path
+
             if let canonicalBase = canonicalBaseDirectory {
-                let basePath = canonicalBase.path
-                let filePath = canonicalURL.path
-                if filePath == basePath || filePath.hasPrefix(basePath.hasSuffix("/") ? basePath : "\(basePath)/") {
-                    isAllowed = true
+                let canonicalBasePath = canonicalBase.path
+                if candidatePath == canonicalBasePath || candidatePath.hasPrefix(canonicalBasePath.hasSuffix("/") ? canonicalBasePath : "\(canonicalBasePath)/") {
+                    let relativeSuffix = String(candidatePath.dropFirst(canonicalBasePath.count))
+                    let cleanComponents = relativeSuffix.split(separator: "/").map(String.init)
+                    if !cleanComponents.isEmpty && !cleanComponents.contains(where: { $0.isEmpty || $0 == "." || $0 == ".." }) {
+                        var constructed = canonicalBase
+                        for component in cleanComponents {
+                            constructed = constructed.appendingPathComponent(component, isDirectory: false)
+                        }
+                        targetURL = constructed.resolvingSymlinksInPath().standardizedFileURL
+                    }
                 }
             }
 
-            if !isAllowed && allowedCanonicalPaths.contains(canonicalURL.path) {
-                isAllowed = true
+            if targetURL == nil && allowedCanonicalPaths.contains(candidatePath) {
+                targetURL = candidateURL
             }
 
-            guard isAllowed else {
-                os_log("HTMLExportInliner: Rejected image path outside base directory: %{public}@", log: logger, type: .error, canonicalURL.path)
+            guard let safeURL = targetURL else {
+                os_log("HTMLExportInliner: Rejected image outside permitted base directory: %{public}@", log: logger, type: .error, rawPath)
                 continue
             }
 
             // 3. Regular file check & safe read
             var isDirectory: ObjCBool = false
-            guard FileManager.default.fileExists(atPath: canonicalURL.path, isDirectory: &isDirectory), !isDirectory.boolValue else {
+            guard FileManager.default.fileExists(atPath: safeURL.path, isDirectory: &isDirectory), !isDirectory.boolValue else {
                 continue
             }
 
-            let fileData: Data?
-            if let baseDir = baseDirectory {
-                let hasAccess = baseDir.startAccessingSecurityScopedResource()
-                defer {
-                    if hasAccess {
-                        baseDir.stopAccessingSecurityScopedResource()
+            var fileData: Data?
+            let coordinator = NSFileCoordinator()
+            var coordError: NSError?
+            coordinator.coordinate(readingItemAt: safeURL, options: [], error: &coordError) { coordinatedURL in
+                if let baseDir = baseDirectory {
+                    let hasAccess = baseDir.startAccessingSecurityScopedResource()
+                    defer {
+                        if hasAccess {
+                            baseDir.stopAccessingSecurityScopedResource()
+                        }
                     }
+                    fileData = try? Data(contentsOf: coordinatedURL)
+                } else {
+                    fileData = try? Data(contentsOf: coordinatedURL)
                 }
-                fileData = try? Data(contentsOf: canonicalURL)
-            } else {
-                fileData = try? Data(contentsOf: canonicalURL)
+            }
+
+            if fileData == nil {
+                fileData = try? Data(contentsOf: safeURL)
             }
 
             if let data = fileData {
