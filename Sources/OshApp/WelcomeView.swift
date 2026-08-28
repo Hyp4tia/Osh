@@ -25,6 +25,30 @@ struct WelcomeView: View {
         if let md = UTType(filenameExtension: "md") {
             types.append(md)
         }
+        if let pdf = UTType.pdf as UTType? {
+            types.append(pdf)
+        }
+        if let csv = UTType.commaSeparatedText as UTType? {
+            types.append(csv)
+        }
+        if let docx = UTType(filenameExtension: "docx") {
+            types.append(docx)
+        }
+        if let docxUti = UTType("org.openxmlformats.wordprocessingml.document"), !types.contains(docxUti) {
+            types.append(docxUti)
+        }
+        if let xlsx = UTType(filenameExtension: "xlsx"), !types.contains(xlsx) {
+            types.append(xlsx)
+        }
+        if let xlsxUti = UTType("org.openxmlformats.spreadsheetml.sheet"), !types.contains(xlsxUti) {
+            types.append(xlsxUti)
+        }
+        if let pptx = UTType(filenameExtension: "pptx"), !types.contains(pptx) {
+            types.append(pptx)
+        }
+        if let pptxUti = UTType("org.openxmlformats.presentationml.presentation"), !types.contains(pptxUti) {
+            types.append(pptxUti)
+        }
         let skillTypes = UTType.types(tag: "skill", tagClass: .filenameExtension, conformingTo: nil)
         for st in skillTypes {
             if !types.contains(st) {
@@ -85,6 +109,16 @@ struct WelcomeView: View {
         }
         .onReceive(Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()) { _ in
             closeIfAnyDocumentIsOpen()
+        }
+        .alert(isPresented: Binding(
+            get: { openErrorMessage != nil },
+            set: { if !$0 { openErrorMessage = nil } }
+        )) {
+            Alert(
+                title: Text(NSLocalizedString("Cannot Open Document", comment: "Error title")),
+                message: Text(openErrorMessage ?? ""),
+                dismissButton: .default(Text(NSLocalizedString("OK", comment: "OK button")))
+            )
         }
     }
 
@@ -205,38 +239,56 @@ struct WelcomeView: View {
     }
 
     private var hero: some View {
-        Button(action: openFilePicker) {
-            VStack(spacing: 8) {
-                Image(systemName: "doc.badge.plus")
-                    .font(.system(size: 24, weight: .regular))
-                    .foregroundColor(isTargeted ? Color.accentColor : Color.secondary)
+        VStack(spacing: 10) {
+            Button(action: openFilePicker) {
+                VStack(spacing: 8) {
+                    Image(systemName: "doc.badge.plus")
+                        .font(.system(size: 24, weight: .regular))
+                        .foregroundColor(isTargeted ? Color.accentColor : Color.secondary)
 
-                Text(NSLocalizedString("Open Markdown File…", comment: "Open file button"))
-                    .font(.system(size: 13.5, weight: .medium))
-                    .foregroundColor(.primary)
+                    Text(NSLocalizedString("Open Markdown File…", comment: "Open file button"))
+                        .font(.system(size: 13.5, weight: .medium))
+                        .foregroundColor(.primary)
 
-                Text(NSLocalizedString("or drop files here", comment: "Drop hint"))
-                    .font(.system(size: 12))
-                    .foregroundColor(.secondary)
+                    Text(NSLocalizedString("or drop Markdown, PDF, Office, or CSV files here", comment: "Drop hint"))
+                        .font(.system(size: 12))
+                        .foregroundColor(.secondary)
 
-                if isOpening {
-                    ProgressView()
-                        .padding(.top, 2)
+                    if isOpening {
+                        ProgressView()
+                            .padding(.top, 2)
+                    }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .padding(.horizontal, 24)
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .padding(.horizontal, 24)
+            .buttonStyle(WelcomeDropZoneButtonStyle(isTargeted: isTargeted))
+            .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .disabled(isOpening)
+            .frame(height: 136)
+            .padding(.horizontal, 44)
+            .onDrop(of: [UTType.fileURL.identifier], isTargeted: $isTargeted) { providers in
+                hasCompletedOnboarding = true
+                return handleDrop(providers: providers)
+            }
+            .accessibilityHint(Text(NSLocalizedString("Drag & drop .md/.skill/.docx/.pdf/.xlsx/.pptx/.csv here", comment: "Drop hint")))
+
+            Button(action: {
+                DocumentImportController.shared.importAndConvertDocument()
+            }) {
+                HStack(spacing: 6) {
+                    Image(systemName: "arrow.triangle.2.circlepath.doc")
+                        .font(.system(size: 12, weight: .medium))
+                    Text(NSLocalizedString("Convert Document to Markdown… (PDF, Office, CSV)", comment: "Convert document action button"))
+                        .font(.system(size: 12, weight: .medium))
+                }
+                .padding(.vertical, 6)
+                .padding(.horizontal, 14)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(ConvertDocumentButtonStyle())
+            .disabled(isOpening)
         }
-        .buttonStyle(WelcomeDropZoneButtonStyle(isTargeted: isTargeted))
-        .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .disabled(isOpening)
-        .frame(height: 136)
-        .padding(.horizontal, 44)
-        .onDrop(of: [UTType.fileURL.identifier], isTargeted: $isTargeted) { providers in
-            hasCompletedOnboarding = true
-            return handleDrop(providers: providers)
-        }
-        .accessibilityHint(Text(NSLocalizedString("Drag & drop .md/.skill/.mdx/.txt here", comment: "Drop hint")))
     }
 
     @ViewBuilder
@@ -361,19 +413,33 @@ struct WelcomeView: View {
 
         hasCompletedOnboarding = true
         var remaining = urls.count
-        for url in urls {
-            NSDocumentController.shared.openDocument(withContentsOf: url, display: true) { _, _, error in
+
+        let finishOne: (Error?) -> Void = { error in
+            DispatchQueue.main.async {
                 if let error {
-                    DispatchQueue.main.async {
-                        openErrorMessage = error.localizedDescription
+                    openErrorMessage = error.localizedDescription
+                }
+                remaining -= 1
+                if remaining <= 0 {
+                    isOpening = false
+                }
+            }
+        }
+
+        for url in urls {
+            if DocumentConverter.isSupported(url: url) {
+                DocumentConverter.shared.convert(fileURL: url) { result in
+                    switch result {
+                    case .success(let markdown):
+                        DocumentImportController.shared.openConvertedDraft(markdown: markdown, sourceURL: url)
+                        finishOne(nil)
+                    case .failure(let error):
+                        finishOne(error)
                     }
                 }
-
-                DispatchQueue.main.async {
-                    remaining -= 1
-                    if remaining <= 0 {
-                        isOpening = false
-                    }
+            } else {
+                NSDocumentController.shared.openDocument(withContentsOf: url, display: true) { _, _, error in
+                    finishOne(error)
                 }
             }
         }
@@ -479,6 +545,35 @@ private struct WelcomeDropZoneButtonStyle: ButtonStyle {
             .scaleEffect(configuration.isPressed && !reduceMotion ? 0.985 : 1.0)
             .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
             .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isTargeted)
+            .onHover { isHovered = $0 }
+    }
+}
+
+private struct ConvertDocumentButtonStyle: ButtonStyle {
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isHovered = false
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .foregroundColor(isHovered ? .primary : .secondary)
+            .background(
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(
+                        configuration.isPressed
+                            ? Color.primary.opacity(0.08)
+                            : (isHovered ? Color.primary.opacity(0.06) : Color.primary.opacity(0.03))
+                    )
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .stroke(
+                        isHovered ? Color.secondary.opacity(0.35) : Color.secondary.opacity(0.14),
+                        lineWidth: 1
+                    )
+            )
+            .scaleEffect(configuration.isPressed && !reduceMotion ? 0.985 : 1.0)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.12), value: isHovered)
+            .animation(reduceMotion ? .none : .easeInOut(duration: 0.08), value: configuration.isPressed)
             .onHover { isHovered = $0 }
     }
 }

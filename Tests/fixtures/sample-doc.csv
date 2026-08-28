@@ -1,0 +1,6 @@
+Product,Category,Price,Quantity,Description,Notes
+Widget A,Hardware,29.99,100,"Standard widget, version 1.0",In Stock
+Widget B,Hardware,49.95,50,"High-performance widget, dual-core",Low Stock
+"Gadget Pro (جهاز برو)",Electronics,199.00,25,"Premium device, includes \"Free\" case & charger",Featured
+Simple Item,General,9.50,500,No special description,
+"Unicode Test (Café / العربية)",Special,0.00,0,"Commas, inside, quotes, and \"escaped quotes\"",

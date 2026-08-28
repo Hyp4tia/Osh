@@ -9,10 +9,18 @@ struct MarkdownDocument: FileDocument {
 
     var text: String
     var packageContext: PackageContext?
+    var suggestedTitle: String?
 
-    init(text: String = "", packageContext: PackageContext? = nil) {
-        self.text = text
-        self.packageContext = packageContext
+    init(text: String = "", packageContext: PackageContext? = nil, suggestedTitle: String? = nil) {
+        if let draft = ConvertedDocumentDraftStore.shared.popDraft() {
+            self.text = draft.text
+            self.packageContext = nil
+            self.suggestedTitle = draft.suggestedFilename
+        } else {
+            self.text = text
+            self.packageContext = packageContext
+            self.suggestedTitle = suggestedTitle
+        }
     }
 
     static var readableContentTypes: [UTType] {

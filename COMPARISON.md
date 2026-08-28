@@ -32,6 +32,7 @@ Osh is designed specifically for **fast, native, distraction-free Markdown and A
 | PDF Export | **✓** | ✓ | — | — | **✓** | **✓** |
 | Standalone HTML Export | **✓** | ✓ | ✓ | ✓ | **✓** | **✓** |
 | DOCX Export | **✓** | ~ | — | — | **✓** | **✓** |
+| Document Conversion (PDF/Office/CSV → MD) | **✓** | — | — | — | — | ~ |
 | App Sandbox Security | **✓** | ✓ | ✓ | — | ✓ | — |
 | Hardened CSP & DOMPurify | **✓** | — | — | — | — | — |
 | Public Security Audit | **✓** | — | — | — | — | — |

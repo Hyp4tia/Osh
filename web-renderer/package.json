@@ -10,6 +10,7 @@
     "playground": "vite --port 5174 --open /playground.html"
   },
   "dependencies": {
+    "@firecrawl/anydoc-wasm": "^0.2.4",
     "@hpcc-js/wasm-graphviz": "^1.21.0",
     "@iktakahiro/markdown-it-katex": "^4.0.1",
     "@myriaddreamin/typst-ts-renderer": "^0.7.0-rc2",

@@ -1523,4 +1523,39 @@ window.updateReadingTheme = function(theme: string): void {
     applyReadingTheme(theme);
 };
 
+// --- Document Converter (AnyDoc) ------------------------------------------
+function base64ToUint8Array(base64: string): Uint8Array {
+    const binaryString = atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes;
+}
+
+window.convertDocumentToMarkdown = async function(base64Data: string, formatHint?: string) {
+    try {
+        const { convertDocumentToMarkdown } = await import('./document-converter');
+        const bytes = base64ToUint8Array(base64Data);
+        return await convertDocumentToMarkdown(bytes, formatHint);
+    } catch (e: any) {
+        return {
+            success: false,
+            error: e?.message || 'Failed to decode input document data.',
+            errorCode: 'malformed'
+        };
+    }
+};
+
+window.detectDocumentFormat = async function(base64Data: string) {
+    try {
+        const { detectDocumentFormat } = await import('./document-converter');
+        const bytes = base64ToUint8Array(base64Data);
+        return await detectDocumentFormat(bytes);
+    } catch {
+        return undefined;
+    }
+};
+
 logToSwift("rendererReady");

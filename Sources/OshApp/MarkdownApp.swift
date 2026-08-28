@@ -52,6 +52,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         return false
     }
 
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        let docs = NSDocumentController.shared.documents
+        let hasEdited = docs.contains { $0.isDocumentEdited }
+        if hasEdited {
+            NSDocumentController.shared.closeAllDocuments(withDelegate: self, didCloseAllSelector: #selector(documentController(_:didCloseAll:contextInfo:)), contextInfo: nil)
+            return .terminateLater
+        }
+        return .terminateNow
+    }
+
+    @objc func documentController(_ docController: NSDocumentController, didCloseAll didCloseAllFlag: Bool, contextInfo: UnsafeMutableRawPointer?) {
+        NSApplication.shared.reply(toApplicationShouldTerminate: didCloseAllFlag)
+    }
+
     func applicationWillTerminate(_ notification: Notification) {
         AppearancePreference.shared.flushSharedPreferences()
     }
@@ -82,6 +96,15 @@ struct MarkdownApp: App {
             )
         }
         .commands {
+            CommandGroup(after: .newItem) {
+                Button(action: {
+                    DocumentImportController.shared.importAndConvertDocument()
+                }) {
+                    Text(NSLocalizedString("Convert Document to Markdown…", comment: "Convert document menu item"))
+                }
+                .keyboardShortcut("i", modifiers: [.command, .shift])
+            }
+
             CommandGroup(after: .saveItem) {
                 Button(action: {
                     NotificationCenter.default.post(name: .toggleEditing, object: nil)
@@ -432,7 +455,33 @@ private struct DocumentPreviewScene: View {
         .background(HostWindowCapture { window in
             hostWindow = window
             window.appearance = preference.currentMode.nsAppearance
+            if fileURL == nil, let title = document.suggestedTitle, !title.isEmpty {
+                let applyDocumentState: () -> Void = {
+                    if let doc = window.windowController?.document as? NSDocument {
+                        doc.displayName = title
+                        doc.updateChangeCount(.changeDone)
+                    }
+                    window.title = title
+                    window.isDocumentEdited = true
+                }
+                applyDocumentState()
+                DispatchQueue.main.async {
+                    applyDocumentState()
+                }
+            }
         })
+        .onAppear {
+            if fileURL == nil, let title = document.suggestedTitle, !title.isEmpty {
+                DispatchQueue.main.async {
+                    if let doc = hostWindow?.windowController?.document as? NSDocument {
+                        doc.displayName = title
+                        doc.updateChangeCount(.changeDone)
+                    }
+                    hostWindow?.title = title
+                    hostWindow?.isDocumentEdited = true
+                }
+            }
+        }
         .background(ToolbarFeedbackObserver { result in
             switch result {
             case .reloadSuccess:

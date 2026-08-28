@@ -8,7 +8,8 @@ module.exports = {
     '^markdown-it-github-alerts$': '<rootDir>/test/__mocks__/markdown-it-github-alerts.js',
     '^vega$': '<rootDir>/test/__mocks__/vega.js',
     '^vega-lite$': '<rootDir>/test/__mocks__/vega-lite.js',
-    '^@hpcc-js/wasm-graphviz$': '<rootDir>/test/__mocks__/@hpcc-js/wasm-graphviz.js'
+    '^@hpcc-js/wasm-graphviz$': '<rootDir>/test/__mocks__/@hpcc-js/wasm-graphviz.js',
+    '^@firecrawl/anydoc-wasm$': '<rootDir>/test/__mocks__/@firecrawl/anydoc-wasm.js'
   },
   transformIgnorePatterns: [
     'node_modules/(?!tex2typst)'

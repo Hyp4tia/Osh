@@ -125,7 +125,8 @@ git commit -m "chore(release): bump version to $NEW_FULL_VERSION"
 git tag "v$NEW_FULL_VERSION"
 
 echo "☁️ Pushing to remote..."
-git push origin master
+CURRENT_BRANCH=$(git branch --show-current || echo "main")
+git push origin "$CURRENT_BRANCH"
 git push origin "v$NEW_FULL_VERSION"
 
 echo "🔨 Building project and DMG..."
@@ -143,7 +144,7 @@ if ./scripts/create_macports_tarball.sh "$NEW_FULL_VERSION"; then
     if [ -f "macports/Portfile" ]; then
         git add macports/Portfile
         git commit -m "chore(macports): update Portfile checksums for v$NEW_FULL_VERSION" || true
-        git push origin master || true
+        git push origin "$CURRENT_BRANCH" || true
         echo "✅ macports/Portfile committed"
     fi
 else
@@ -178,7 +179,7 @@ if [ -f "./scripts/generate-appcast.sh" ] && [ -x "$SIGN_UPDATE_BIN" ]; then
     if [ -f "appcast.xml" ]; then
         git add appcast.xml
         git commit -m "chore(sparkle): update appcast.xml for v$NEW_FULL_VERSION" || true
-        git push origin master || true
+        git push origin "$CURRENT_BRANCH" || true
         echo "✅ Appcast updated and committed"
     fi
 else

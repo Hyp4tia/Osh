@@ -21,7 +21,7 @@
 </p>
 
 > [!NOTE]
-> **Osh is currently in Public Beta (v1.0.5 Beta).**
+> **Osh is currently in Public Beta (v1.0.6 Beta).**
 > Features and polish are evolving rapidly. If you run into anything unexpected or have suggestions, please feel free to [open an issue](https://github.com/Hyp4tia/Osh/issues).
 
 ---
@@ -65,6 +65,7 @@ Osh focuses on **fast, local Markdown reading on macOS**, while other apps prior
 | PDF export | **✓** | ✓ | — | — | **✓** | **✓** |
 | HTML export | **✓** | ✓ | ✓ | ✓ | **✓** | **✓** |
 | DOCX export | **✓** | ~ | — | — | **✓** | **✓** |
+| Document conversion (PDF/DOCX/XLSX/PPTX/CSV → MD) | **✓** | — | — | — | — | ~ |
 | CLI / automation | **✓** | — | ~ | — | **✓** | — |
 | Public security documentation | **✓** | — | — | — | — | — |
 | License | **GPL-3.0** | GPL-3.0* | GPL-2.0 | MIT | Proprietary | Proprietary |

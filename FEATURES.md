@@ -63,6 +63,17 @@ Osh is a native macOS Markdown and AI `.skill` reader, editor, and QuickLook ext
 
 ---
 
+## 🔄 Document Conversion
+
+- **Local Document to Markdown**: Convert `.pdf`, `.docx`, `.xlsx`, `.pptx`, and `.csv` files directly into clean Markdown using Firecrawl AnyDoc WebAssembly.
+- **Excel & Spreadsheet Support**: Automatically parses multiple worksheets into distinct Markdown sections and tables with column headers and cell values.
+- **PowerPoint & Presentation Support**: Extracts slide titles, body text, lists, and tables into structured Markdown slides.
+- **CSV Support**: Formats tabular data into clean GitHub-Flavored Markdown tables with quote handling and full Unicode support.
+- **In-Memory Draft Editing**: Converted files open immediately as new, unsaved documents in Osh, leaving the original source documents untouched.
+- **Offline & Private**: Conversion runs 100% locally on your Mac with zero network calls or cloud dependencies.
+
+---
+
 ## 🛡️ Security & Privacy
 
 - **App Sandbox**: Sandboxed execution with read-only file permissions and security-scoped bookmark protection.

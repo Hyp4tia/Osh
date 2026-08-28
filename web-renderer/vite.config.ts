@@ -20,6 +20,7 @@ export default defineConfig({
             '@myriaddreamin/typst-ts-web-compiler',
             '@myriaddreamin/typst-ts-renderer',
           ],
+          'anydoc-wasm': ['@firecrawl/anydoc-wasm'],
         },
       },
     },

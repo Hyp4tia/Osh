@@ -1,5 +1,14 @@
 ## [Unreleased]
-_无待发布的变更_
+
+### Added
+- **Local Document-to-Markdown Converter**: Convert `.pdf`, `.docx`, `.xlsx`, `.pptx`, and `.csv` files into clean, readable GitHub-Flavored Markdown completely offline:
+  - **Firecrawl AnyDoc WebAssembly Engine**: Integrated client-side AnyDoc WebAssembly parser running locally in the sandboxed web view with zero network dependencies or cloud services.
+  - **In-Memory Draft Workflow**: Converted documents open immediately as new, unsaved documents in Osh (`fileURL == nil`), leaving the source documents and folders completely untouched.
+  - **Native macOS Save & Quit Lifecycle**: Full integration with `NSDocument.updateChangeCount(.changeDone)` and `applicationShouldTerminate:`—closing the window (`⌘W`) or quitting Osh (`⌘Q`) triggers the standard macOS confirmation sheet (**Save**, **Don't Save**, **Cancel**), and pressing `⌘S` opens the standard Save As dialog defaulting to `filename.md`.
+  - **Spreadsheet & Workbook Conversion (`.xlsx`, `.csv`)**: Parses multiple Excel worksheets into distinct Markdown sections and tables with headers and cell values; formats CSV data into clean Markdown tables with quote handling and Unicode preservation.
+  - **Presentation Conversion (`.pptx`)**: Extracts slide titles, body paragraphs, bullet lists, tables, and speaker notes; separates slide boundaries with section dividers; extracts embedded image assets into self-contained base64 data URIs with sanitized alt text.
+  - **Scanned PDF Handling**: Detects image-only/scanned PDF pages and returns clear, structured notifications identifying pages that require OCR.
+  - **Welcome Screen & Menu Entry Points**: Added a dedicated **"Convert Document to Markdown… (PDF, Office, CSV)"** button on the home screen with hover and press animations, drag-and-drop support, and `File > Convert Document to Markdown…` (`⇧⌘I`) shortcut.
 
 ## [1.0.5] - 2026-08-27
 

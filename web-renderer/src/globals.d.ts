@@ -17,4 +17,11 @@ interface Window {
     webkit?: {
         messageHandlers: WebkitMessageHandlers;
     };
+    convertDocumentToMarkdown?: (
+        base64Data: string,
+        formatHint?: string
+    ) => Promise<any>;
+    detectDocumentFormat?: (
+        base64Data: string
+    ) => Promise<string | undefined>;
 }
