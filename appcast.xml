@@ -7,6 +7,23 @@
         <language>en</language>
 
         <item>
+            <title>Version 1.0.75</title>
+            <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.75</link>
+            <sparkle:version>75</sparkle:version>
+            <sparkle:shortVersionString>1.0.75</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
+            <pubDate>Fri, 28 Aug 2026 18:48:58 +0000</pubDate>
+            <enclosure
+                url="https://github.com/Hyp4tia/Osh/releases/download/v1.0.75/Osh.dmg"
+                sparkle:edSignature="CkSz+f+UX2Llz/oOZpSD2Kf/9+NDgHDDX7u/UXxIPf+U2WZEISZmbceuAVQfHP3RNSVXo2dEd6W2hIx6uF+sDQ=="
+                length="37580303"
+                type="application/octet-stream" />
+            <description><![CDATA[
+                <h2>What's Changed in v1.0.75</h2><h3>Added</h3><ul><li><strong>Local Document-to-Markdown Converter</strong>: Convert <code>.pdf</code>, <code>.docx</code>, <code>.xlsx</code>, <code>.pptx</code>, and <code>.csv</code> files into clean, readable GitHub-Flavored Markdown completely offline:</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Firecrawl AnyDoc WebAssembly Engine</strong>: Integrated client-side AnyDoc WebAssembly parser running locally in the sandboxed web view with zero network dependencies or cloud services.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>In-Memory Draft Workflow</strong>: Converted documents open immediately as new, unsaved documents in Osh (<code>fileURL == nil</code>), leaving the source documents and folders completely untouched.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Native macOS Save & Quit Lifecycle</strong>: Full integration with <code>NSDocument.updateChangeCount(.changeDone)</code> and <code>applicationShouldTerminate:</code>—closing the window (<code>⌘W</code>) or quitting Osh (<code>⌘Q</code>) triggers the standard macOS confirmation sheet (<strong>Save</strong>, <strong>Don't Save</strong>, <strong>Cancel</strong>), and pressing <code>⌘S</code> opens the standard Save As dialog defaulting to <code>filename.md</code>.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Spreadsheet & Workbook Conversion (<code>.xlsx</code>, <code>.csv</code>)</strong>: Parses multiple Excel worksheets into distinct Markdown sections and tables with headers and cell values; formats CSV data into clean Markdown tables with quote handling and Unicode preservation.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Presentation Conversion (<code>.pptx</code>)</strong>: Extracts slide titles, body paragraphs, bullet lists, tables, and speaker notes; separates slide boundaries with section dividers; extracts embedded image assets into self-contained base64 data URIs with sanitized alt text.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Scanned PDF Handling</strong>: Detects image-only/scanned PDF pages and returns clear, structured notifications identifying pages that require OCR.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Welcome Screen & Menu Entry Points</strong>: Added a dedicated <strong>"Convert Document to Markdown… (PDF, Office, CSV)"</strong> button on the home screen with hover and press animations, drag-and-drop support, and <code>File > Convert Document to Markdown…</code> (<code>⇧⌘I</code>) shortcut.</li></ul><p><a href="https://github.com/Hyp4tia/Osh/releases/tag/v1.0.75">View Full Release Notes</a></p>
+            ]]></description>
+        </item>
+        
+        <item>
             <title>Version 1.0.5 Beta</title>
             <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.5-beta</link>
             <sparkle:version>5</sparkle:version>
