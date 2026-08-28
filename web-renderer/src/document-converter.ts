@@ -303,8 +303,30 @@ export async function convertDocumentToMarkdown(
             detectedFormat,
         };
     } catch (err: any) {
-        const code: ConversionErrorCode = err?.code || 'generic';
-        let errorMessage = err?.message || 'Document conversion failed.';
+        let code: ConversionErrorCode = err?.code;
+        const rawMessage: string = typeof err?.message === 'string' ? err.message : String(err || '');
+
+        if (!code) {
+            const lowerMsg = rawMessage.toLowerCase();
+            if (
+                lowerMsg.includes('zip') ||
+                lowerMsg.includes('corrupt') ||
+                lowerMsg.includes('malformed') ||
+                lowerMsg.includes('invalid') ||
+                lowerMsg.includes('eof') ||
+                lowerMsg.includes('header') ||
+                lowerMsg.includes('trailer') ||
+                lowerMsg.includes('parse') ||
+                lowerMsg.includes('bad format') ||
+                lowerMsg.includes('unclosed')
+            ) {
+                code = 'malformed';
+            } else {
+                code = 'generic';
+            }
+        }
+
+        let errorMessage = rawMessage || 'Document conversion failed.';
 
         if (code === 'needsOcr') {
             const pageList = Array.isArray(err?.pages) && err.pages.length > 0
@@ -316,7 +338,7 @@ export async function convertDocumentToMarkdown(
         } else if (code === 'unsupported') {
             errorMessage = 'The file format is not supported for document conversion.';
         } else if (code === 'malformed') {
-            errorMessage = 'The document is corrupted or malformed and cannot be parsed.';
+            errorMessage = rawMessage || 'The document is corrupted or malformed and cannot be parsed.';
         } else if (code === 'resourceLimit') {
             errorMessage = 'The document exceeded safe size, decompression, or nesting limits.';
         } else if (code === 'missingPart') {
