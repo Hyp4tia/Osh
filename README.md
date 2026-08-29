@@ -106,7 +106,7 @@ Osh focuses on **fast, local Markdown reading on macOS**, while other apps prior
 
 ### 🌐 Multilingual & RTL
 - **Arabic & Hebrew RTL** — Bidirectional text and UI mirroring.
-- **6 Languages** — English, Arabic, French, German, Spanish, Chinese.
+- **5 Languages** — English, Arabic, French, German, and Spanish.
 - **Localized Help** — Guides follow your selected language.
 
 ### 🛠️ Writing & Export
