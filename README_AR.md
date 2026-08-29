@@ -21,7 +21,7 @@
 </p>
 
 > [!NOTE]
-> **تطبيق Osh (v1.0.7).** إذا واجهتك أي مشكلة أو كان لديك اقتراح، يُرجى [فتح تذكرة على GitHub](https://github.com/Hyp4tia/Osh/issues)!
+> **تطبيق Osh (latest).** إذا واجهتك أي مشكلة أو كان لديك اقتراح، يُرجى [فتح تذكرة على GitHub](https://github.com/Hyp4tia/Osh/issues)!
 
 ---
 

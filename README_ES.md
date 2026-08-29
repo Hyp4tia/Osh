@@ -21,7 +21,7 @@
 </p>
 
 > [!NOTE]
-> **Osh (v1.0.7)** — Si encuentras algún problema o tienes sugerencias, ¡no dudes en [abrir un issue](https://github.com/Hyp4tia/Osh/issues)!
+> **Osh (latest)** — Si encuentras algún problema o tienes sugerencias, ¡no dudes en [abrir un issue](https://github.com/Hyp4tia/Osh/issues)!
 
 ---
 
