@@ -1,5 +1,14 @@
 ## [Unreleased]
-_No pending unreleased changes._
+
+### Security & Hardening
+- **Path Sanitization & Coordinated Asset Inlining**: Refactored `HTMLExportInliner` to pre-sanitize all path components, reject directory traversal (`..`) and null bytes, anchor path resolution strictly to canonical base directories, and confine all filesystem checks and reads within `NSFileCoordinator`.
+- **SVG & Diagram XSS Remediation**: Complete DOMPurify SVG profile sanitization for Mermaid, Vega-Lite, Graphviz, and Typst diagrams with safe DOM element replacement on error states.
+
+### Fixed
+- **UI Symbol Resolution**: Corrected SF Symbol identifier for the document conversion button on the Welcome screen to `arrow.triangle.2.circlepath`, resolving runtime console warnings.
+
+### Documentation
+- **Attribution & Supported Formats**: Added explicit Firecrawl AnyDoc attribution and structured supported formats tables across English, Arabic, and Spanish documentation.
 
 ## [1.0.7] - 2026-08-29
 
