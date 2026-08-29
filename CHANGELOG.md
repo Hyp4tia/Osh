@@ -1,4 +1,7 @@
 ## [Unreleased]
+_No pending unreleased changes._
+
+## [1.0.8] - 2026-08-29
 
 ### Security & Hardening
 - **Path Sanitization & Coordinated Asset Inlining**: Refactored `HTMLExportInliner` to pre-sanitize all path components, reject directory traversal (`..`) and null bytes, anchor path resolution strictly to canonical base directories, and confine all filesystem checks and reads within `NSFileCoordinator`.
