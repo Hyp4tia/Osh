@@ -46,7 +46,24 @@ if [ ! -f "$VERSION_FILE" ]; then
 fi
 
 FULL_VERSION=$(cat "$VERSION_FILE")
-BUILD_NUMBER=$(echo "$FULL_VERSION" | cut -d'.' -f3)
+
+# Extract CFBundleVersion directly from the app inside the DMG
+BUILD_NUMBER=""
+if [ -f "$DMG_FILE" ]; then
+    MOUNT_POINT=$(mktemp -d)
+    if hdiutil attach "$DMG_FILE" -mountpoint "$MOUNT_POINT" -nobrowse -readonly >/dev/null 2>&1; then
+        if [ -f "$MOUNT_POINT/Osh.app/Contents/Info.plist" ]; then
+            BUILD_NUMBER=$(/usr/bin/defaults read "$MOUNT_POINT/Osh.app/Contents/Info.plist" CFBundleVersion 2>/dev/null || true)
+        fi
+        hdiutil detach "$MOUNT_POINT" -quiet >/dev/null 2>&1 || true
+    fi
+    rmdir "$MOUNT_POINT" >/dev/null 2>&1 || true
+fi
+
+# Fallback to git commit count if DMG inspection fails
+if [ -z "$BUILD_NUMBER" ]; then
+    BUILD_NUMBER=$(git rev-list --count HEAD 2>/dev/null || echo "1")
+fi
 
 echo "📝 Generating Sparkle signature for v$FULL_VERSION..."
 echo "   Using: $SIGN_UPDATE"
