@@ -7,6 +7,23 @@
         <language>en</language>
 
         <item>
+            <title>Version 1.0.8</title>
+            <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.8</link>
+            <sparkle:version>8</sparkle:version>
+            <sparkle:shortVersionString>1.0.8</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
+            <pubDate>Sat, 29 Aug 2026 00:15:42 +0000</pubDate>
+            <enclosure
+                url="https://github.com/Hyp4tia/Osh/releases/download/v1.0.8/Osh.dmg"
+                sparkle:edSignature="kVtwkUxW94P/FlkbYRziTIkEBXYXxCPfMwO7NezHr8FyUhQH5UpMA9GPcssVyn2RJjLQwTp3E6TmSaquybU9Cw=="
+                length="38077219"
+                type="application/octet-stream" />
+            <description><![CDATA[
+                <h2>What's Changed in v1.0.8</h2><p>Security & Hardening</p><ul><li><strong>Path Sanitization & Coordinated Asset Inlining</strong>: Refactored <code>HTMLExportInliner</code> to pre-sanitize all path components, reject directory traversal (<code>..</code>) and null bytes, anchor path resolution strictly to canonical base directories, and confine all filesystem checks and reads within <code>NSFileCoordinator</code>.</li><li><strong>SVG & Diagram XSS Remediation</strong>: Complete DOMPurify SVG profile sanitization for Mermaid, Vega-Lite, Graphviz, and Typst diagrams with safe DOM element replacement on error states.</li></ul><h3>Fixed</h3><ul><li><strong>UI Symbol Resolution</strong>: Corrected SF Symbol identifier for the document conversion button on the Welcome screen to <code>arrow.triangle.2.circlepath</code>, resolving runtime console warnings.</li></ul><p>Documentation</p><ul><li><strong>Attribution & Supported Formats</strong>: Added explicit Firecrawl AnyDoc attribution and structured supported formats tables across English, Arabic, and Spanish documentation.</li></ul><p><a href="https://github.com/Hyp4tia/Osh/releases/tag/v1.0.8">View Full Release Notes</a></p>
+            ]]></description>
+        </item>
+        
+        <item>
             <title>Version 1.0.7</title>
             <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.7</link>
             <sparkle:version>7</sparkle:version>
