@@ -36,6 +36,12 @@
 <p align="center">
   <img src="docs/assets/osh-demo.gif" alt="عرض Osh التوضيحي" width="85%">
 </p>
+<p align="center">
+  <img src="docs/assets/osh-welcome.png" alt="شاشة البداية في Osh" width="85%">
+</p>
+<p align="center">
+  <img src="docs/assets/osh-reader.png" alt="واجهة القارئ في Osh" width="85%">
+</p>
 
 ---
 

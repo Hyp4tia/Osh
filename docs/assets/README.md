@@ -9,7 +9,9 @@ This directory houses official visual assets and demonstration materials referen
 | File | Type | Description | Target Dimensions / Size | Referenced By |
 | :--- | :--- | :--- | :--- | :--- |
 | **`icon.png`** | PNG | Official Osh application icon (transparent background). | 512×512 or 1024×1024 px (< 500 KB) | `README.md`, `README_AR.md`, `README_ES.md` |
-| **`demo.gif`** | GIF | Animated preview showcasing Finder QuickLook & key features. | ~1200×800 px, 10–15s (< 6–8 MB) | `README.md`, `README_AR.md`, `README_ES.md` |
+| **`osh-demo.gif`** / **`demo.gif`** | GIF | Animated preview showcasing Finder QuickLook & key features. | ~1200×800 px, 10–15s (< 6–8 MB) | `README.md`, `README_AR.md`, `README_ES.md` |
+| **`osh-welcome.png`** | PNG | MacBook mockup of the Osh welcome launcher screen. | 1024×768 px (< 1 MB) | `README.md`, `README_AR.md`, `README_ES.md` |
+| **`osh-reader.png`** | PNG | MacBook mockup of the Osh document reader / editor preview. | 1024×768 px (< 1 MB) | `README.md`, `README_AR.md`, `README_ES.md` |
 | **`demo.md`** | Markdown | Showcase file used for demo recordings & rendering validation. | Plain text Markdown | Testing & recording |
 | **`demo-light.png`** *(optional)* | PNG | High-DPI screenshot of QuickLook preview in Light Mode. | 2× Retina (@2x) | Documentation |
 | **`demo-dark.png`** *(optional)* | PNG | High-DPI screenshot of QuickLook preview in Dark Mode. | 2× Retina (@2x) | Documentation |

@@ -36,6 +36,12 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 <p align="center">
   <img src="docs/assets/osh-demo.gif" alt="Demostración de Osh" width="85%">
 </p>
+<p align="center">
+  <img src="docs/assets/osh-welcome.png" alt="Pantalla de inicio de Osh" width="85%">
+</p>
+<p align="center">
+  <img src="docs/assets/osh-reader.png" alt="Vista del lector de Osh" width="85%">
+</p>
 
 ---
 
