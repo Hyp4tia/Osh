@@ -37,10 +37,8 @@ Select any file in Finder, press `Space`, and get an instant, beautifully render
   <img src="docs/assets/osh-demo.gif" alt="Osh Preview Demo" width="85%">
 </p>
 <p align="center">
-  <img src="docs/assets/osh-welcome.png" alt="Osh Welcome Screen" width="85%">
-</p>
-<p align="center">
-  <img src="docs/assets/osh-reader.png" alt="Osh Reader View" width="85%">
+  <img src="docs/assets/osh-welcome.png" alt="Osh Welcome Screen" width="49%">
+  <img src="docs/assets/osh-reader.png" alt="Osh Reader View" width="49%">
 </p>
 
 ---
