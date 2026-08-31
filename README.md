@@ -145,7 +145,7 @@ Osh focuses on **fast, local Markdown reading on macOS**, while other apps prior
 
 ---
 
-## 🚀 Installation
+## Installation
 
 > [!NOTE]
 > 🛡️ **Security & Privacy:** A full-codebase security audit is available in [Security_Audit.md](Security_Audit.md), covering static analysis, sandboxing, data handling, and security hardening.
