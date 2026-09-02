@@ -189,11 +189,7 @@ killall Finder
 
 <p align="center">
 
-## Contact
 
-Built by Hyp4tia.  Reach out on <a href="https://x.com/Hypatox">X / Twitter</a>
-
-</p>
 
 
 <p align="center">
