@@ -539,4 +539,55 @@ final class FileExtensionTests: XCTestCase {
         XCTAssertNotNil(controller.pendingMarkdown)
         XCTAssertTrue(controller.pendingMarkdown?.contains("user's PDF Presentation Skill") ?? false)
     }
+
+    func testDocumentIcon_icnsExists() {
+        let root = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+        let docIconURL = root.appendingPathComponent("Sources/OshApp/DocumentIcon.icns")
+        XCTAssertTrue(FileManager.default.fileExists(atPath: docIconURL.path),
+                      "Sources/OshApp/DocumentIcon.icns must exist")
+        let attributes = try? FileManager.default.attributesOfItem(atPath: docIconURL.path)
+        let fileSize = attributes?[.size] as? Int64 ?? 0
+        XCTAssertGreaterThan(fileSize, 10000, "DocumentIcon.icns must not be empty")
+    }
+
+    func testDocumentIcon_declaredInAppInfoPlist() throws {
+        let root = URL(fileURLWithPath: #file)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+        let plistURL = root.appendingPathComponent("Sources/OshApp/Info.plist")
+        let plistData = try Data(contentsOf: plistURL)
+        guard let plist = try PropertyListSerialization.propertyList(from: plistData, format: nil) as? [String: Any] else {
+            XCTFail("Failed to parse Info.plist")
+            return
+        }
+
+        guard let docTypes = plist["CFBundleDocumentTypes"] as? [[String: Any]], let firstDoc = docTypes.first else {
+            XCTFail("CFBundleDocumentTypes missing in Info.plist")
+            return
+        }
+
+        XCTAssertEqual(firstDoc["CFBundleTypeIconFile"] as? String, "DocumentIcon",
+                       "CFBundleTypeIconFile must be DocumentIcon")
+        XCTAssertEqual(firstDoc["CFBundleTypeIconSystemGenerated"] as? Bool, false,
+                       "CFBundleTypeIconSystemGenerated must be false")
+
+        if let exportedTypes = plist["UTExportedTypeDeclarations"] as? [[String: Any]] {
+            for exp in exportedTypes {
+                XCTAssertEqual(exp["UTTypeIconFile"] as? String, "DocumentIcon",
+                               "Exported type \(exp["UTTypeIdentifier"] ?? "") must specify DocumentIcon")
+            }
+        }
+
+        if let importedTypes = plist["UTImportedTypeDeclarations"] as? [[String: Any]] {
+            for imp in importedTypes {
+                XCTAssertEqual(imp["UTTypeIconFile"] as? String, "DocumentIcon",
+                               "Imported type \(imp["UTTypeIdentifier"] ?? "") must specify DocumentIcon")
+            }
+        }
+    }
 }
+
