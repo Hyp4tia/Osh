@@ -1,5 +1,10 @@
 ## [Unreleased]
-_No pending unreleased changes._
+
+### Added
+- **Dedicated macOS Document Icon**: Designed and integrated a custom macOS document icon for files associated with Osh:
+  - Custom multi-resolution document icon (`DocumentIcon.icns`) built to Apple Human Interface Guidelines featuring the Osh mark on standard macOS document sheet canvas.
+  - Linked across all supported document UTTypes in `Info.plist` (`net.daringfireball.markdown`, `com.osh.markdown`, `.skill`, `.mdx`, `.livemd`, etc.) for sharp and distinct Finder presentation.
+  - Fully verified across compact and high-resolution displays.
 
 ## [1.0.8] - 2026-08-29
 
