@@ -1,4 +1,7 @@
 ## [Unreleased]
+_No pending unreleased changes._
+
+## [1.0.9] - 2026-09-03
 
 ### Added
 - **Dedicated macOS Document Icon**: Designed and integrated a custom macOS document icon for files associated with Osh:
