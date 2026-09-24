@@ -1,53 +1,53 @@
-# Homebrew 官方库提交与维护指南
+# Homebrew Official Tap Submission and Maintenance Guide
 
-> **状态：尚未发布。** 仓库目前没有 `Hyp4tia/homebrew-tap`（404），`homebrew/homebrew-cask` 中也没有 `osh` cask。
-> 下面所有 `brew install --cask ...` 命令在 tap/Draft 真正发布前对用户无效，用户安装与升级走 DMG（见 `docs/release/RELEASE_PROCESS.md` §3.4）。
+> **Status: not yet published.** The repo currently has no `Hyp4tia/homebrew-tap` (404), and there is no `osh` cask in `homebrew/homebrew-cask`.
+> All `brew install --cask ...` commands below have no effect for users until the tap/Draft is actually published; users install and upgrade via DMG (see `docs/release/RELEASE_PROCESS.md` §3.4).
 
-## 双轨策略
+## Dual-track strategy
 
-| 版本 | 文件 | 安装方式 | 特性 |
+| Version | File | Installation | Features |
 |------|------|----------|------|
-| **功能版（tap）** | `../homebrew-tap/Casks/osh.rb` | `brew install --cask Hyp4tia/tap/osh` | duti 默认关联、auto_updates、Sparkle livecheck |
-| **官方版草稿** | `../homebrew-tap/Drafts/osh-official.rb` | 提交到 homebrew/homebrew-cask 后：`brew install --cask osh` | 符合官方规范，无 formula 依赖 |
+| **Feature version (tap)** | `../homebrew-tap/Casks/osh.rb` | `brew install --cask Hyp4tia/tap/osh` | duti default associations, auto_updates, Sparkle livecheck |
+| **Official draft** | `../homebrew-tap/Drafts/osh-official.rb` | After submission to homebrew/homebrew-cask: `brew install --cask osh` | Compliant with official standards, no formula dependencies |
 
 ---
 
-## 首次提交到官方库
+## First submission to the official tap
 
-### 前提条件
+### Prerequisites
 
-- `gh` CLI 已安装且已登录（`gh auth status`）
-- 当前版本已 release 并已运行 `update-homebrew-cask.sh`
-- `./scripts/submit-to-homebrew.sh` 会复制草稿到官方 tap 路径后执行 `brew style`
+- `gh` CLI installed and logged in (`gh auth status`)
+- The current version has been released and `update-homebrew-cask.sh` has been run
+- `./scripts/submit-to-homebrew.sh` copies the draft to the official tap path and then runs `brew style`
 
-### 提交
+### Submission
 
 ```bash
 ./scripts/submit-to-homebrew.sh
 ```
 
-脚本自动完成：Fork → clone → sync upstream → 新分支 → 复制 cask → style 检查 → 提交 → 创建 PR。
+The script automates: Fork → clone → sync upstream → new branch → copy cask → style check → commit → create PR.
 
 ---
 
-## 后续版本更新
+## Updating later versions
 
-### 每次 release 时（已自动化）
+### On every release (automated)
 
-`update-homebrew-cask.sh` 会同时更新两个文件：
+`update-homebrew-cask.sh` updates both files at the same time:
 
 ```bash
 ./scripts/update-homebrew-cask.sh
 ```
 
-### 官方库版本更新
+### Official tap version updates
 
-**推荐：依赖 Homebrew Bot**
+**Recommended: rely on Homebrew Bot**
 
-PR 合并后，Homebrew 的 `BrewTestBot` 会自动通过 livecheck 检测新版本并提 PR。
-只需 approve 即可（Comment `@BrewTestBot approved`）。
+After the PR is merged, Homebrew's `BrewTestBot` automatically detects new versions via livecheck and opens a PR.
+You only need to approve it (comment `@BrewTestBot approved`).
 
-**备用：手动提 PR**
+**Fallback: open a PR manually**
 
 ```bash
 VERSION="<NEW_VERSION>"
@@ -69,33 +69,33 @@ gh pr create --repo Homebrew/homebrew-cask --title "osh ${VERSION}" --body "Vers
 
 ---
 
-## 两版本差异说明
+## Differences between the two versions
 
-| 字段 | 功能版（tap） | 官方版 |
+| Field | Feature version (tap) | Official version |
 |------|-------------|--------|
-| `auto_updates` | ✅ `true` | ❌ 官方不允许 |
-| `depends_on formula: "duti"` | ✅ | ❌ 官方禁止 cask 依赖 formula |
-| duti postflight | ✅ 设置默认文件关联 | ❌ 已移除 |
+| `auto_updates` | ✅ `true` | ❌ Not allowed by Homebrew |
+| `depends_on formula: "duti"` | ✅ | ❌ Homebrew forbids casks depending on formulas |
+| duti postflight | ✅ Sets default file associations | ❌ Removed |
 | livecheck | Sparkle + appcast.xml | GitHub Latest |
-| caveats | 含默认 app 设置说明 | 仅 QuickLook 故障排除 |
+| caveats | Includes default-app setup instructions | QuickLook troubleshooting only |
 
 ---
 
-## 常见问题
+## FAQ
 
-**Q: 官方 PR 审核要求？**
+**Q: What are the review requirements for an official PR?**
 
-常见审核意见：
-- postflight 中的 `system_command` 需要在 PR 描述中说明必要性（`submit-to-homebrew.sh` 已包含完整说明）
-- 可能被要求添加 `brew test` 用例
+Common review feedback:
+- `system_command` in postflight requires justification in the PR description (`submit-to-homebrew.sh` already includes a full explanation)
+- You may be asked to add a `brew test` case
 
-**Q: 官方合并后与 tap 版如何共存？**
+**Q: How do the official and tap versions coexist after the official merge?**
 
-两者可共存，但 tap 目前尚未创建（`Hyp4tia/homebrew-tap` 返回 404）。发布后再启用：
-- `brew install --cask osh` — 官方版（精简）
-- `brew install --cask Hyp4tia/tap/osh` — tap 版（完整功能）
+Both can coexist, but the tap has not been created yet (`Hyp4tia/homebrew-tap` returns 404). Enable it after publishing:
+- `brew install --cask osh` — official version (lean)
+- `brew install --cask Hyp4tia/tap/osh` — tap version (full features)
 
-从官方版切换到 tap 版：
+To switch from the official version to the tap version:
 ```bash
 brew uninstall --cask osh
 brew install --cask Hyp4tia/tap/osh
