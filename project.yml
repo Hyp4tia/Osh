@@ -2,7 +2,7 @@ name: Osh
 options:
   bundleIdPrefix: com.zeyadistired
   deploymentTarget:
-    macOS: "11.0"
+    macOS: "12.0"
 settings:
   MARKETING_VERSION: ${MARKETING_VERSION}
   CURRENT_PROJECT_VERSION: ${CURRENT_PROJECT_VERSION}

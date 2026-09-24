@@ -182,7 +182,7 @@ TEMP_ITEM=$(cat <<EOF
             <link>$RELEASE_URL</link>
             <sparkle:version>$BUILD_NUMBER</sparkle:version>
             <sparkle:shortVersionString>$FULL_VERSION</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>11.0</sparkle:minimumSystemVersion>
+            <sparkle:minimumSystemVersion>12.0</sparkle:minimumSystemVersion>
             <pubDate>$PUB_DATE</pubDate>
             <enclosure
                 url="$DOWNLOAD_URL"

@@ -165,7 +165,7 @@
 | **QuickLook 内直接导出 PDF/HTML** | 通常需要打开 Marked 2 才能完成，我们在 Space 键预览时即可完成 |
 | **多代码高亮主题** | 其他 QuickLook 插件均无此功能 |
 | **渲染性能** | 经过 7 项性能优化（v1.15），bundle 分包 + 懒加载，冷启动和热渲染均领先竞品 |
-| **已公证 + Homebrew 分发** | QLMarkdown 未公证，安装体验差；我们支持 `brew install --cask` |
+| **分发状态（待补齐）** | 当前为 adhoc 签名、未公证，也未发布 Homebrew cask；需要 Developer ID 证书 + 公证后才能形成安装体验优势 |
 
 ---
 

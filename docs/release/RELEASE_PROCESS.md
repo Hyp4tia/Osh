@@ -183,17 +183,16 @@ git commit -m "chore(cask): update osh to v<VERSION>"
 git push origin master
 ```
 
-### 3.4 验证 Homebrew 安装
+### 3.4 验证安装包
+
+Osh 目前不分发 Homebrew cask（tap 未发布，官方 cask 未提交），因此发布后验证走 DMG：
 
 ```bash
-# 更新本地 tap
-brew update
-
-# 升级应用
-brew upgrade osh
-
-# 或全新安装测试
-brew install --cask osh
+# 下载已发布的 DMG 并检查签名与公证状态
+gh release download v<VERSION> --repo Hyp4tia/Osh --pattern "Osh.dmg"
+codesign -dv --verbose=4 "Osh.app"      # 期望 Developer ID Application（当前为 adhoc）
+spctl -a -vvv -t exec "Osh.app"         # 期望 accepted（当前为 rejected）
+xcrun stapler validate "Osh.app"        # 期望 ticket stapled
 ```
 
 ---

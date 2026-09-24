@@ -38,7 +38,7 @@ xattr -cr /Applications/Osh.app
 If you prefer compiling Osh locally from source:
 
 ### Prerequisites:
-- **macOS 11.0 (Big Sur)** or higher
+- **macOS 12.0 (Monterey)** or higher
 - **Xcode 14.0+** and Command Line Tools (`xcode-select --install`)
 - **XcodeGen** (`brew install xcodegen`)
 - **Node.js 18+** and **npm**

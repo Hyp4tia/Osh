@@ -1,5 +1,8 @@
 # Homebrew 官方库提交与维护指南
 
+> **状态：尚未发布。** 仓库目前没有 `Hyp4tia/homebrew-tap`（404），`homebrew/homebrew-cask` 中也没有 `osh` cask。
+> 下面所有 `brew install --cask ...` 命令在 tap/Draft 真正发布前对用户无效，用户安装与升级走 DMG（见 `docs/release/RELEASE_PROCESS.md` §3.4）。
+
 ## 双轨策略
 
 | 版本 | 文件 | 安装方式 | 特性 |
@@ -88,7 +91,7 @@ gh pr create --repo Homebrew/homebrew-cask --title "osh ${VERSION}" --body "Vers
 
 **Q: 官方合并后与 tap 版如何共存？**
 
-完全兼容。用户可以选择：
+两者可共存，但 tap 目前尚未创建（`Hyp4tia/homebrew-tap` 返回 404）。发布后再启用：
 - `brew install --cask osh` — 官方版（精简）
 - `brew install --cask Hyp4tia/tap/osh` — tap 版（完整功能）
 

@@ -1,9 +1,21 @@
 # Debug Log: v1.0.10 Review Findings (QuickLook teardown, DOCX export, renderer settings)
 
 **Date:** 2026-09-24
-**Status:** Open, fixes in progress on `fix/v1.0.10`
+**Status:** §2 fixes landed on `fix/v1.0.10` with tests; release blocked on distribution signing (§4.2)
 **Reviewed revision:** `e8e616c` (v1.0.9 release tip, `main`)
 **Baseline:** `npm test` 354/354 pass, XCTest 304 tests / 1 skipped / 0 failures
+
+## 0. Progress
+
+| Item | State |
+|---|---|
+| §2.1 DOCX image loss | Fixed, `test/docx-export-model.test.ts` (4 tests) |
+| §2.2 QuickLook nil-web-view traps | Fixed, `Tests/OshTests/QuickLookTeardownSafetyTests.swift` (4 tests). Both reported traps were reproduced as real `Fatal error` crashes before the fix |
+| §2.3 Renderer settings dropped on fast path | Fixed, `Sources/Shared/RenderFastPath.swift` + `Tests/OshTests/RenderFastPathTests.swift` (10 tests) |
+| §2.4 Inert reload suppression | Fixed, `Tests/OshTests/EditingReloadSuppressionTests.swift` (3 source-assertions) |
+| §4.1 Deployment target | Bumped to 12.0 in `project.yml`, appcast generator aligned, docs updated |
+| §4.2 Distribution signing | Open, needs a Developer ID certificate |
+| §4.3 Homebrew docs | Docs corrected to state that no cask is published |
 
 ## 1. Scope and method
 
