@@ -66,13 +66,24 @@ echo ""
 cd "$(dirname "$CASK_FILE")/.."
 
 CHANGED_FILES=()
-git diff --quiet Casks/osh.rb || CHANGED_FILES+=("Casks/osh.rb")
-git diff --quiet Drafts/osh-official.rb 2>/dev/null || CHANGED_FILES+=("Drafts/osh-official.rb")
+for f in Casks/osh.rb Drafts/osh-official.rb; do
+    [ -f "$f" ] || continue
+    # `git diff` only looks at tracked files, so a cask that has never been committed
+    # (a new tap, or the first run of this script) would go unnoticed. `git status`
+    # reports untracked and modified files alike.
+    if [ -n "$(git status --porcelain -- "$f")" ]; then
+        CHANGED_FILES+=("$f")
+    fi
+done
 
 if [ ${#CHANGED_FILES[@]} -gt 0 ]; then
     echo "📝 Changes detected in: ${CHANGED_FILES[*]}"
     for f in "${CHANGED_FILES[@]}"; do
-        git diff "$f"
+        if git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+            git diff -- "$f"
+        else
+            echo "   (new file: $f)"
+        fi
     done
     echo ""
 
@@ -104,8 +115,9 @@ else
 fi
 
 echo ""
-echo "🎉 Done! Users can now install v$VERSION with:"
-echo "   brew update && brew upgrade osh"
+echo "🎉 Done! The tap cask now points at v$VERSION:"
+echo "   brew install --cask Hyp4tia/tap/osh      # first install"
+echo "   brew update && brew upgrade --cask osh   # later upgrades"
 echo ""
 echo "📋 To submit to official homebrew-cask:"
 echo "   ./scripts/submit-to-homebrew.sh"
