@@ -1,4 +1,7 @@
 ## [Unreleased]
+_No pending unreleased changes._
+
+## [1.0.10] - 2026-09-24
 
 ### Fixed
 - **QuickLook Preview Crash on Panel Close**: Closing a preview while a document was still rendering could terminate the QuickLook extension. The preview controller now clears its web-view readiness on teardown and no longer touches a released web view from deferred work, including system appearance changes during teardown.

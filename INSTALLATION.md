@@ -13,6 +13,20 @@ Osh is distributed as a standalone macOS application with an integrated QuickLoo
 
 ---
 
+## 🍺 Homebrew (Alternative)
+
+```bash
+brew install --cask Hyp4tia/tap/osh
+```
+
+The cask pulls in [`duti`](https://github.com/jwalton/duti) and sets Osh as the default handler for Markdown documents. Osh updates itself through its own updater, so `brew upgrade` only refreshes the cask metadata:
+
+```bash
+brew update && brew upgrade --cask osh
+```
+
+---
+
 ## 🛡️ Opening Osh for the First Time (macOS Gatekeeper)
 
 Osh is distributed independently outside the Mac App Store. When opening the app for the first time, macOS Gatekeeper may display a dialog stating that the developer cannot be verified.

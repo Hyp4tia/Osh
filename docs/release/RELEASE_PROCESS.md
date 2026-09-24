@@ -180,12 +180,14 @@ end
 cd ../homebrew-tap
 git add Casks/osh.rb
 git commit -m "chore(cask): update osh to v<VERSION>"
-git push origin master
+git push origin main
 ```
+
+`scripts/update-homebrew-cask.sh` already rewrites the version and sha256, but it skips the commit when it runs without a TTY (as `release.sh` does), so check its output and commit by hand.
 
 ### 3.4 Verify the installation package
 
-Osh does not currently distribute a Homebrew cask (the tap is unpublished and the official cask has not been submitted), so post-release verification goes through the DMG:
+The tap is published, so verify both the cask and the published DMG:
 
 ```bash
 # Download the published DMG and check its signature and notarization status
@@ -193,6 +195,9 @@ gh release download v<VERSION> --repo Hyp4tia/Osh --pattern "Osh.dmg"
 codesign -dv --verbose=4 "Osh.app"      # Expect Developer ID Application (currently adhoc)
 spctl -a -vvv -t exec "Osh.app"         # Expect accepted (currently rejected)
 xcrun stapler validate "Osh.app"        # Expect ticket stapled
+
+# Verify the cask tracks the published asset
+brew fetch --cask Hyp4tia/tap/osh       # Fails if the sha256 does not match the release DMG
 ```
 
 ---
@@ -248,10 +253,12 @@ $ cd ../homebrew-tap
 $ vim Casks/osh.rb  # Update the version and sha256
 $ git add Casks/osh.rb
 $ git commit -m "chore(cask): update osh to v1.3.73"
-$ git push origin master
+$ git push origin main
 
 # 8. Verify
-$ brew upgrade osh
+$ brew audit --cask Hyp4tia/tap/osh
+$ brew fetch --cask Hyp4tia/tap/osh
+$ brew upgrade --cask osh
 ```
 
 ---
