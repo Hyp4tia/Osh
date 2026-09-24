@@ -1,7 +1,7 @@
 # Homebrew Official Tap Submission and Maintenance Guide
 
-> **Status: not yet published.** The repo currently has no `Hyp4tia/homebrew-tap` (404), and there is no `osh` cask in `homebrew/homebrew-cask`.
-> All `brew install --cask ...` commands below have no effect for users until the tap/Draft is actually published; users install and upgrade via DMG (see `docs/release/RELEASE_PROCESS.md` §3.4).
+> **Status: tap published, official cask not submitted.** `Hyp4tia/homebrew-tap` is live and `Casks/osh.rb` tracks the current release, so `brew install --cask Hyp4tia/tap/osh` works today. There is no `osh` cask in `homebrew/homebrew-cask` yet, so the submission steps below are still pending.
+> `scripts/update-homebrew-cask.sh` (run automatically by `scripts/release.sh`) rewrites the tap cask's `version` and `sha256` on every release, which makes Phase 3 of `RELEASE_PROCESS.md` mostly a verification pass.
 
 ## Dual-track strategy
 
@@ -91,9 +91,9 @@ Common review feedback:
 
 **Q: How do the official and tap versions coexist after the official merge?**
 
-Both can coexist, but the tap has not been created yet (`Hyp4tia/homebrew-tap` returns 404). Enable it after publishing:
-- `brew install --cask osh` — official version (lean)
-- `brew install --cask Hyp4tia/tap/osh` — tap version (full features)
+Both can coexist once the official cask is submitted. The tap is already live (`Hyp4tia/homebrew-tap`):
+- `brew install --cask osh` (official version, after the submission lands): lean
+- `brew install --cask Hyp4tia/tap/osh` (tap version): full features
 
 To switch from the official version to the tap version:
 ```bash
