@@ -1,211 +1,211 @@
-# Osh 竞品分析与差距报告
+# Osh Competitive Analysis and Gap Report
 
-**版本** ：基于 v1.16.182  
-**日期** ：2026-02-23  
-**范围** ：macOS Markdown QuickLook 插件 + 主流 Markdown 预览器
+**Version**: based on v1.16.182  
+**Date**: 2026-02-23  
+**Scope**: macOS Markdown QuickLook plugins + mainstream Markdown previewers
 
 ---
 
-## 一、我们的现状（v1.16.182）
+## 1. Our current status (v1.16.182)
 
-| 能力 | 状态 |
+| Capability | Status |
 |------|------|
-| Mermaid 图表 | ✅ 本地 bundle，离线可用 |
-| KaTeX 数学公式 | ✅ 本地 bundle，渲染快 |
-| GFM（表格、任务列表、删除线） | ✅ |
-| GitHub Alerts（NOTE/WARNING/TIP...） | ✅ |
-| Vega / Vega-Lite 交互图表 | ✅ 独家 |
-| Graphviz / DOT 图 | ✅ 独家 |
-| TOC 侧边栏（可交互） | ✅ 独家 |
-| 导出 PDF / HTML | ✅ 独家 |
-| YAML Frontmatter 表格展示 | ✅ |
-| 缩放 / 滚动位置记忆 | ✅ |
-| 代码高亮 40+ 语言 | ✅ |
-| 多代码高亮主题（GitHub / Monokai / Atom One Dark） | ✅ |
-| Settings 窗口（Cmd+,） | ✅ |
-| 文件格式 .mdx / .rmd / .qmd / .mdoc 等 | ✅ |
-| Sparkle 自动更新 | ✅ |
-| i18n 中英文 | ✅ |
+| Mermaid diagrams | ✅ Bundled locally, works offline |
+| KaTeX math formulas | ✅ Bundled locally, fast rendering |
+| GFM (tables, task lists, strikethrough) | ✅ |
+| GitHub Alerts (NOTE/WARNING/TIP...) | ✅ |
+| Vega / Vega-Lite interactive charts | ✅ Exclusive |
+| Graphviz / DOT diagrams | ✅ Exclusive |
+| TOC sidebar (interactive) | ✅ Exclusive |
+| Export PDF / HTML | ✅ Exclusive |
+| YAML Frontmatter table display | ✅ |
+| Zoom / scroll position memory | ✅ |
+| Syntax highlighting for 40+ languages | ✅ |
+| Multiple highlight themes (GitHub / Monokai / Atom One Dark) | ✅ |
+| Settings window (Cmd+,) | ✅ |
+| File formats .mdx / .rmd / .qmd / .mdoc etc. | ✅ |
+| Sparkle auto-updates | ✅ |
+| i18n Chinese and English | ✅ |
 
 ---
 
-## 二、竞品概览
+## 2. Competitor overview
 
-### 2.1 直接竞品：QuickLook 插件
+### 2.1 Direct competitors: QuickLook plugins
 
-| 特性 | Osh | QLMarkdown (sbarex) | PreviewMarkdown | qlmarkdown (toland) |
+| Feature | Osh | QLMarkdown (sbarex) | PreviewMarkdown | qlmarkdown (toland) |
 |------|:---:|:---:|:---:|:---:|
-| 渲染引擎 | TS/Vite 自研 | cmark-gfm | Markdown-It | Discount (C) |
+| Rendering engine | In-house TS/Vite | cmark-gfm | Markdown-It | Discount (C) |
 | Mermaid | ✅ | ✅ | ❌ | ❌ |
-| 数学公式 | ✅ KaTeX | ✅ MathJax | ❌ | ❌ |
-| Vega / Graphviz 图表 | ✅ | ❌ | ❌ | ❌ |
-| TOC 侧边栏 | ✅ | ❌ | ❌ | ❌ |
-| 导出 PDF/HTML | ✅ | ❌ | ❌ | ❌ |
+| Math formulas | ✅ KaTeX | ✅ MathJax | ❌ | ❌ |
+| Vega / Graphviz diagrams | ✅ | ❌ | ❌ | ❌ |
+| TOC sidebar | ✅ | ❌ | ❌ | ❌ |
+| Export PDF/HTML | ✅ | ❌ | ❌ | ❌ |
 | GitHub Alerts | ✅ | ❌ | ❌ | ❌ |
 | YAML Frontmatter | ✅ | ✅ | ✅ | ❌ |
-| 多代码高亮主题 | ✅ | ❌ | ❌ | ❌ |
-| 自定义 CSS | ❌ | ✅ | ❌ | ❌ |
-| 本地图片沙盒方案 | ⚠️ | ✅ base64 内嵌 | ❌ | ❌ |
-| 脚注（Footnotes） | ❌ | ✅ | ❌ | ❌ |
-| 上标 / 下标 | ❌ | ✅ | ❌ | ❌ |
-| `==高亮==` 语法 | ❌ | ✅ | ❌ | ❌ |
-| 代码语言自动猜测 | ❌ | ✅ Linguist/Enry | ❌ | ❌ |
-| CLI 批量转换工具 | ❌ | ✅ | ❌ | ❌ |
-| .textbundle / .apib 格式 | ❌ | ✅ | ❌ | ❌ |
-| 预览内搜索（Cmd+F） | ❌ | ❌ | ❌ | ❌ |
-| Raw 源码切换 | ❌ | ✅ | ❌ | ❌ |
-| Smart 引号 / 破折号 | ❌ | ✅ | ❌ | ❌ |
-| 缩放 | ✅ | ❌ | ❌ | ❌ |
-| 滚动位置记忆 | ✅ | ❌ | ❌ | ❌ |
-| 字体大小设置 | ✅ | ❌ | ⚠️ 有限 | ❌ |
-| Homebrew 安装 | ✅ | ✅ | ❌ | ❌ |
-| 已签名/公证 | ✅ | ❌ | ✅ App Store | ❌ |
+| Multiple highlight themes | ✅ | ❌ | ❌ | ❌ |
+| Custom CSS | ❌ | ✅ | ❌ | ❌ |
+| Local image sandbox approach | ⚠️ | ✅ base64 inline | ❌ | ❌ |
+| Footnotes | ❌ | ✅ | ❌ | ❌ |
+| Superscript / subscript | ❌ | ✅ | ❌ | ❌ |
+| `==highlight==` syntax | ❌ | ✅ | ❌ | ❌ |
+| Automatic code language detection | ❌ | ✅ Linguist/Enry | ❌ | ❌ |
+| CLI batch conversion tool | ❌ | ✅ | ❌ | ❌ |
+| .textbundle / .apib formats | ❌ | ✅ | ❌ | ❌ |
+| In-preview search (Cmd+F) | ❌ | ❌ | ❌ | ❌ |
+| Raw source toggle | ❌ | ✅ | ❌ | ❌ |
+| Smart quotes / dashes | ❌ | ✅ | ❌ | ❌ |
+| Zoom | ✅ | ❌ | ❌ | ❌ |
+| Scroll position memory | ✅ | ❌ | ❌ | ❌ |
+| Font size setting | ✅ | ❌ | ⚠️ Limited | ❌ |
+| Homebrew install | ✅ | ✅ | ❌ | ❌ |
+| Signed/notarized | ✅ | ❌ | ✅ App Store | ❌ |
 
-### 2.2 间接竞品：专用 Markdown 预览器
+### 2.2 Indirect competitors: dedicated Markdown previewers
 
-| 特性 | Osh | Marked 2 | Typora | iA Writer |
+| Feature | Osh | Marked 2 | Typora | iA Writer |
 |------|:---:|:---:|:---:|:---:|
-| 使用方式 | QuickLook（Space 键） | 独立应用 | 编辑器 | 编辑器 |
+| How it is used | QuickLook (Space key) | Standalone app | Editor | Editor |
 | Mermaid | ✅ | ✅ | ✅ | ❌ |
-| 数学公式 | ✅ KaTeX | ✅ MathJax | ✅ MathJax | ❌ |
-| 自定义 CSS | ❌ | ✅ 深度支持 | ✅ 主题系统 | ✅ 模板系统 |
-| 自定义处理器 | ❌ | ✅ 任意脚本 | ❌ | ❌ |
-| 导出格式 | PDF / HTML | PDF/HTML/DOCX/RTF/ODT | PDF/HTML/DOCX/LaTeX/Epub | PDF/HTML/DOCX |
-| 多文件合并 | ❌ | ✅ transclusion | ❌ | ✅ Content Blocks |
-| CriticMarkup 审阅 | ❌ | ✅ | ❌ | ❌ |
-| 文档统计 / 可读性 | ❌ | ✅ 词频、可读性评分 | ❌ | ✅ 词性高亮 |
-| 链接校验 | ❌ | ✅ | ❌ | ❌ |
+| Math formulas | ✅ KaTeX | ✅ MathJax | ✅ MathJax | ❌ |
+| Custom CSS | ❌ | ✅ Deep support | ✅ Theme system | ✅ Template system |
+| Custom processors | ❌ | ✅ Arbitrary scripts | ❌ | ❌ |
+| Export formats | PDF / HTML | PDF/HTML/DOCX/RTF/ODT | PDF/HTML/DOCX/LaTeX/Epub | PDF/HTML/DOCX |
+| Multi-file merge | ❌ | ✅ transclusion | ❌ | ✅ Content Blocks |
+| CriticMarkup review | ❌ | ✅ | ❌ | ❌ |
+| Document statistics / readability | ❌ | ✅ Word frequency, readability scores | ❌ | ✅ Part-of-speech highlighting |
+| Link validation | ❌ | ✅ | ❌ | ❌ |
 | Vega / Graphviz | ✅ | ❌ | ❌ | ❌ |
-| QuickLook 即时预览 | ✅ | ❌ | ❌ | ❌ |
-| 无需打开应用 | ✅ | ❌ 需要打开 Marked 2 | ❌ | ❌ |
-| 价格 | 免费/GPL | 付费（$13.99） | 付费（$14.99） | 付费（$49.99/年） |
+| Instant QuickLook preview | ✅ | ❌ | ❌ | ❌ |
+| No need to open an app | ✅ | ❌ Requires opening Marked 2 | ❌ | ❌ |
+| Price | Free/GPL | Paid ($13.99) | Paid ($14.99) | Paid ($49.99/year) |
 
 ---
 
-## 三、差距分析
+## 3. Gap analysis
 
-### 3.1 高优先级差距
+### 3.1 High-priority gaps
 
-#### ① 预览内搜索（Cmd+F）
-- **现状** ：❌ 缺失
-- **用户需求** ：🔥🔥🔥 高频，是付费产品 Peek 的核心差异点
-- **实现路径** ：在 JS 层实现自定义搜索 overlay，WKWebView 支持 `findString:` API
-- **工作量估计** ：中等（纯 JS + Swift bridge）
+#### ① In-preview search (Cmd+F)
+- **Status**: ❌ Missing
+- **User demand**: 🔥🔥🔥 High frequency; it is the core differentiator of the paid product Peek
+- **Implementation path**: implement a custom search overlay at the JS layer; WKWebView supports the `findString:` API
+- **Effort estimate**: medium (pure JS + Swift bridge)
 
-#### ② 本地图片渲染健壮性
-- **现状** ：⚠️ 沙盒限制下相对路径图片是否正确渲染未充分验证
-- **用户需求** ：🔥🔥🔥 最高频投诉之一
-- **实现路径** ：参考 QLMarkdown 的 base64 内嵌方案，或使用 `local-md://` scheme 处理
-- **工作量估计** ：小（已有 LocalSchemeHandler 基础）
+#### ② Robustness of local image rendering
+- **Status**: ⚠️ Not fully verified whether relative-path images render correctly under sandbox restrictions
+- **User demand**: 🔥🔥🔥 One of the most frequent complaints
+- **Implementation path**: follow QLMarkdown's base64 inline approach, or handle via a `local-md://` scheme
+- **Effort estimate**: small (LocalSchemeHandler foundation already exists)
 
-#### ③ Raw 源码切换（Toggle）
-- **现状** ：❌ 缺失
-- **用户需求** ：🔥🔥 开发者场景频繁使用，一键切换渲染 ↔ 原始 Markdown
-- **实现路径** ：JS 层切换显示内容，Swift 端加一个工具栏按钮
-- **工作量估计** ：小
+#### ③ Raw source toggle
+- **Status**: ❌ Missing
+- **User demand**: 🔥🔥 Used frequently in developer scenarios; one-click toggle between rendering ↔ raw Markdown
+- **Implementation path**: switch the displayed content at the JS layer and add a toolbar button on the Swift side
+- **Effort estimate**: small
 
-### 3.2 中优先级差距
+### 3.2 Medium-priority gaps
 
-#### ④ 自定义 CSS
-- **现状** ：❌ 缺失，Settings 只有内置主题
-- **用户需求** ：🔥🔥 Power user 必备
-- **实现路径** ：Settings 中添加 CSS 文件路径输入，通过 Swift 读取文件后注入 WebView
-- **工作量估计** ：中等
+#### ④ Custom CSS
+- **Status**: ❌ Missing; Settings only has built-in themes
+- **User demand**: 🔥🔥 A must-have for power users
+- **Implementation path**: add a CSS file path input in Settings, read the file from Swift, and inject it into the WebView
+- **Effort estimate**: medium
 
-#### ⑤ 脚注（Footnotes）
-- **现状** ：❌ 缺失
-- **用户需求** ：🔥🔥 学术写作用户常用
-- **实现路径** ：`markdown-it-footnote` 插件，一行引入
-- **工作量估计** ：极小
+#### ⑤ Footnotes
+- **Status**: ❌ Missing
+- **User demand**: 🔥🔥 Commonly used by academic writing users
+- **Implementation path**: the `markdown-it-footnote` plugin, a one-line integration
+- **Effort estimate**: minimal
 
-#### ⑥ 上标 / 下标（`H~2~O`、`x^2^`）
-- **现状** ：❌ 缺失
-- **用户需求** ：🔥 化学、数学用户
-- **实现路径** ：`markdown-it-sub` + `markdown-it-sup` 插件
-- **工作量估计** ：极小
+#### ⑥ Superscript / subscript (`H~2~O`, `x^2^`)
+- **Status**: ❌ Missing
+- **User demand**: 🔥 Chemistry and math users
+- **Implementation path**: the `markdown-it-sub` + `markdown-it-sup` plugins
+- **Effort estimate**: minimal
 
-#### ⑦ `==高亮==` 语法
-- **现状** ：❌ 缺失
-- **用户需求** ：🔥🔥 Obsidian / 笔记用户高频
-- **实现路径** ：`markdown-it-mark` 插件
-- **工作量估计** ：极小
+#### ⑦ `==highlight==` syntax
+- **Status**: ❌ Missing
+- **User demand**: 🔥🔥 High frequency among Obsidian / note-taking users
+- **Implementation path**: the `markdown-it-mark` plugin
+- **Effort estimate**: minimal
 
-#### ⑧ Smart 引号 / 破折号（`---` → em dash）
-- **现状** ：❌ 缺失
-- **用户需求** ：🔥 写作类用户
-- **实现路径** ：`markdown-it-smartarrows` 或 markdown-it `typographer` 选项
-- **工作量估计** ：极小（一个配置项）
+#### ⑧ Smart quotes / dashes (`---` → em dash)
+- **Status**: ❌ Missing
+- **User demand**: 🔥 Writing-oriented users
+- **Implementation path**: `markdown-it-smartarrows` or markdown-it's `typographer` option
+- **Effort estimate**: minimal (a single configuration option)
 
-#### ⑨ 自动刷新（外部编辑器保存后更新）
-- **现状** ：❌ QuickLook 重新触发才更新
-- **用户需求** ：🔥 配合外部编辑器工作流
-- **实现路径** ：QuickLook 生命周期内通过 `DispatchSourceFileSystemObject` 监听文件变化
-- **工作量估计** ：中等，需处理 QuickLook 沙盒限制
+#### ⑨ Auto-refresh (update after an external editor saves)
+- **Status**: ❌ Updates only when QuickLook is re-triggered
+- **User demand**: 🔥 Pairs with external-editor workflows
+- **Implementation path**: watch file changes via `DispatchSourceFileSystemObject` within the QuickLook lifecycle
+- **Effort estimate**: medium; needs to handle QuickLook sandbox restrictions
 
-### 3.3 低优先级差距
+### 3.3 Low-priority gaps
 
-| 功能 | 备注 |
+| Feature | Notes |
 |------|------|
-| CLI 批量转换工具 | 工程量大，受众偏小 |
-| 文档统计（字数、阅读时间） | QuickLook 场景需求弱 |
-| .textbundle / .apib 格式 | 小众需求 |
-| 代码语言自动猜测（Linguist） | 需集成 Go 库，成本高 |
-| 多文件合并（transclusion） | Marked 2 特色，超出 QuickLook 定位 |
-| CriticMarkup | 审阅场景与 QuickLook 定位不符 |
+| CLI batch conversion tool | Large engineering effort, small audience |
+| Document statistics (word count, reading time) | Weak demand in the QuickLook context |
+| .textbundle / .apib formats | Niche demand |
+| Automatic code language detection (Linguist) | Requires integrating a Go library; high cost |
+| Multi-file merge (transclusion) | A Marked 2 feature; beyond QuickLook's scope |
+| CriticMarkup | Review scenarios don't fit QuickLook's scope |
 
 ---
 
-## 四、我们的核心护城河
+## 4. Our core moat
 
-| 护城河 | 说明 |
+| Moat | Description |
 |--------|------|
-| **Vega / Vega-Lite 交互图表** | 所有 QuickLook 插件中唯一支持，数据科学 / 工程师用户的杀手锏 |
-| **Graphviz / DOT** | 同上，系统设计文档的标准图表格式 |
-| **TOC 侧边栏** | QuickLook 插件独有，长文档导航无竞争 |
-| **QuickLook 内直接导出 PDF/HTML** | 通常需要打开 Marked 2 才能完成，我们在 Space 键预览时即可完成 |
-| **多代码高亮主题** | 其他 QuickLook 插件均无此功能 |
-| **渲染性能** | 经过 7 项性能优化（v1.15），bundle 分包 + 懒加载，冷启动和热渲染均领先竞品 |
-| **已公证 + Homebrew 分发** | QLMarkdown 未公证，安装体验差；我们支持 `brew install --cask` |
+| **Vega / Vega-Lite interactive charts** | The only QuickLook plugin supporting them; a killer feature for data science / engineering users |
+| **Graphviz / DOT** | Same as above; the standard diagram format for system design documents |
+| **TOC sidebar** | Unique among QuickLook plugins; unmatched for navigating long documents |
+| **Export PDF/HTML directly within QuickLook** | Normally requires opening Marked 2; we can do it while previewing with the Space key |
+| **Multiple highlight themes** | No other QuickLook plugin has this feature |
+| **Rendering performance** | After 7 performance optimizations (v1.15), bundle code-splitting + lazy loading; leading competitors in both cold start and hot rendering |
+| **Distribution status (to be completed)** | Currently ad-hoc signed and not notarized, and no Homebrew cask published; a Developer ID certificate + notarization are needed before it can become an installation-experience advantage |
 
 ---
 
-## 五、战略建议
+## 5. Strategic recommendations
 
-### 短期（1-2 个版本）
+### Short term (1-2 releases)
 
-快速收割低工程量、高用户感知的功能：
+Quickly capture low-effort, high-visibility features:
 
 ```
-markdown-it-footnote  →  脚注支持
-markdown-it-sub/sup   →  上标 / 下标
-markdown-it-mark      →  ==高亮== 语法
-typographer: true     →  Smart 引号 / 破折号
-Raw Toggle 按钮        →  源码 / 渲染视图切换
+markdown-it-footnote  →  Footnote support
+markdown-it-sub/sup   →  Superscript / subscript
+markdown-it-mark      →  ==highlight== syntax
+typographer: true     →  Smart quotes / dashes
+Raw Toggle button     →  Source / rendered view toggle
 ```
 
-这 5 项合计工程量不超过 1 天，但可以直接填补与 QLMarkdown 最显眼的语法差距。
+Together these 5 items take no more than 1 day of effort, but they directly close the most visible syntax gaps with QLMarkdown.
 
-### 中期（3-4 个版本）
+### Medium term (3-4 releases)
 
-投入"差异化杀手级功能"：
+Invest in "differentiating killer features":
 
-1. **预览内 Cmd+F 搜索** — 实现后可作为核心宣传点，直接对标付费产品 Peek
-2. **本地图片沙盒修复** — 消除最高频用户投诉
-3. **自定义 CSS** — 吸引从 QLMarkdown 迁移的 power user
+1. **In-preview Cmd+F search** — once implemented it can serve as a core marketing point, directly competing with the paid product Peek
+2. **Local image sandbox fix** — eliminates the most frequent user complaints
+3. **Custom CSS** — attracts power users migrating from QLMarkdown
 
-### 长期（持续方向）
+### Long term (ongoing direction)
 
-- 持续优化渲染性能（我们的技术护城河）
-- 探索 Finder 侧边栏 Preview Pane 兼容性
-- 关注 macOS 新版本兼容性（Sequoia / Tahoe）
+- Continuously optimize rendering performance (our technical moat)
+- Explore Finder sidebar Preview Pane compatibility
+- Track compatibility with new macOS versions (Sequoia / Tahoe)
 
 ---
 
-## 六、参考来源
+## 6. References
 
 - [sbarex/QLMarkdown README](https://github.com/sbarex/QLMarkdown/blob/main/README.md)
 - [sbarex/QLMarkdown Issues](https://github.com/sbarex/QLMarkdown/issues)
 - [Marked 2 Help](https://marked2app.com/help/)
-- [Typora 官网](https://typora.io)
-- [iA Writer 官网](https://ia.net/writer)
-- 用户反馈来源：GitHub Issues、Reddit r/MacOS、r/Markdown
+- [Typora official site](https://typora.io)
+- [iA Writer official site](https://ia.net/writer)
+- User feedback sources: GitHub Issues, Reddit r/MacOS, r/Markdown

@@ -288,7 +288,8 @@ private struct DocumentPreviewScene: View {
                 codeHighlightTheme: preference.codeHighlightTheme,
                 collapseBlockquotesByDefault: preference.collapseBlockquotesByDefault,
                 showLineNumbers: preference.showLineNumbers,
-                readingTheme: preference.readingTheme
+                readingTheme: preference.readingTheme,
+                isEditing: isEditing
             )
             .opacity(isEditing ? 0 : 1)
             .allowsHitTesting(!isEditing)

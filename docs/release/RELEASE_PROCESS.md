@@ -1,77 +1,77 @@
 # Release Process
 
-本文档记录完整的版本发布流程，包括 PR 处理、CHANGELOG 生成和 Homebrew 分发。
+This document records the complete version release process, including PR handling, CHANGELOG generation, and Homebrew distribution.
 
-## 概述
+## Overview
 
-发布流程分为三个阶段：
-1. **PR 合并前**: 收集和记录变更
-2. **版本发布**: 自动化构建和发布
-3. **发布后**: 更新 Homebrew Cask 和验证
+The release process is divided into three phases:
+1. **Before PR merge**: Collect and record changes
+2. **Version release**: Automated build and release
+3. **After release**: Update the Homebrew Cask and verify
 
 ---
 
-## 阶段 1: PR 合并前的处理
+## Phase 1: Handling before PR merge
 
-### 1.1 PR Review 和分析
+### 1.1 PR Review and analysis
 
-当收到 PR 时，需要：
+When a PR is received, you need to:
 
-1. **获取 PR 元数据**:
+1. **Get PR metadata**:
    ```bash
    gh pr view <PR_NUMBER> --json title,body,author,number
    ```
 
-2. **分析代码变更**:
+2. **Analyze the code changes**:
    ```bash
-   # 查看 PR 的所有提交
+   # View all commits in the PR
    gh pr view <PR_NUMBER> --json commits
    
-   # 查看具体的代码变更
+   # View the specific code changes
    git log --oneline <BASE_COMMIT>..<PR_COMMIT>
    git show <PR_COMMIT> --stat
    git show <PR_COMMIT>
    ```
 
-3. **提取 PR 信息**:
-   - PR 编号
-   - PR 标题
-   - PR 作者 GitHub 用户名
-   - PR 描述
-   - 修改的文件和行数
-   - 具体的代码变更
+3. **Extract PR information**:
+   - PR number
+   - PR title
+   - PR author's GitHub username
+   - PR description
+   - Modified files and line counts
+   - Specific code changes
 
-### 1.2 生成 CHANGELOG 条目
+### 1.2 Generate the CHANGELOG entry
 
-基于 PR 分析，生成符合格式的 CHANGELOG 条目：
+Based on the PR analysis, generate a CHANGELOG entry that follows the format:
 
-**格式模板**:
+**Format template**:
 ```markdown
 ### [Added|Fixed|Changed|Removed]
-- **[Scope]**: [简短描述]。（感谢 [@username](https://github.com/username) 的贡献 [#PR_NUMBER](https://github.com/Hyp4tia/Osh/pull/PR_NUMBER)）
-  - [技术实现细节 1]
-  - [技术实现细节 2]
-  - [技术实现细节 3]
+- **[Scope]**: [Brief description]. (Thanks to [@username](https://github.com/username) for the contribution [#PR_NUMBER](https://github.com/Hyp4tia/Osh/pull/PR_NUMBER))
+  - [Technical implementation detail 1]
+  - [Technical implementation detail 2]
+  - [Technical implementation detail 3]
 ```
 
-**示例**:
+**Example**:
 ```markdown
 ### Fixed
-- **QuickLook**: 修复双击 Markdown 文件时意外触发"使用默认应用打开"的问题。（感谢 [@sxmad](https://github.com/sxmad) 的贡献 [#2](https://github.com/Hyp4tia/Osh/pull/2)）
-  - 通过自定义 `InteractiveWebView` 子类拦截鼠标事件，防止事件冒泡到 QuickLook 宿主。
-  - 添加 `NSClickGestureRecognizer` 拦截双击手势，确保 WebView 内的交互（如文本选择）不受影响。
-  - 实现 `acceptsFirstMouse(for:)` 方法，允许 WebView 直接响应首次点击事件。
+- **QuickLook**: Fix the problem where double-clicking a Markdown file unexpectedly triggers "Open with the default app". (Thanks to [@sxmad](https://github.com/sxmad) for the contribution [#2](https://github.com/Hyp4tia/Osh/pull/2))
+  - Intercept mouse events through a custom `InteractiveWebView` subclass to prevent events from bubbling up to the QuickLook host.
+  - Add an `NSClickGestureRecognizer` to intercept the double-click gesture, ensuring that interactions inside the WebView (such as text selection) are unaffected.
+  - Implement the `acceptsFirstMouse(for:)` method to allow the WebView to respond to the first click event directly.
 ```
 
-### 1.3 更新 CHANGELOG
+### 1.3 Update the CHANGELOG
 
-**重要**: PR 合并后，立即将生成的条目添加到 `CHANGELOG.md` 的 `## [Unreleased]` 部分：
+**Important**: After the PR is merged, immediately add the generated entry to the `## [Unreleased]` section of `CHANGELOG.md`:
 
 ```bash
-# 编辑 CHANGELOG.md，在 [Unreleased] 下添加新条目
+# Edit CHANGELOG.md and add new entries under [Unreleased]
 vim CHANGELOG.md
 
-# 提交更新
+# Commit the update
 git add CHANGELOG.md
 git commit -m "docs(changelog): add PR #<NUMBER> to unreleased section"
 git push origin master
@@ -79,42 +79,42 @@ git push origin master
 
 ---
 
-## 阶段 2: 版本发布
+## Phase 2: Version release
 
-### 2.1 执行发布命令
+### 2.1 Run the release command
 
-使用 `make release` 命令发布新版本：
+Use the `make release` command to publish a new version:
 
 ```bash
-# Patch 版本 (1.2.69 -> 1.2.70)
+# Patch version (1.2.69 -> 1.2.70)
 make release patch
 
-# Minor 版本 (1.2.69 -> 1.3.70)
+# Minor version (1.2.69 -> 1.3.70)
 make release minor
 
-# Major 版本 (1.2.69 -> 2.0.70)
+# Major version (1.2.69 -> 2.0.70)
 make release major
 ```
 
-### 2.2 发布脚本自动执行的步骤
+### 2.2 Steps the release script performs automatically
 
-`scripts/release.sh` 会自动执行：
+`scripts/release.sh` automatically performs:
 
-1. **更新版本号**:
-   - 读取 `.version` 文件
-   - 根据 bump 类型更新 major/minor
-   - 计算新的完整版本号（base_version.commit_count）
+1. **Update the version number**:
+   - Read the `.version` file
+   - Update major/minor based on the bump type
+   - Calculate the new full version number (base_version.commit_count)
 
-2. **提取发布说明**:
-   - 从 `CHANGELOG.md` 的 `[Unreleased]` 部分提取内容
-   - 过滤掉内部变更（架构、构建、测试等）
-   - 生成 `release_notes_tmp.md`
+2. **Extract the release notes**:
+   - Extract content from the `[Unreleased]` section of `CHANGELOG.md`
+   - Filter out internal changes (architecture, build, tests, etc.)
+   - Generate `release_notes_tmp.md`
 
-3. **更新 CHANGELOG**:
-   - 将 `[Unreleased]` 替换为新版本号和日期
-   - 保留空的 `[Unreleased]` 部分供下次使用
+3. **Update the CHANGELOG**:
+   - Replace `[Unreleased]` with the new version number and date
+   - Keep an empty `[Unreleased]` section for next time
 
-4. **提交和打标签**:
+4. **Commit and tag**:
    ```bash
    git add .version CHANGELOG.md
    git commit -m "chore(release): bump version to <VERSION>"
@@ -123,58 +123,58 @@ make release major
    git push origin "v<VERSION>"
    ```
 
-5. **构建 DMG**:
-   - 构建 TypeScript 渲染器
-   - 生成 Xcode 项目
-   - 编译 macOS 应用
-   - 创建 DMG 安装包
+5. **Build the DMG**:
+   - Build the TypeScript renderer
+   - Generate the Xcode project
+   - Compile the macOS app
+   - Create the DMG installer
 
-6. **创建 GitHub Release**:
+6. **Create the GitHub Release**:
    ```bash
-gh release create "v<VERSION>" build/artifacts/Osh.dmg \
-     --title "v<VERSION>" \
-     --notes-file release_notes_tmp.md
+   gh release create "v<VERSION>" build/artifacts/Osh.dmg \
+        --title "v<VERSION>" \
+        --notes-file release_notes_tmp.md
    ```
 
-### 2.3 验证发布
+### 2.3 Verify the release
 
-检查以下内容：
+Check the following:
 
-- [ ] GitHub Release 已创建: https://github.com/Hyp4tia/Osh/releases/tag/v<VERSION>
-- [ ] DMG 文件已上传
-- [ ] Release Notes 包含所有 PR 的感谢信息
-- [ ] Git tag 已推送
-- [ ] CHANGELOG.md 已更新
+- [ ] GitHub Release has been created: https://github.com/Hyp4tia/Osh/releases/tag/v<VERSION>
+- [ ] DMG file has been uploaded
+- [ ] Release Notes include the thanks for all PRs
+- [ ] Git tag has been pushed
+- [ ] CHANGELOG.md has been updated
 
 ---
 
-## 阶段 3: 发布后的 Homebrew 更新
+## Phase 3: Homebrew update after the release
 
-### 3.1 计算 DMG 的 SHA256
+### 3.1 Calculate the DMG's SHA256
 
 ```bash
 shasum -a 256 build/artifacts/Osh.dmg
 ```
 
-输出示例：
+Example output:
 ```
 ca72b7201410962f0f5d272149b2405a5d191a8e692d9526f23ecad3882cd306  build/artifacts/Osh.dmg
 ```
 
-### 3.2 更新 Homebrew Cask
+### 3.2 Update the Homebrew Cask
 
-编辑 `../homebrew-tap/Casks/osh.rb`：
+Edit `../homebrew-tap/Casks/osh.rb`:
 
 ```ruby
 cask 'osh' do
-  version '1.3.73'  # 更新版本号
-  sha256 'ca72b7201410962f0f5d272149b2405a5d191a8e692d9526f23ecad3882cd306'  # 更新 SHA256
+  version '1.3.73'  # Update the version number
+  sha256 'ca72b7201410962f0f5d272149b2405a5d191a8e692d9526f23ecad3882cd306'  # Update the SHA256
   
-  # ... 其余内容保持不变
+  # ... keep the rest unchanged
 end
 ```
 
-### 3.3 提交和推送 Homebrew Cask
+### 3.3 Commit and push the Homebrew Cask
 
 ```bash
 cd ../homebrew-tap
@@ -183,27 +183,26 @@ git commit -m "chore(cask): update osh to v<VERSION>"
 git push origin master
 ```
 
-### 3.4 验证 Homebrew 安装
+### 3.4 Verify the installation package
+
+Osh does not currently distribute a Homebrew cask (the tap is unpublished and the official cask has not been submitted), so post-release verification goes through the DMG:
 
 ```bash
-# 更新本地 tap
-brew update
-
-# 升级应用
-brew upgrade osh
-
-# 或全新安装测试
-brew install --cask osh
+# Download the published DMG and check its signature and notarization status
+gh release download v<VERSION> --repo Hyp4tia/Osh --pattern "Osh.dmg"
+codesign -dv --verbose=4 "Osh.app"      # Expect Developer ID Application (currently adhoc)
+spctl -a -vvv -t exec "Osh.app"         # Expect accepted (currently rejected)
+xcrun stapler validate "Osh.app"        # Expect ticket stapled
 ```
 
 ---
 
-## 完整示例: v1.3.73 发布流程
+## Complete example: v1.3.73 release process
 
-### 实际执行的命令和输出
+### Actual commands executed and their output
 
 ```bash
-# 1. 分析合并的 PR #2
+# 1. Analyze the merged PR #2
 $ gh pr view 2 --json title,body,author
 {
   "author": {"login": "sxmad", "name": "asdfq"},
@@ -221,47 +220,47 @@ Date:   Tue Jan 13 12:25:58 2026 +0800
  Sources/MarkdownPreview/PreviewViewController.swift | 31 +++++++++++++++++++---
  1 file changed, 28 insertions(+), 3 deletions(-)
 
-# 2. 手动添加到 CHANGELOG.md [Unreleased] 部分
-# （本次因为漏掉了这步，所以发布后需要回填）
+# 2. Manually add to the [Unreleased] section of CHANGELOG.md
+# (This step was missed this time, so it had to be backfilled after the release)
 
-# 3. 执行 minor 版本发布
+# 3. Run the minor version release
 $ make release minor
 🚀 Bumping Minor Version: 1.2 -> 1.3
 🎯 Target Version: 1.3.73
 ✅ DMG created successfully at: build/artifacts/Osh.dmg
 🎉 Successfully released v1.3.73!
 
-# 4. 回填 CHANGELOG（修正漏掉的步骤）
-$ vim CHANGELOG.md  # 添加 PR #2 的详细说明和感谢
+# 4. Backfill the CHANGELOG (fix the missed step)
+$ vim CHANGELOG.md  # Add the detailed description of and thanks for PR #2
 $ git add CHANGELOG.md
 $ git commit -m "docs(changelog): backfill v1.3.73 release notes with PR #2 fix"
 $ git push origin master
 
-# 5. 更新 GitHub Release
+# 5. Update the GitHub Release
 $ gh release edit v1.3.73 --notes-file /tmp/release_notes_v1.3.73_updated.md
 
-# 6. 计算 SHA256
+# 6. Calculate the SHA256
 $ shasum -a 256 build/artifacts/Osh.dmg
 ca72b7201410962f0f5d272149b2405a5d191a8e692d9526f23ecad3882cd306
 
-# 7. 更新 Homebrew Cask
+# 7. Update the Homebrew Cask
 $ cd ../homebrew-tap
-$ vim Casks/osh.rb  # 更新 version 和 sha256
+$ vim Casks/osh.rb  # Update the version and sha256
 $ git add Casks/osh.rb
 $ git commit -m "chore(cask): update osh to v1.3.73"
 $ git push origin master
 
-# 8. 验证
+# 8. Verify
 $ brew upgrade osh
 ```
 
 ---
 
-## 自动化改进建议
+## Automation improvement suggestions
 
-### 短期改进（手动执行，规范流程）
+### Short-term improvements (manual execution, standardize the process)
 
-**创建 PR 合并后的 Checklist**:
+**Create a post-PR-merge Checklist**:
 
 ```bash
 # scripts/pr-merged-checklist.sh
@@ -275,29 +274,29 @@ fi
 
 echo "✅ PR #$PR_NUMBER Merged - Post-Merge Checklist"
 echo ""
-echo "1. 分析 PR 内容："
+echo "1. Analyze the PR content:"
 echo "   gh pr view $PR_NUMBER --json title,body,author,commits"
 echo ""
-echo "2. 查看代码变更："
+echo "2. View the code changes:"
 echo "   gh pr diff $PR_NUMBER"
 echo ""
-echo "3. 生成 CHANGELOG 条目（手动）："
-echo "   - 确定类型: Added/Fixed/Changed/Removed"
-echo "   - 确定范围: QuickLook/渲染器/构建系统等"
-echo "   - 提取作者信息和 PR 链接"
+echo "3. Generate the CHANGELOG entry (manually):"
+echo "   - Determine the type: Added/Fixed/Changed/Removed"
+echo "   - Determine the scope: QuickLook/Renderer/Build system etc."
+echo "   - Extract the author info and PR link"
 echo ""
-echo "4. 更新 CHANGELOG.md [Unreleased] 部分"
+echo "4. Update the [Unreleased] section of CHANGELOG.md"
 echo "   vim CHANGELOG.md"
 echo ""
-echo "5. 提交更新："
+echo "5. Commit the update:"
 echo "   git add CHANGELOG.md"
 echo "   git commit -m 'docs(changelog): add PR #$PR_NUMBER to unreleased section'"
 echo "   git push origin master"
 ```
 
-### 中期改进（脚本辅助）
+### Medium-term improvements (script-assisted)
 
-**创建 PR 分析和 CHANGELOG 生成脚本**:
+**Create a PR analysis and CHANGELOG generation script**:
 
 ```bash
 # scripts/analyze-pr.sh
@@ -312,7 +311,7 @@ fi
 
 echo "📊 Analyzing PR #$PR_NUMBER..."
 
-# 获取 PR 信息
+# Get the PR information
 PR_INFO=$(gh pr view $PR_NUMBER --json title,body,author,files)
 PR_TITLE=$(echo "$PR_INFO" | jq -r '.title')
 PR_AUTHOR=$(echo "$PR_INFO" | jq -r '.author.login')
@@ -330,12 +329,12 @@ echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
-# 获取修改的文件
+# Get the modified files
 echo "Modified Files:"
 gh pr view $PR_NUMBER --json files --jq '.files[].path'
 echo ""
 
-# 查看 diff
+# View the diff
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Code Changes:"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -347,108 +346,108 @@ echo "📝 Suggested CHANGELOG Entry:"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 echo "### [TODO: Category]"
-echo "- **[TODO: Scope]**: $PR_TITLE。（感谢 [@$PR_AUTHOR](https://github.com/$PR_AUTHOR) 的贡献 [#$PR_NUMBER](https://github.com/Hyp4tia/Osh/pull/$PR_NUMBER)）"
-echo "  - [TODO: 技术实现细节 1]"
-echo "  - [TODO: 技术实现细节 2]"
+echo "- **[TODO: Scope]**: $PR_TITLE. (Thanks to [@$PR_AUTHOR](https://github.com/$PR_AUTHOR) for the contribution [#$PR_NUMBER](https://github.com/Hyp4tia/Osh/pull/$PR_NUMBER))"
+echo "  - [TODO: Technical implementation detail 1]"
+echo "  - [TODO: Technical implementation detail 2]"
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
-echo "⚠️  请根据以上信息手动完善 CHANGELOG 条目，然后："
-echo "    1. 编辑 CHANGELOG.md"
+echo "⚠️  Please refine the CHANGELOG entry manually based on the above information, then:"
+echo "    1. Edit CHANGELOG.md"
 echo "    2. git add CHANGELOG.md"
 echo "    3. git commit -m 'docs(changelog): add PR #$PR_NUMBER to unreleased section'"
 echo "    4. git push origin master"
 ```
 
-### 长期改进（完全自动化）
+### Long-term improvements (fully automated)
 
-使用 AI 辅助或 GitHub Actions 自动化：
+Use AI assistance or GitHub Actions automation:
 
-1. **PR 合并时自动生成 CHANGELOG 草稿**:
-   - GitHub Action 监听 PR merge 事件
-   - 使用 GPT API 分析代码变更
-   - 自动生成 CHANGELOG 条目并创建 commit
+1. **Automatically generate a CHANGELOG draft when a PR is merged**:
+   - GitHub Action listens for the PR merge event
+   - Use the GPT API to analyze the code changes
+   - Automatically generate the CHANGELOG entry and create a commit
 
-2. **发布时自动更新 Homebrew Cask**:
-   - 在 `scripts/release.sh` 末尾添加 Homebrew 更新逻辑
-   - 自动计算 SHA256
-   - 自动提交到 homebrew-tap 仓库
+2. **Automatically update the Homebrew Cask on release**:
+   - Add the Homebrew update logic to the end of `scripts/release.sh`
+   - Automatically calculate the SHA256
+   - Automatically commit to the homebrew-tap repository
 
 ---
 
-## 常见问题
+## FAQ
 
-### Q1: 发布后发现遗漏了 PR 的 CHANGELOG 怎么办？
+### Q1: What to do when a PR's CHANGELOG entry was missed after the release?
 
-**回填流程**（如 v1.3.73）:
+**Backfill process** (e.g. v1.3.73):
 
-1. 分析遗漏的 PR
-2. 编辑 CHANGELOG.md，在对应版本下添加条目
-3. 提交: `git commit -m "docs(changelog): backfill v<VERSION> with PR #<NUMBER>"`
-4. 更新 GitHub Release: `gh release edit v<VERSION> --notes-file <new_notes.md>`
-5. 推送: `git push origin master`
+1. Analyze the missed PR
+2. Edit CHANGELOG.md and add the entry under the corresponding version
+3. Commit: `git commit -m "docs(changelog): backfill v<VERSION> with PR #<NUMBER>"`
+4. Update the GitHub Release: `gh release edit v<VERSION> --notes-file <new_notes.md>`
+5. Push: `git push origin master`
 
-### Q2: 如何判断 PR 属于哪个类型（Added/Fixed/Changed）？
+### Q2: How to determine which type a PR belongs to (Added/Fixed/Changed)?
 
-- **Added**: 全新功能或特性
-- **Fixed**: Bug 修复
-- **Changed**: 现有功能的改进或重构
-- **Removed**: 删除的功能
-- **Deprecated**: 即将废弃的功能
+- **Added**: Brand-new features or capabilities
+- **Fixed**: Bug fixes
+- **Changed**: Improvements or refactoring of existing functionality
+- **Removed**: Removed functionality
+- **Deprecated**: Functionality that will be deprecated soon
 
-### Q3: 如何确定 CHANGELOG 的 Scope？
+### Q3: How to determine the Scope of a CHANGELOG entry?
 
-根据修改的文件路径：
-- `Sources/MarkdownPreview/` → **QuickLook** 或 **Extension**
-- `Sources/Markdown/` → **App** 或 **Host App**
-- `web-renderer/` → **渲染器 (Renderer)** 或 **预览 (Preview)**
-- `Makefile`, `project.yml`, `scripts/` → **构建系统 (Build)**
-- `docs/` → **文档 (Documentation)**
+Based on the modified file paths:
+- `Sources/MarkdownPreview/` → **QuickLook** or **Extension**
+- `Sources/Markdown/` → **App** or **Host App**
+- `web-renderer/` → **Renderer** or **Preview**
+- `Makefile`, `project.yml`, `scripts/` → **Build**
+- `docs/` → **Documentation**
 
-### Q4: 什么样的变更不应该出现在 Release Notes 中？
+### Q4: What kinds of changes should not appear in the Release Notes?
 
-根据 `scripts/release.sh` 的过滤逻辑，以下类型会被过滤：
-- 架构 (Architecture)
-- 内部 (Internal)
-- 构建 (Build)
-- 测试 (Test)
+Based on the filtering logic in `scripts/release.sh`, the following types are filtered out:
+- Architecture
+- Internal
+- Build
+- Test
 - CI
-- Refactor（除非影响用户体验）
+- Refactor (unless it affects the user experience)
 
-这些变更保留在 CHANGELOG.md 中，但不出现在 GitHub Release 的发布说明中。
+These changes remain in CHANGELOG.md, but do not appear in the GitHub Release notes.
 
 ---
 
-## 阶段 4: Issue 回复规范
+## Phase 4: Issue reply guidelines
 
-### 4.1 核心原则
+### 4.1 Core principles
 
-| 规则 | 说明 |
+| Rule | Description |
 |------|------|
-| **语言匹配** | **永远用 issue 的语言回复**。英文 issue → 英文回复；中文 issue → 中文回复。无需询问。 |
-| **不关闭 issue** | 只添加 `done` 标签 + 回复。由 issue 作者决定是否关闭。 |
-| **不重复打开** | 若 issue 被误关闭，先 reopen，再补标签和回复。 |
+| **Language matching** | **Always reply in the issue's language**. English issue → English reply; Chinese issue → Chinese reply. No need to ask. |
+| **Never close issues** | Only add the `done` label + a reply. The issue author decides whether to close it. |
+| **Never reopen repeatedly** | If an issue was closed by mistake, reopen it first, then add the label and reply. |
 
-### 4.2 已修复 Issue 的处理流程
+### 4.2 Workflow for handling a fixed issue
 
 ```bash
-# 1. 确认修复已包含在已发布版本中
-git tag --contains <fix-commit>  # 确认 tag 存在
-gh release view v<VERSION>       # 确认 release 已发布
+# 1. Confirm the fix is included in a released version
+git tag --contains <fix-commit>  # Confirm the tag exists
+gh release view v<VERSION>       # Confirm the release is published
 
-# 2. 添加 done 标签
+# 2. Add the done label
 gh issue edit <NUMBER> --add-label "done"
 
-# 3. 用 issue 的语言回复（英文或中文，见模板）
+# 3. Reply in the issue's language (English or Chinese, see the templates)
 gh issue comment <NUMBER> --body "..."
 
-# 禁止执行:
+# Forbidden:
 # gh issue close <NUMBER>
 ```
 
-### 4.3 回复模板
+### 4.3 Reply templates
 
-**英文 issue**:
+**English issue**:
 ```
 Fixed in [vX.Y.Z](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z).
 
@@ -462,23 +461,23 @@ brew update && brew upgrade --cask osh
 Or download the DMG from the [Releases page](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z).
 ```
 
-**中文 issue**:
+**Chinese issue**:
 ```
-已在 [vX.Y.Z](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z) 中修复。
+Fixed in [vX.Y.Z](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z).
 
-**修复内容：**
-- [与此 issue 相关的具体修复]
+**What was fixed:**
+- [specific fix related to this issue]
 
-**更新方式：**
+**How to update:**
 \`\`\`bash
 brew update && brew upgrade --cask osh
 \`\`\`
-或从 [Releases 页面](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z) 直接下载 DMG。
+Or download the DMG directly from the [Releases page](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z).
 ```
 
 ---
 
-## 参考资料
+## References
 
 - [Keep a Changelog](https://keepachangelog.com/)
 - [Semantic Versioning](https://semver.org/)

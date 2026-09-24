@@ -168,11 +168,11 @@ pub fn format_document(source: &str) -> Result<String, OshError> {
 }
 ```
 
-### Shell (Homebrew Quick Start)
+### Shell (Install Quick Start)
 
 ```bash
-# Install Osh via Homebrew Tap
-brew install --cask Hyp4tia/tap/osh
+# Download the latest release DMG
+open https://github.com/Hyp4tia/Osh/releases/latest
 
 # Reload QuickLook daemon
 qlmanage -r

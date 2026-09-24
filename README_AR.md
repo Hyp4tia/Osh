@@ -187,7 +187,7 @@
 
 ## 🛠️ البناء من المصدر
 
-المتطلبات: macOS 11+, Xcode, Node.js 18+, و `xcodegen` (`brew install xcodegen`).
+المتطلبات: macOS 12+, Xcode, Node.js 18+, و `xcodegen` (`brew install xcodegen`).
 
 ```bash
 # استنساخ المستودع

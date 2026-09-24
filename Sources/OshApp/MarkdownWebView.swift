@@ -24,6 +24,9 @@ struct MarkdownWebView: NSViewRepresentable {
     var collapseBlockquotesByDefault: Bool = false
     var showLineNumbers: Bool = true
     var readingTheme: String = "default"
+    /// True while the source editor overlay is open, which suppresses disk reloads so an external
+    /// watcher cannot clobber the in-progress draft.
+    var isEditing: Bool = false
 
     private let localSchemeHandler = LocalSchemeHandler()
     
@@ -101,6 +104,8 @@ struct MarkdownWebView: NSViewRepresentable {
             webView.appearance = nil
         }
 
+        context.coordinator.isEditingPaused = isEditing
+
         context.coordinator.render(webView: webView, content: content, fileURL: fileURL, viewMode: viewMode, appearanceMode: appearanceMode, baseFontSize: baseFontSize, enableMermaid: enableMermaid, enableKatex: enableKatex, enableEmoji: enableEmoji, enableTypst: enableTypst, codeHighlightTheme: codeHighlightTheme, collapseBlockquotesByDefault: collapseBlockquotesByDefault, showLineNumbers: showLineNumbers, readingTheme: readingTheme)
     }
 
@@ -130,6 +135,8 @@ struct MarkdownWebView: NSViewRepresentable {
         private var lastShowLineNumbers: Bool = true
         private var lastReadingTheme: String = "default"
         private var lastRenderedContent: String = ""
+        /// Settings applied by the last full render; `nil` until one has happened.
+        private var lastRenderedSignature: RenderSignature?
         private var pollingTimer: Timer?
         private let pollingInterval: TimeInterval = 2.0
         private var hasAppliedInitialZoomReset: Bool = false
@@ -548,7 +555,22 @@ struct MarkdownWebView: NSViewRepresentable {
         }
 
         private func executeRender(webView: WKWebView, content: String, fileURL: URL?, viewMode: ViewMode, appearanceMode: AppearanceMode, baseFontSize: Double, enableMermaid: Bool, enableKatex: Bool, enableEmoji: Bool, enableTypst: Bool, codeHighlightTheme: String, collapseBlockquotesByDefault: Bool, showLineNumbers: Bool = false, readingTheme: String = "default") {
-            let onlyAppearanceOrFontChanged = (content == lastRenderedContent) && (viewMode == .preview) && (viewMode == lastViewMode) && (collapseBlockquotesByDefault == lastCollapseBlockquotesByDefault) && (showLineNumbers == lastShowLineNumbers)
+            let signature = RenderSignature(
+                content: content,
+                isPreviewMode: viewMode == .preview,
+                collapseBlockquotesByDefault: collapseBlockquotesByDefault,
+                showLineNumbers: showLineNumbers,
+                rendererOptions: RendererOptions(
+                    enableMermaid: enableMermaid,
+                    enableKatex: enableKatex,
+                    enableEmoji: enableEmoji,
+                    enableTypst: enableTypst,
+                    codeHighlightTheme: codeHighlightTheme
+                )
+            )
+            let onlyAppearanceOrFontChanged = lastRenderedSignature.map {
+                RenderFastPath.isAppearanceOnlyChange(previous: $0, current: signature)
+            } ?? false
             if onlyAppearanceOrFontChanged {
                 if baseFontSize != lastBaseFontSize {
                     lastBaseFontSize = baseFontSize
@@ -587,6 +609,7 @@ struct MarkdownWebView: NSViewRepresentable {
             lastCollapseBlockquotesByDefault = collapseBlockquotesByDefault
             lastShowLineNumbers = showLineNumbers
             lastReadingTheme = readingTheme
+            lastRenderedSignature = signature
 
             guard let contentData = try? JSONSerialization.data(withJSONObject: [content], options: []),
                   let contentJsonArray = String(data: contentData, encoding: .utf8) else {

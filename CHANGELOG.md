@@ -1,5 +1,13 @@
 ## [Unreleased]
-_No pending unreleased changes._
+
+### Fixed
+- **QuickLook Preview Crash on Panel Close**: Closing a preview while a document was still rendering could terminate the QuickLook extension. The preview controller now clears its web-view readiness on teardown and no longer touches a released web view from deferred work, including system appearance changes during teardown.
+- **DOCX Export Dropped Large Images**: Exporting to DOCX silently omitted any image above roughly 65 KB (which is practically every photo) because the encoder passed one argument per byte. Images are now base64-encoded in chunks and always land in the exported document.
+- **Renderer Settings Ignored Until Content Changed**: Toggling Mermaid, KaTeX, emoji, Typst or the code-highlight theme had no visible effect until the document itself changed. These settings now force a full re-render.
+- **Disk Reload Suppression While Editing**: The documented protection that stops external file watchers from overwriting an in-progress edit was never activated. It is now driven by the real edit-overlay state in the host app.
+
+### Changed
+- **Minimum macOS Version**: Osh now requires macOS 12.0 (Monterey) or later. The previous 11.0 deployment target can no longer be built with Xcode 27, and the Sparkle appcast now advertises the matching minimum.
 
 ## [1.0.9] - 2026-09-03
 

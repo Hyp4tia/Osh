@@ -556,6 +556,10 @@ public class PreviewViewController: NSViewController, QLPreviewingController, WK
     }
     
     private func cleanupWebView() {
+        // Readiness is cleared even when the web view was never created, so every
+        // `guard isWebViewLoaded` path no-ops instead of touching a torn-down web view.
+        isWebViewLoaded = false
+
         guard let webView = webView else { return }
         
         os_log("🔵 Cleaning up WKWebView (PID: %d, WebView: %p)", log: logger, type: .default, getpid(), webView)
@@ -1114,7 +1118,7 @@ public class PreviewViewController: NSViewController, QLPreviewingController, WK
             self.logScreenEnvironment(context: "preparePreviewOfFile-ASYNC-START")
 
             let savedZoom = AppearancePreference.shared.zoomLevel
-            self.webView.pageZoom = savedZoom
+            self.webView?.pageZoom = savedZoom
             os_log("🔵 Restored pageZoom to %.2f for new file preview", log: self.logger, type: .debug, savedZoom)
 
             // Reset tracking to prevent capturing layout thrashing during display switching.
@@ -1268,7 +1272,8 @@ public class PreviewViewController: NSViewController, QLPreviewingController, WK
             let callJs = "return window.renderMarkdown(\(safeContentArg), \(optionsJson));"
             
             await MainActor.run {
-                self.webView.callAsyncJavaScript(
+                guard let webView = self.webView else { return }
+                webView.callAsyncJavaScript(
                     callJs,
                     arguments: [:],
                     in: nil,
@@ -1287,7 +1292,7 @@ public class PreviewViewController: NSViewController, QLPreviewingController, WK
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             let scrollJS = "window.scrollTo({ top: \(savedScrollY), behavior: 'auto' });"
-                            self.webView.evaluateJavaScript(scrollJS) { _, error in
+                            self.webView?.evaluateJavaScript(scrollJS) { _, error in
                                 if error == nil {
                                     os_log("📊 [renderPendingMarkdown] Restored scroll position: %.0f for %{public}@",
                                            log: self.logger, type: .default, savedScrollY, url.lastPathComponent)

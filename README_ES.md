@@ -187,7 +187,7 @@ Si al presionar la barra espaciadora todavía aparece texto plano:
 
 ## 🛠️ Compilación desde el código fuente
 
-Requisitos: macOS 11+, Xcode, Node.js 18+, y `xcodegen` (`brew install xcodegen`).
+Requisitos: macOS 12+, Xcode, Node.js 18+, y `xcodegen` (`brew install xcodegen`).
 
 ```bash
 # Clonar el repositorio

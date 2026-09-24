@@ -81,7 +81,7 @@ if [ ${#CHANGED_FILES[@]} -gt 0 ]; then
         echo "   cd $(pwd)"
         echo "   git add ${CHANGED_FILES[*]}"
         echo "   git commit -m 'chore(cask): update osh to v$VERSION'"
-        echo "   git push origin master"
+        echo "   git push origin $(git branch --show-current)"
     else
         read -p "👉 Commit and push changes? (y/n) " -n 1 -r
         echo ""
@@ -89,14 +89,14 @@ if [ ${#CHANGED_FILES[@]} -gt 0 ]; then
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             git add "${CHANGED_FILES[@]}"
             git commit -m "chore(cask): update osh to v$VERSION"
-            git push origin master
+            git push origin "$(git branch --show-current)"
             echo "✅ Changes committed and pushed to homebrew-tap"
         else
             echo "⚠️  Changes not committed. Please commit manually:"
             echo "   cd $(pwd)"
             echo "   git add ${CHANGED_FILES[*]}"
             echo "   git commit -m 'chore(cask): update osh to v$VERSION'"
-            echo "   git push origin master"
+            echo "   git push origin $(git branch --show-current)"
         fi
     fi
 else

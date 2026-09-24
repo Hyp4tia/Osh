@@ -6,7 +6,7 @@
     <a href="https://github.com/Hyp4tia/Osh/releases"><img src="https://img.shields.io/github/v/release/Hyp4tia/Osh?include_prereleases&style=flat-square&color=blue" alt="Release"></a>
     <a href="https://github.com/Hyp4tia/Osh/stargazers"><img src="https://img.shields.io/github/stars/Hyp4tia/Osh?style=flat-square&color=gold" alt="Stars"></a>
     <a href="https://github.com/Hyp4tia/Osh/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Hyp4tia/Osh?style=flat-square" alt="License"></a>
-    <img src="https://img.shields.io/badge/platform-macOS%2011%2B-lightgrey?style=flat-square" alt="macOS">
+    <img src="https://img.shields.io/badge/platform-macOS%2012%2B-lightgrey?style=flat-square" alt="macOS">
   </p>
   <p align="center">
     <a href="README.md">English</a> •

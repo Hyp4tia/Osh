@@ -1447,6 +1447,20 @@ function docxIsRTL(el: Element): boolean {
     return el.closest('[dir="rtl"]') !== null;
 }
 
+/**
+ * Base64-encodes bytes in chunks. A single `String.fromCharCode(...bytes)` call throws
+ * `RangeError` once the image passes the engine's argument limit (~65k), which silently
+ * dropped every real photo from the exported document.
+ */
+function bytesToBase64(bytes: Uint8Array): string {
+    const CHUNK_SIZE = 0x8000;
+    let binary = '';
+    for (let offset = 0; offset < bytes.length; offset += CHUNK_SIZE) {
+        binary += String.fromCharCode(...bytes.subarray(offset, offset + CHUNK_SIZE));
+    }
+    return btoa(binary);
+}
+
 window.exportDocxModel = function(): unknown {
     const previewDiv = document.getElementById('markdown-preview');
     if (!previewDiv) return { blocks: [], images: {} };
@@ -1475,7 +1489,7 @@ window.exportDocxModel = function(): unknown {
                     else if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) mime = 'image/jpeg';
                     else if (lower.endsWith('.svg')) mime = 'image/svg+xml';
                     else if (lower.endsWith('.webp')) mime = 'image/webp';
-                    images[key] = `data:${mime};base64,` + btoa(String.fromCharCode(...bytes));
+                    images[key] = `data:${mime};base64,` + bytesToBase64(bytes);
                 }
             } catch (e) {
                 logToSwift(`exportDocxModel: failed to inline image ${key}: ${e}`);
