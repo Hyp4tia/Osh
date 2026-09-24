@@ -149,6 +149,27 @@ certificate, so a distributable, notarizable build cannot be produced here as it
 `scripts/verify-release-entitlements.sh` passes because `codesign --verify --strict` also accepts an
 ad-hoc signature.
 
+What the ad-hoc signature does and does not break (verified against Sparkle 2.8.1 sources on this
+machine):
+
+- **In-app updates keep working.** `SUUpdateValidator.m:281-291` only rejects *removal* of code
+  signing (`hostIsCodeSigned && !updateIsCodeSigned`). Signed to signed is accepted, and a change of
+  signing identity is allowed while the `SUPublicEDKey` is unchanged. Both old and new builds are
+  signed (ad-hoc counts as signed), and `Info.plist:389` still carries the same key.
+- **Appcast signing works here.** Running Sparkle's `sign_update` against the published `v1.0.9` DMG
+  reproduces the exact signature in `appcast.xml`
+  (`TAv8sIqC9g18cBJiIaQXAT09lXp2L39idpjnLTohu1nQ2ZtVWPu1IcEzyUxv1FcnTmRERDPfW8GL7b5dYYENBw==`),
+  so the EdDSA private key on this machine is the live one.
+- **New users are still blocked.** A fresh DMG download is quarantined and `spctl` rejects the app
+  (`Installation.md` documents the manual System Settings / `xattr -cr` workaround). Removing that
+  friction needs a `Developer ID Application` certificate (paid Apple Developer Program) plus
+  notarization credentials, then a `codesign` + `notarytool` + `stapler` step in `release.sh`.
+
+A Release build on this machine also surfaces `WKProcessPool` as deprecated in macOS 12.0
+(`Sources/OshApp/MarkdownWebView.swift:43`, `Sources/OshQuickLook/PreviewViewController.swift:319`).
+Both assignments are no-ops on 12.0+ per Apple's deprecation note; they are left in place so this
+release does not change process-pool behaviour.
+
 ### 4.3 Homebrew instructions point at a tap that does not exist (confirmed)
 
 `AGENTS.md` issue-reply template, `docs/release/RELEASE_PROCESS.md:196`,
