@@ -132,10 +132,7 @@ Fixed in [vX.Y.Z](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z).
 - [specific fix relevant to this issue]
 
 **To update:**
-\`\`\`bash
-brew update && brew upgrade --cask osh
-\`\`\`
-Or download the DMG from the [Releases page](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z).
+Download the DMG from the [Releases page](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z), drag **Osh.app** into Applications, or use the built-in update check in **Settings > Advanced**. Osh is not distributed through Homebrew.
 ```
 
 ### Issue Reply Template (Chinese)
@@ -146,10 +143,7 @@ Or download the DMG from the [Releases page](https://github.com/Hyp4tia/Osh/rele
 - [与此 issue 相关的具体修复]
 
 **更新方式：**
-\`\`\`bash
-brew update && brew upgrade --cask osh
-\`\`\`
-或从 [Releases 页面](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z) 直接下载 DMG。
+从 [Releases 页面](https://github.com/Hyp4tia/Osh/releases/tag/vX.Y.Z) 下载 DMG，将 **Osh.app** 拖入「应用程序」替换旧版本，或使用应用内更新检查（设置 > 高级）。Osh 暂未通过 Homebrew 分发。
 ```
 
 ## ANTI-PATTERNS
