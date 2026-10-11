@@ -7,10 +7,16 @@ BUILD_DIR="${HOME}/Library/Developer/Xcode/DerivedData/Osh-*"
 DMG_NAME="Osh.dmg"
 OUTPUT_DIR="build/artifacts"
 
+# Distribution signing. Releases must ship Developer ID signed and notarized so
+# Gatekeeper lets users open the app without the "Open Anyway" dance.
+RELEASE_SIGN_IDENTITY="${RELEASE_SIGN_IDENTITY:-Developer ID Application}"
+RELEASE_TEAM_ID="${RELEASE_TEAM_ID:-PSSU5CT8UG}"
+export RELEASE_SIGN_IDENTITY RELEASE_TEAM_ID
+
 echo "🚀 Starting DMG creation for ${APP_NAME}..."
 
-# 1. Ensure clean build
-echo "📦 Building application..."
+# 1. Ensure a signed clean build
+echo "📦 Building application (identity: ${RELEASE_SIGN_IDENTITY})..."
 make app
 
 # 2. Locate the built app
@@ -51,19 +57,42 @@ fi
 
 echo "✅ Found app at: $APP_PATH"
 
-# 3. Create artifacts directory
+# 3. Refuse to package anything that is not properly signed for distribution
+echo "🔐 Verifying distribution signature..."
+SIGN_INFO=$(/usr/bin/codesign -dv --verbose=2 "$APP_PATH" 2>&1)
+printf '%s\n' "$SIGN_INFO"
+
+if ! printf '%s\n' "$SIGN_INFO" | grep -q "Authority=Developer ID Application"; then
+    echo "❌ Error: ${APP_BUNDLE} is not signed with a Developer ID Application certificate."
+    echo "   Expected identity: '${RELEASE_SIGN_IDENTITY}' (team ${RELEASE_TEAM_ID})."
+    echo "   Run 'security find-identity -v -p codesigning' to see the identities in your keychain."
+    exit 1
+fi
+
+if ! printf '%s\n' "$SIGN_INFO" | grep -q "flags=.*runtime"; then
+    echo "❌ Error: hardened runtime is not enabled, which notarization requires."
+    exit 1
+fi
+
+# 4. Notarize and staple the app before it gets packaged (NOTARIZE=1).
+# Staple the bundle and not just the image so the app still passes Gatekeeper offline.
+if [ "${NOTARIZE:-0}" = "1" ]; then
+    ./scripts/notarize.sh app "$APP_PATH"
+fi
+
+# 5. Create artifacts directory
 mkdir -p "$OUTPUT_DIR"
 rm -f "$OUTPUT_DIR/$DMG_NAME"
 
-# 4. Prepare temporary folder
+# 6. Prepare temporary folder
 TMP_DIR=$(mktemp -d)
 echo "📂 Preparing DMG content in $TMP_DIR..."
-cp -R "$APP_PATH" "$TMP_DIR/"
-# 4.5. Pre-seed the background directory with Retina asset for Finder
+/usr/bin/ditto "$APP_PATH" "$TMP_DIR/$APP_BUNDLE"
+# 6.5. Pre-seed the background directory with Retina asset for Finder
 mkdir -p "$TMP_DIR/.background"
 cp assets/dmg/background@2x.png "$TMP_DIR/.background/background@2x.png"
 
-# 5. Create DMG using create-dmg
+# 7. Create DMG using create-dmg
 echo "💿 Creating styled DMG using create-dmg..."
 
 # Volume name must change to bypass Finder cache for the layout
@@ -83,7 +112,12 @@ create-dmg \
 echo "🔐 Verifying release entitlements..."
 ./scripts/verify-release-entitlements.sh "$OUTPUT_DIR/$DMG_NAME"
 
-# 6. Cleanup
+# 8. Notarize and staple the disk image too (NOTARIZE=1)
+if [ "${NOTARIZE:-0}" = "1" ]; then
+    ./scripts/notarize.sh dmg "$OUTPUT_DIR/$DMG_NAME"
+fi
+
+# 9. Cleanup
 rm -rf "$TMP_DIR"
 
 echo ""

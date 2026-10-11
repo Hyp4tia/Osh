@@ -10,6 +10,11 @@ if ! command -v gh &> /dev/null; then
     exit 1
 fi
 
+if ! git diff-index --quiet HEAD --; then
+    echo "❌ Error: the working tree has uncommitted changes. Commit or stash them before releasing."
+    exit 1
+fi
+
 BUMP_TYPE=${1:-patch}
 
 if [ ! -f "$VERSION_FILE" ]; then
@@ -110,13 +115,27 @@ _No pending unreleased changes._\\
 ## [$NEW_FULL_VERSION] - $DATE_STR/" "$CHANGELOG_FILE" > "$TEMP_CHANGELOG"
 mv "$TEMP_CHANGELOG" "$CHANGELOG_FILE"
 
-echo "💾 Committing changes..."
+echo "💾 Committing version bump..."
 git add "$VERSION_FILE" "$CHANGELOG_FILE"
 if git ls-files --error-unmatch .build_number >/dev/null 2>&1; then
     git rm .build_number
 fi
 if git ls-files --error-unmatch scripts/increment_version.sh >/dev/null 2>&1; then
     git rm scripts/increment_version.sh
+fi
+git commit -m "chore(release): bump version to $NEW_FULL_VERSION"
+
+# Build, sign, and notarize BEFORE tagging: a release must never point at an
+# artifact that Apple's notary service or Gatekeeper rejected.
+echo "🔨 Building, signing, and notarizing the release DMG..."
+export NOTARIZE=1
+export RELEASE_SIGN_IDENTITY="${RELEASE_SIGN_IDENTITY:-Developer ID Application}"
+export RELEASE_TEAM_ID="${RELEASE_TEAM_ID:-PSSU5CT8UG}"
+make dmg
+
+if [ ! -f "$DMG_PATH" ]; then
+    echo "❌ Error: DMG not found at $DMG_PATH"
+    exit 1
 fi
 
 TAG_NAME="v${NEW_FULL_VERSION}"
@@ -126,14 +145,6 @@ echo "☁️ Pushing to remote..."
 CURRENT_BRANCH=$(git branch --show-current || echo "main")
 git push origin "$CURRENT_BRANCH"
 git push origin "$TAG_NAME"
-
-echo "🔨 Building project and DMG..."
-make dmg
-
-if [ ! -f "$DMG_PATH" ]; then
-    echo "❌ Error: DMG not found at $DMG_PATH"
-    exit 1
-fi
 
 echo "📦 Building MacPorts source tarball..."
 MACPORTS_TARBALL="build/artifacts/Osh-${NEW_FULL_VERSION}-macports-source.tar.gz"
@@ -201,6 +212,8 @@ echo ""
 echo "🎉 Successfully released v$NEW_FULL_VERSION!"
 echo ""
 echo "📋 Post-release checklist:"
+echo "   ✅ Version bump committed and tagged"
+echo "   ✅ DMG built, Developer ID signed, notarized, and stapled"
 echo "   ✅ GitHub Release created"
 echo "   ✅ DMG uploaded"
 echo "   ✅ Sparkle appcast updated (if configured)"

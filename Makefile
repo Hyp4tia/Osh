@@ -17,9 +17,15 @@ generate: build_renderer
 	rm -rf Osh.xcodeproj; \
 	MARKETING_VERSION=$$full_v CURRENT_PROJECT_VERSION=$$commit_count xcodegen generate --quiet
 
+# Developer ID signing for distribution builds. The release scripts export these;
+# when left empty (local builds) Xcode falls back to ad-hoc signing.
+RELEASE_SIGN_IDENTITY ?=
+RELEASE_TEAM_ID ?=
+RELEASE_SIGNING_FLAGS = $(if $(RELEASE_SIGN_IDENTITY),CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="$(RELEASE_SIGN_IDENTITY)" DEVELOPMENT_TEAM="$(RELEASE_TEAM_ID)" OTHER_CODE_SIGN_FLAGS="--timestamp",)
+
 app: generate
 	@echo "🔨 Building application in $(or $(CONFIGURATION),Release) configuration..."
-	@xcodebuild -project Osh.xcodeproj -scheme Osh -configuration $(or $(CONFIGURATION),Release) -destination 'platform=macOS,arch=arm64' clean build -quiet 2> build_error.log || (cat build_error.log; rm -f build_error.log; exit 1)
+	@xcodebuild -project Osh.xcodeproj -scheme Osh -configuration $(or $(CONFIGURATION),Release) -destination 'platform=macOS,arch=arm64' $(RELEASE_SIGNING_FLAGS) clean build -quiet 2> build_error.log || (cat build_error.log; rm -f build_error.log; exit 1)
 	@rm -f build_error.log
 	@echo "✅ Build completed: $(or $(CONFIGURATION),Release) configuration"
 
