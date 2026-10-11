@@ -15,6 +15,10 @@ if ! git diff-index --quiet HEAD --; then
     exit 1
 fi
 
+# Releases land on main regardless of which local branch is checked out (the
+# repo is often parked on a topic branch, and main may be checked out elsewhere).
+RELEASE_BRANCH="${RELEASE_BRANCH:-main}"
+
 BUMP_TYPE=${1:-patch}
 
 if [ ! -f "$VERSION_FILE" ]; then
@@ -142,8 +146,7 @@ TAG_NAME="v${NEW_FULL_VERSION}"
 git tag "$TAG_NAME"
 
 echo "☁️ Pushing to remote..."
-CURRENT_BRANCH=$(git branch --show-current || echo "main")
-git push origin "$CURRENT_BRANCH"
+git push origin "HEAD:${RELEASE_BRANCH}"
 git push origin "$TAG_NAME"
 
 echo "📦 Building MacPorts source tarball..."
@@ -153,7 +156,7 @@ if ./scripts/create_macports_tarball.sh "$NEW_FULL_VERSION"; then
     if [ -f "macports/Portfile" ]; then
         git add macports/Portfile
         git commit -m "chore(macports): update Portfile checksums for v$NEW_FULL_VERSION" || true
-        git push origin "$CURRENT_BRANCH" || true
+        git push origin "HEAD:${RELEASE_BRANCH}" || true
         echo "✅ macports/Portfile committed"
     fi
 else
@@ -187,7 +190,7 @@ if [ -f "./scripts/generate-appcast.sh" ] && [ -x "$SIGN_UPDATE_BIN" ]; then
     if [ -f "appcast.xml" ]; then
         git add appcast.xml
         git commit -m "chore(sparkle): update appcast.xml for v$NEW_FULL_VERSION" || true
-        git push origin "$CURRENT_BRANCH" || true
+        git push origin "HEAD:${RELEASE_BRANCH}" || true
         echo "✅ Appcast updated and committed"
     fi
 else
