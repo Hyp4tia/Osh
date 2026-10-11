@@ -15,9 +15,14 @@ export RELEASE_SIGN_IDENTITY RELEASE_TEAM_ID
 
 echo "🚀 Starting DMG creation for ${APP_NAME}..."
 
-# 1. Ensure a signed clean build
-echo "📦 Building application (identity: ${RELEASE_SIGN_IDENTITY})..."
-make app
+# 1. Ensure a signed clean build (SKIP_BUILD=1 reuses an already signed and
+#    notarized app, e.g. when repackaging without rebuilding).
+if [ "${SKIP_BUILD:-0}" = "1" ]; then
+    echo "📦 Reusing the existing built app (SKIP_BUILD=1)..."
+else
+    echo "📦 Building application (identity: ${RELEASE_SIGN_IDENTITY})..."
+    make app
+fi
 
 # 2. Locate the built app
 EXPECTED_VERSION="$(cat .version 2>/dev/null || true)"
@@ -57,9 +62,13 @@ fi
 
 echo "✅ Found app at: $APP_PATH"
 
-# 3. Re-sign Sparkle's nested binaries: Xcode leaves the XPC services and
-# Autoupdate ad-hoc signed, which the notary service rejects.
-./scripts/resign_release_app.sh "$APP_PATH"
+# 3. Re-sign Sparkle's nested binaries: Xcode leaves the XPC services,
+# Updater.app and Autoupdate ad-hoc signed, which the notary service rejects.
+# Skipped with SKIP_BUILD=1 because re-signing would invalidate the notarization
+# ticket already stapled to that app.
+if [ "${SKIP_BUILD:-0}" != "1" ]; then
+    ./scripts/resign_release_app.sh "$APP_PATH"
+fi
 
 # 4. Refuse to package anything that is not properly signed for distribution
 echo "🔐 Verifying distribution signature..."
@@ -122,6 +131,12 @@ create-dmg \
   --icon ".background" 120 120 \
   "$OUTPUT_DIR/$DMG_NAME" \
   "$TMP_DIR/"
+
+# 8.5. Sign the disk image itself. Notarizing an unsigned image is not enough:
+# Gatekeeper's primary-signature check for disk images wants a Developer ID
+# signature on the image.
+echo "🔏 Signing the disk image..."
+/usr/bin/codesign --force --sign "$RELEASE_SIGN_IDENTITY" --timestamp "$OUTPUT_DIR/$DMG_NAME"
 
 # 9. Verify the entitlements of the packaged app
 echo "🔐 Verifying release entitlements..."
