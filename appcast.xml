@@ -7,6 +7,23 @@
         <language>en</language>
 
         <item>
+            <title>Version 1.0.11</title>
+            <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.11</link>
+            <sparkle:version>141</sparkle:version>
+            <sparkle:shortVersionString>1.0.11</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>12.0</sparkle:minimumSystemVersion>
+            <pubDate>Sun, 11 Oct 2026 21:38:07 +0000</pubDate>
+            <enclosure
+                url="https://github.com/Hyp4tia/Osh/releases/download/v1.0.11/Osh.dmg"
+                sparkle:edSignature="HFTpAhQurTMWQ0X28fy6NVY9IMnl5lbz5k1S8PC/MzG/Cx4fwrpLmr+PyKjHfiiRzyLJ/mWj0dGrOlWvVLpQBA=="
+                length="38231761"
+                type="application/octet-stream" />
+            <description><![CDATA[
+                <h2>What's Changed in v1.0.11</h2><p>Security & Hardening</p><ul><li><strong>Signed and Notarized with Apple Developer ID</strong>: Osh is now code signed with a Developer ID Application certificate and notarized by Apple, with the hardened runtime enabled and the notarization ticket stapled to both the app and the disk image:</li><li>&nbsp;&nbsp;&nbsp;&nbsp;Gatekeeper no longer blocks the first launch, so the "Open Anyway" detour and the <code>xattr</code> workaround are gone.</li><li>&nbsp;&nbsp;&nbsp;&nbsp;Existing installs keep updating through the built-in updater as usual.</li></ul><h3>Changed</h3><ul><li><strong>Installation Docs</strong>: Removed the Gatekeeper bypass steps from the README, INSTALLATION, and Help documentation in all six languages.</li></ul><h3>Fixed</h3><ul><li><strong>Release Pipeline</strong>: The version bump is committed before the tag is created, so release tags point at the released revision, and a release is aborted unless signing, notarization, and the Gatekeeper checks pass.</li></ul><p><a href="https://github.com/Hyp4tia/Osh/releases/tag/v1.0.11">View Full Release Notes</a></p>
+            ]]></description>
+        </item>
+        
+        <item>
             <title>Version 1.0.10</title>
             <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.10</link>
             <sparkle:version>125</sparkle:version>
