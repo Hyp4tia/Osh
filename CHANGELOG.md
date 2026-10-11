@@ -1,4 +1,7 @@
 ## [Unreleased]
+_No pending unreleased changes._
+
+## [1.0.11] - 2026-10-12
 
 ### Security & Hardening
 - **Signed and Notarized with Apple Developer ID**: Osh is now code signed with a Developer ID Application certificate and notarized by Apple, with the hardened runtime enabled and the notarization ticket stapled to both the app and the disk image:
