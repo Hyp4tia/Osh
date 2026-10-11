@@ -56,15 +56,13 @@ Luego regrese al Finder y presione la barra espaciadora nuevamente.
 
 ### 3.2 «La aplicación está dañada / no se puede verificar el desarrollador»
 
-Es la protección Gatekeeper de macOS.
+Osh v1.0.11 y posteriores están firmados con un Apple Developer ID y notarizados por Apple, así que este aviso no debería aparecer. Si aparece, está usando una versión anterior: descargue el DMG más reciente desde GitHub Releases y reemplace la aplicación.
 
-Ejecute esto en Terminal:
+En esas versiones anteriores puede quitar el atributo de cuarentena manualmente:
 
 ```bash
 xattr -cr "/Applications/Osh.app"
 ```
-
-Luego vuelva a abrir la aplicación.
 
 ### 3.3 La vista previa se abre, pero a veces muestra texto sin formato
 

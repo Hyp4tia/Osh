@@ -56,15 +56,13 @@ Anschließend im Finder erneut die Leertaste drücken.
 
 ### 3.2 „App ist beschädigt / Entwickler kann nicht verifiziert werden“
 
-Dies ist die macOS Gatekeeper-Sicherheitsüberprüfung.
+Osh v1.0.11 und später sind mit einer Apple Developer ID signiert und von Apple notarisiert, daher sollte diese Warnung nicht mehr erscheinen. Falls sie doch auftritt, läuft eine ältere Version: Laden Sie das aktuelle DMG von GitHub Releases und ersetzen Sie die App.
 
-Führen Sie im Terminal Folgendes aus:
+Bei diesen älteren Versionen lässt sich das Quarantäne-Flag manuell entfernen:
 
 ```bash
 xattr -cr "/Applications/Osh.app"
 ```
-
-Öffnen Sie die App anschließend erneut.
 
 ### 3.3 Vorschau öffnet sich, zeigt aber manchmal reinen Text
 

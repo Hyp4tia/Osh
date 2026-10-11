@@ -81,6 +81,22 @@ git push origin master
 
 ## Phase 2: Version release
 
+### 2.0 One-time signing setup
+
+Every release must be Developer ID signed and notarized. Two things have to exist on the machine doing the release:
+
+1. **Developer ID Application certificate** in the login keychain (Xcode → Settings → Accounts → select the team → Manage Certificates → `+` → Developer ID Application). Verify:
+   ```bash
+   security find-identity -v -p codesigning   # Expect: Developer ID Application: ... (PSSU5CT8UG)
+   ```
+
+2. **Notary credentials** stored in the keychain under the profile `osh-notary` (override with `NOTARY_PROFILE`). Create an app-specific password at [appleid.apple.com](https://appleid.apple.com) and store it locally (never in the repo):
+   ```bash
+   xcrun notarytool store-credentials "osh-notary" --apple-id "<apple-id-email>" --team-id "PSSU5CT8UG"
+   ```
+
+`scripts/notarize.sh` fails fast when the profile is missing. Override signing with `RELEASE_SIGN_IDENTITY` and `RELEASE_TEAM_ID` if needed.
+
 ### 2.1 Run the release command
 
 Use the `make release` command to publish a new version:
@@ -114,22 +130,30 @@ make release major
    - Replace `[Unreleased]` with the new version number and date
    - Keep an empty `[Unreleased]` section for next time
 
-4. **Commit and tag**:
+4. **Commit the version bump**:
    ```bash
    git add .version CHANGELOG.md
    git commit -m "chore(release): bump version to <VERSION>"
+   ```
+
+5. **Build, sign, and notarize the DMG** (`NOTARIZE=1 make dmg`):
+   - Build the TypeScript renderer, generate the Xcode project, compile the Release app
+   - Sign the app and the QuickLook extension with a Developer ID Application certificate, hardened runtime, and a secure timestamp
+   - Refuse to package anything that is not Developer ID signed with the hardened runtime enabled
+   - Notarize the app with Apple and staple the ticket to the bundle
+   - Create the DMG installer and verify its release entitlements
+   - Notarize the DMG, staple the ticket to the image, and run the Gatekeeper checks (`spctl`, `stapler validate`) on both the image and the app inside it
+   
+   A release is never tagged or published before these checks pass.
+
+6. **Tag and push** (only after the signed artifact passed):
+   ```bash
    git tag "v<VERSION>"
-   git push origin master
+   git push origin main
    git push origin "v<VERSION>"
    ```
 
-5. **Build the DMG**:
-   - Build the TypeScript renderer
-   - Generate the Xcode project
-   - Compile the macOS app
-   - Create the DMG installer
-
-6. **Create the GitHub Release**:
+7. **Create the GitHub Release**:
    ```bash
    gh release create "v<VERSION>" build/artifacts/Osh.dmg \
         --title "v<VERSION>" \
@@ -192,9 +216,12 @@ The tap is published, so verify both the cask and the published DMG:
 ```bash
 # Download the published DMG and check its signature and notarization status
 gh release download v<VERSION> --repo Hyp4tia/Osh --pattern "Osh.dmg"
-codesign -dv --verbose=4 "Osh.app"      # Expect Developer ID Application (currently adhoc)
-spctl -a -vvv -t exec "Osh.app"         # Expect accepted (currently rejected)
-xcrun stapler validate "Osh.app"        # Expect ticket stapled
+xcrun stapler validate "Osh.dmg"        # Expect ticket stapled to the image
+hdiutil attach Osh.dmg
+codesign -dv --verbose=4 "/Volumes/Install Osh/Osh.app"   # Expect Developer ID Application (team PSSU5CT8UG)
+spctl -a -vvv -t exec "/Volumes/Install Osh/Osh.app"      # Expect accepted (Notarized Developer ID)
+xcrun stapler validate "/Volumes/Install Osh/Osh.app"     # Expect ticket stapled to the bundle
+hdiutil detach "/Volumes/Install Osh"
 
 # Verify the cask tracks the published asset
 brew fetch --cask Hyp4tia/tap/osh       # Fails if the sha256 does not match the release DMG

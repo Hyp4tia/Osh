@@ -1,5 +1,15 @@
 ## [Unreleased]
-_No pending unreleased changes._
+
+### Security & Hardening
+- **Signed and Notarized with Apple Developer ID**: Osh is now code signed with a Developer ID Application certificate and notarized by Apple, with the hardened runtime enabled and the notarization ticket stapled to both the app and the disk image:
+  - Gatekeeper no longer blocks the first launch, so the "Open Anyway" detour and the `xattr` workaround are gone.
+  - Existing installs keep updating through the built-in updater as usual.
+
+### Changed
+- **Installation Docs**: Removed the Gatekeeper bypass steps from the README, INSTALLATION, and Help documentation in all six languages.
+
+### Fixed
+- **Release Pipeline**: The version bump is committed before the tag is created, so release tags point at the released revision, and a release is aborted unless signing, notarization, and the Gatekeeper checks pass.
 
 ## [1.0.10] - 2026-09-24
 

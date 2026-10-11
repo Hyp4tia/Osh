@@ -56,15 +56,13 @@ Then go back to Finder and press Space again.
 
 ### 3.2 "App is damaged / can't verify the developer"
 
-This is macOS Gatekeeper kicking in (downloaded apps carry a quarantine flag).
+Osh v1.0.11 and later are signed with an Apple Developer ID and notarized by Apple, so this warning should not appear. If you do see it, you are running an older build: download the latest DMG from GitHub Releases and replace the app.
 
-Run this in Terminal:
+On those older builds the quarantine flag can be cleared manually:
 
 ```bash
 xattr -cr "/Applications/Osh.app"
 ```
-
-Then open the app again.
 
 ### 3.3 Preview opens, but occasionally shows plain text
 

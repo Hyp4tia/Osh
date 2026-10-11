@@ -56,15 +56,13 @@ Retournez ensuite dans le Finder et réessayez avec Espace.
 
 ### 3.2 « L'application est endommagée / impossible de vérifier le développeur »
 
-C'est la sécurité Gatekeeper de macOS.
+Osh v1.0.11 et versions ultérieures sont signés avec un Apple Developer ID et notarisés par Apple : ce message ne devrait donc plus apparaître. S'il s'affiche, vous utilisez une version antérieure : téléchargez le DMG le plus récent depuis GitHub Releases et remplacez l'application.
 
-Exécutez ceci dans le Terminal :
+Sur ces anciennes versions, l'attribut de quarantaine peut être supprimé manuellement :
 
 ```bash
 xattr -cr "/Applications/Osh.app"
 ```
-
-Puis rouvrez l'application.
 
 ### 3.3 L'aperçu s'ouvre, mais affiche parfois du texte brut
 

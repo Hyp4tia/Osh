@@ -121,16 +121,10 @@ Seleccione cualquier archivo en Finder, presione la **barra espaciadora** y disf
 3. Inicie Osh una vez desde Aplicaciones para registrar la extensión de QuickLook en macOS.
 
 > [!TIP]
-> **Abrir Osh por primera vez en macOS (aviso de Gatekeeper):**
-> Al distribuirse de forma independiente fuera de la Mac App Store, macOS Gatekeeper puede mostrar un aviso de verificación al abrirlo por primera vez. Para abrir Osh:
-> 1. Haga clic en **Aceptar / Listo (Done)** en el aviso.
-> 2. Abra **Ajustes del Sistema (System Settings)** → **Privacidad y seguridad (Privacy & Security)**.
-> 3. Desplácese hacia abajo hasta la sección **Seguridad (Security)**.
-> 4. Verá el mensaje *“Se bloqueó el uso de Osh…”*.
-> 5. Haga clic en **Abrir de todos modos (Open Anyway)**.
-> 6. Confirme haciendo clic en **Abrir (Open)**.
+> **Abrir Osh por primera vez en macOS:**
+> Osh está firmado con un certificado **Apple Developer ID** y notarizado por Apple, así que macOS lo abre como cualquier otra app: monte el DMG, arrastre **Osh.app** a **Aplicaciones** y ábrala.
 >
-> *(Solo necesita realizar este paso una vez).*
+> No hace falta eludir Gatekeeper: sin aviso de «desarrollador no identificado», sin pasar por **Privacidad y seguridad** y sin el comando `xattr`. Solo las versiones anteriores a la v1.0.11 pueden mostrar ese aviso; al actualizar desaparece.
 
 <details>
 <summary><strong>Solución de problemas con QuickLook</strong></summary>
@@ -143,7 +137,7 @@ Si al presionar la barra espaciadora todavía aparece texto plano:
    qlmanage -r cache
    killall Finder
    ```
-3. Si aparece el diálogo de desarrollador no identificado:
+3. Si aparece el diálogo de desarrollador no identificado (solo en versiones anteriores a la v1.0.11):
    ```bash
    xattr -cr /Applications/Osh.app
    ```

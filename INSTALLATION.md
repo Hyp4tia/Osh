@@ -27,11 +27,14 @@ brew update && brew upgrade --cask osh
 
 ---
 
-## 🛡️ Opening Osh for the First Time (macOS Gatekeeper)
+## 🛡️ Opening Osh for the First Time
 
-Osh is distributed independently outside the Mac App Store. When opening the app for the first time, macOS Gatekeeper may display a dialog stating that the developer cannot be verified.
+Osh is signed with an **Apple Developer ID** certificate and notarized by Apple, so macOS verifies it as a trusted app. Mount the DMG, drag **Osh.app** into **Applications**, and launch it: no "unidentified developer" dialog, no **Privacy & Security** detour, and no `xattr` workaround.
 
-### Standard macOS Permission Flow:
+### Older builds (before v1.0.11)
+
+Builds released before v1.0.11 were not notarized and Gatekeeper blocked their first launch. Updating from the [Releases page](https://github.com/Hyp4tia/Osh/releases) removes that, or you can bypass it once:
+
 1. Click **Done** or **Cancel** on the Gatekeeper alert.
 2. Open **System Settings** → **Privacy & Security**.
 3. Scroll down to the **Security** section.
@@ -39,11 +42,7 @@ Osh is distributed independently outside the Mac App Store. When opening the app
 5. Click **Open Anyway**.
 6. When prompted, click **Open** to confirm.
 
-### Terminal Shortcut (Alternative):
-If you prefer using the command line, you can clear the quarantine attribute directly:
-```bash
-xattr -cr /Applications/Osh.app
-```
+Terminal alternative for those builds: `xattr -cr /Applications/Osh.app`
 
 ---
 

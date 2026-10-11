@@ -159,18 +159,9 @@ Osh focuses on **fast, local Markdown reading on macOS**, while other apps prior
 > [!TIP]
 > **Opening Osh on macOS for the first time**
 >
-> Osh is currently distributed outside the Mac App Store and is not yet notarized with an Apple Developer ID. macOS Gatekeeper may therefore show a warning that the developer cannot be verified.
+> Osh is signed with an **Apple Developer ID** certificate and notarized by Apple, so macOS opens it like any other app: mount the DMG, drag **Osh.app** into **Applications**, and launch it.
 >
-> To open Osh:
->
-> 1. Click **Done** on the warning.
-> 2. Open **System Settings → Privacy & Security**.
-> 3. Scroll to the **Security** section.
-> 4. Look for the message indicating that Osh was blocked.
-> 5. Click **Open Anyway**.
-> 6. Confirm **Open**.
->
-> This is normally required only on the first launch.
+> No Gatekeeper bypass is needed: no "unidentified developer" warning, no **Privacy & Security** detour, and no `xattr` command. Only builds older than v1.0.11 can still show the warning; updating from the latest release removes it.
 
 <details>
 <summary><strong>Troubleshooting QuickLook after installation</strong></summary>

@@ -56,15 +56,13 @@ killall Finder
 
 ### 3.2 提示「已损坏 / 无法验证开发者」
 
-这是 macOS Gatekeeper 安全机制拦截。
+Osh v1.0.11 及更高版本已使用 Apple Developer ID 签名并通过 Apple 公证，因此不应再出现该提示。若仍然出现，说明您使用的是旧版本：请从 GitHub Releases 下载最新 DMG 并替换应用。
 
-在终端中运行：
+在这些旧版本上，可以手动清除隔离属性：
 
 ```bash
 xattr -cr "/Applications/Osh.app"
 ```
-
-然后重新打开应用程序。
 
 ### 3.3 预览可以打开，但有时变成纯文本
 
