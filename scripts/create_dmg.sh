@@ -78,15 +78,15 @@ if ! printf '%s\n' "$SIGN_INFO" | grep -q "flags=.*runtime"; then
     exit 1
 fi
 
-echo "🔐 Verifying nested Sparkle binaries..."
-for nested in "$APP_PATH/Contents/Frameworks/Sparkle.framework/Versions/Current/XPCServices"/*.xpc \
-    "$APP_PATH/Contents/Frameworks/Sparkle.framework/Versions/Current/Autoupdate"; do
-    [ -e "$nested" ] || continue
-    if ! /usr/bin/codesign -dv --verbose=2 "$nested" 2>&1 | grep -q "Authority=Developer ID Application"; then
-        echo "❌ Error: $(basename "$nested") is not Developer ID signed; the notary service would reject the release."
+echo "🔐 Verifying every executable in the bundle is Developer ID signed..."
+while IFS= read -r binary; do
+    if ! /usr/bin/codesign -dv --verbose=2 "$binary" 2>&1 | grep -q "Authority=Developer ID Application"; then
+        echo "❌ Error: ${binary#"$APP_PATH/"} is not Developer ID signed; the notary service would reject the release."
         exit 1
     fi
-done
+done < <(find "$APP_PATH" -type f -perm +111 | while IFS= read -r candidate; do
+    /usr/bin/file "$candidate" | grep -q "Mach-O" && echo "$candidate"
+done)
 
 # 5. Notarize and staple the app before it gets packaged (NOTARIZE=1).
 # Staple the bundle and not just the image so the app still passes Gatekeeper offline.

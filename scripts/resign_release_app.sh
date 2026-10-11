@@ -18,18 +18,27 @@ SPARKLE_CURRENT="$SPARKLE_FRAMEWORK/Versions/Current"
 
 [ -d "$SPARKLE_FRAMEWORK" ] || { echo "❌ Sparkle.framework not found in $APP" >&2; exit 1; }
 
+# find(1) does not descend into a symlinked starting point, so resolve Current first.
+SPARKLE_CURRENT="$(cd "$SPARKLE_CURRENT" && pwd -P)"
+
 sign() {
     local target="$1"
     /usr/bin/codesign --force --sign "$IDENTITY" --options runtime --timestamp \
         --preserve-metadata=entitlements "$target"
 }
 
-echo "🔏 Re-signing Sparkle XPC services..."
-for xpc in "$SPARKLE_CURRENT"/XPCServices/*.xpc; do
-    [ -e "$xpc" ] || continue
-    echo "   $(basename "$xpc")"
-    sign "$xpc"
-done
+echo "🔏 Re-signing nested bundles inside Sparkle.framework..."
+# -depth emits nested bundles before their containers, which is the order
+# codesign requires.
+NESTED_BUNDLES="$(find "$SPARKLE_CURRENT" -depth -type d \( -name "*.xpc" -o -name "*.app" \))"
+if [ -z "$NESTED_BUNDLES" ]; then
+    echo "❌ No nested bundles found under $SPARKLE_CURRENT" >&2
+    exit 1
+fi
+while IFS= read -r bundle; do
+    echo "   ${bundle#"$SPARKLE_CURRENT"/}"
+    sign "$bundle"
+done <<< "$NESTED_BUNDLES"
 
 if [ -e "$SPARKLE_CURRENT/Autoupdate" ]; then
     echo "   Autoupdate"

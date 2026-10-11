@@ -34,6 +34,22 @@ if ! xcrun notarytool history --keychain-profile "$PROFILE" >/dev/null 2>&1; the
    xcrun notarytool store-credentials \"$PROFILE\" --apple-id <email> --team-id <TEAM_ID>"
 fi
 
+# Cleanup runs on every exit path. These live outside the functions on purpose:
+# a trap referencing a function-local variable hits "unbound variable" under set -u.
+WORK_DIR=""
+MOUNT_DIR=""
+
+cleanup() {
+    if [ -n "$WORK_DIR" ]; then
+        rm -rf "$WORK_DIR"
+    fi
+    if [ -n "$MOUNT_DIR" ]; then
+        hdiutil detach "$MOUNT_DIR" -quiet >/dev/null 2>&1 || true
+        rmdir "$MOUNT_DIR" >/dev/null 2>&1 || true
+    fi
+}
+trap cleanup EXIT
+
 submit_and_wait() {
     local archive="$1" output submission_id status
     echo "☁️  Submitting $(basename "$archive") to Apple's notary service (usually a few minutes)..."
@@ -52,15 +68,14 @@ submit_and_wait() {
 }
 
 notarize_app() {
-    local app="$1" work zip
+    local app="$1" zip
     [ -d "$app" ] || fail "App bundle not found: $app"
 
     echo "🔐 Verifying signature before upload..."
     codesign --verify --strict --verbose=2 "$app"
 
-    work=$(mktemp -d)
-    trap 'rm -rf "$work"' EXIT
-    zip="$work/$(basename "$app").zip"
+    WORK_DIR=$(mktemp -d)
+    zip="$WORK_DIR/$(basename "$app").zip"
     ditto -c -k --keepParent "$app" "$zip"
 
     submit_and_wait "$zip"
@@ -75,7 +90,7 @@ notarize_app() {
 }
 
 notarize_dmg() {
-    local dmg="$1" mount app
+    local dmg="$1" app
     [ -f "$dmg" ] || fail "DMG not found: $dmg"
 
     submit_and_wait "$dmg"
@@ -88,11 +103,10 @@ notarize_dmg() {
     spctl --assess --type open --context context:primary-signature --verbose=4 "$dmg"
 
     # Verify the app inside the packaged image, not just the image itself.
-    mount=$(mktemp -d)
-    trap 'hdiutil detach "$mount" -quiet >/dev/null 2>&1 || true; rmdir "$mount" >/dev/null 2>&1 || true' EXIT
-    hdiutil attach "$dmg" -mountpoint "$mount" -nobrowse -readonly >/dev/null
+    MOUNT_DIR=$(mktemp -d)
+    hdiutil attach "$dmg" -mountpoint "$MOUNT_DIR" -nobrowse -readonly >/dev/null
 
-    app="$mount/Osh.app"
+    app="$MOUNT_DIR/Osh.app"
     [ -d "$app" ] || fail "Osh.app not found inside $dmg"
     echo "🛡️  Gatekeeper assessment (app inside the DMG)..."
     spctl --assess --type execute --verbose=4 "$app"
