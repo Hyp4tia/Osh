@@ -87,12 +87,12 @@ Every release must be Developer ID signed and notarized. Two things have to exis
 
 1. **Developer ID Application certificate** in the login keychain (Xcode → Settings → Accounts → select the team → Manage Certificates → `+` → Developer ID Application). Verify:
    ```bash
-   security find-identity -v -p codesigning   # Expect: Developer ID Application: ... (PSSU5CT8UG)
+   security find-identity -v -p codesigning   # Expect: Developer ID Application: ... (RY4LJM4BM2)
    ```
 
 2. **Notary credentials** stored in the keychain under the profile `osh-notary` (override with `NOTARY_PROFILE`). Create an app-specific password at [appleid.apple.com](https://appleid.apple.com) and store it locally (never in the repo):
    ```bash
-   xcrun notarytool store-credentials "osh-notary" --apple-id "<apple-id-email>" --team-id "PSSU5CT8UG"
+   xcrun notarytool store-credentials "osh-notary" --apple-id "<apple-id-email>" --team-id "RY4LJM4BM2"
    ```
 
 `scripts/notarize.sh` fails fast when the profile is missing. Override signing with `RELEASE_SIGN_IDENTITY` and `RELEASE_TEAM_ID` if needed.
@@ -218,7 +218,7 @@ The tap is published, so verify both the cask and the published DMG:
 gh release download v<VERSION> --repo Hyp4tia/Osh --pattern "Osh.dmg"
 xcrun stapler validate "Osh.dmg"        # Expect ticket stapled to the image
 hdiutil attach Osh.dmg
-codesign -dv --verbose=4 "/Volumes/Install Osh/Osh.app"   # Expect Developer ID Application (team PSSU5CT8UG)
+codesign -dv --verbose=4 "/Volumes/Install Osh/Osh.app"   # Expect Developer ID Application (team RY4LJM4BM2)
 spctl -a -vvv -t exec "/Volumes/Install Osh/Osh.app"      # Expect accepted (Notarized Developer ID)
 xcrun stapler validate "/Volumes/Install Osh/Osh.app"     # Expect ticket stapled to the bundle
 hdiutil detach "/Volumes/Install Osh"

@@ -130,7 +130,7 @@ git commit -m "chore(release): bump version to $NEW_FULL_VERSION"
 echo "🔨 Building, signing, and notarizing the release DMG..."
 export NOTARIZE=1
 export RELEASE_SIGN_IDENTITY="${RELEASE_SIGN_IDENTITY:-Developer ID Application}"
-export RELEASE_TEAM_ID="${RELEASE_TEAM_ID:-PSSU5CT8UG}"
+export RELEASE_TEAM_ID="${RELEASE_TEAM_ID:-RY4LJM4BM2}"
 make dmg
 
 if [ ! -f "$DMG_PATH" ]; then

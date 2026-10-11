@@ -10,7 +10,7 @@ OUTPUT_DIR="build/artifacts"
 # Distribution signing. Releases must ship Developer ID signed and notarized so
 # Gatekeeper lets users open the app without the "Open Anyway" dance.
 RELEASE_SIGN_IDENTITY="${RELEASE_SIGN_IDENTITY:-Developer ID Application}"
-RELEASE_TEAM_ID="${RELEASE_TEAM_ID:-PSSU5CT8UG}"
+RELEASE_TEAM_ID="${RELEASE_TEAM_ID:-RY4LJM4BM2}"
 export RELEASE_SIGN_IDENTITY RELEASE_TEAM_ID
 
 echo "🚀 Starting DMG creation for ${APP_NAME}..."
@@ -57,7 +57,11 @@ fi
 
 echo "✅ Found app at: $APP_PATH"
 
-# 3. Refuse to package anything that is not properly signed for distribution
+# 3. Re-sign Sparkle's nested binaries: Xcode leaves the XPC services and
+# Autoupdate ad-hoc signed, which the notary service rejects.
+./scripts/resign_release_app.sh "$APP_PATH"
+
+# 4. Refuse to package anything that is not properly signed for distribution
 echo "🔐 Verifying distribution signature..."
 SIGN_INFO=$(/usr/bin/codesign -dv --verbose=2 "$APP_PATH" 2>&1)
 printf '%s\n' "$SIGN_INFO"
@@ -74,25 +78,35 @@ if ! printf '%s\n' "$SIGN_INFO" | grep -q "flags=.*runtime"; then
     exit 1
 fi
 
-# 4. Notarize and staple the app before it gets packaged (NOTARIZE=1).
+echo "🔐 Verifying nested Sparkle binaries..."
+for nested in "$APP_PATH/Contents/Frameworks/Sparkle.framework/Versions/Current/XPCServices"/*.xpc \
+    "$APP_PATH/Contents/Frameworks/Sparkle.framework/Versions/Current/Autoupdate"; do
+    [ -e "$nested" ] || continue
+    if ! /usr/bin/codesign -dv --verbose=2 "$nested" 2>&1 | grep -q "Authority=Developer ID Application"; then
+        echo "❌ Error: $(basename "$nested") is not Developer ID signed; the notary service would reject the release."
+        exit 1
+    fi
+done
+
+# 5. Notarize and staple the app before it gets packaged (NOTARIZE=1).
 # Staple the bundle and not just the image so the app still passes Gatekeeper offline.
 if [ "${NOTARIZE:-0}" = "1" ]; then
     ./scripts/notarize.sh app "$APP_PATH"
 fi
 
-# 5. Create artifacts directory
+# 6. Create artifacts directory
 mkdir -p "$OUTPUT_DIR"
 rm -f "$OUTPUT_DIR/$DMG_NAME"
 
-# 6. Prepare temporary folder
+# 7. Prepare temporary folder
 TMP_DIR=$(mktemp -d)
 echo "📂 Preparing DMG content in $TMP_DIR..."
 /usr/bin/ditto "$APP_PATH" "$TMP_DIR/$APP_BUNDLE"
-# 6.5. Pre-seed the background directory with Retina asset for Finder
+# 7.5. Pre-seed the background directory with Retina asset for Finder
 mkdir -p "$TMP_DIR/.background"
 cp assets/dmg/background@2x.png "$TMP_DIR/.background/background@2x.png"
 
-# 7. Create DMG using create-dmg
+# 8. Create DMG using create-dmg
 echo "💿 Creating styled DMG using create-dmg..."
 
 # Volume name must change to bypass Finder cache for the layout
@@ -109,15 +123,16 @@ create-dmg \
   "$OUTPUT_DIR/$DMG_NAME" \
   "$TMP_DIR/"
 
+# 9. Verify the entitlements of the packaged app
 echo "🔐 Verifying release entitlements..."
 ./scripts/verify-release-entitlements.sh "$OUTPUT_DIR/$DMG_NAME"
 
-# 8. Notarize and staple the disk image too (NOTARIZE=1)
+# 10. Notarize and staple the disk image too (NOTARIZE=1)
 if [ "${NOTARIZE:-0}" = "1" ]; then
     ./scripts/notarize.sh dmg "$OUTPUT_DIR/$DMG_NAME"
 fi
 
-# 9. Cleanup
+# 11. Cleanup
 rm -rf "$TMP_DIR"
 
 echo ""
