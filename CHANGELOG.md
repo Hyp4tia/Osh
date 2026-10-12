@@ -1,4 +1,7 @@
 ## [Unreleased]
+_No pending unreleased changes._
+
+## [1.0.12] - 2026-10-12
 
 ### Security & Hardening
 - **Updated DOMPurify to 3.4.16**: the HTML sanitizer that cleans rendered Markdown was bumped from 3.4.14, picking up the fixes for two medium-severity advisories in the 3.4.15 line.
