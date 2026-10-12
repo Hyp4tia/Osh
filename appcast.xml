@@ -7,6 +7,23 @@
         <language>en</language>
 
         <item>
+            <title>Version 1.0.12</title>
+            <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.12</link>
+            <sparkle:version>149</sparkle:version>
+            <sparkle:shortVersionString>1.0.12</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>12.0</sparkle:minimumSystemVersion>
+            <pubDate>Mon, 12 Oct 2026 00:57:35 +0000</pubDate>
+            <enclosure
+                url="https://github.com/Hyp4tia/Osh/releases/download/v1.0.12/Osh.dmg"
+                sparkle:edSignature="POAoiJddM6/h5E2xYqLF8QdrB0HH1O0FNR1y8pb3DYNu4NQUqf8ZrKt+52Mh+AbJx+/jOsiBY3DBOwhE0q7UBQ=="
+                length="38231058"
+                type="application/octet-stream" />
+            <description><![CDATA[
+                <h2>What's Changed in v1.0.12</h2><p>Security & Hardening</p><ul><li><strong>Updated DOMPurify to 3.4.16</strong>: the HTML sanitizer that cleans rendered Markdown was bumped from 3.4.14, picking up the fixes for two medium-severity advisories in the 3.4.15 line.</li></ul><p><a href="https://github.com/Hyp4tia/Osh/releases/tag/v1.0.12">View Full Release Notes</a></p>
+            ]]></description>
+        </item>
+        
+        <item>
             <title>Version 1.0.11</title>
             <link>https://github.com/Hyp4tia/Osh/releases/tag/v1.0.11</link>
             <sparkle:version>141</sparkle:version>
